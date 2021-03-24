@@ -20,12 +20,38 @@ namespace insertGuaXingtoPowerpnt
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            List<string> lb = new List<string>{"64卦圖","行書","小篆","甲骨文"
+                    ,"金文","隸書"};
+            listBox1.DataSource = lb;
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            string dir = getDir() + "\\";
+            switch (listBox1.SelectedValue)
+            {
+                case "64卦圖":
+                    guaXing();
+                    break;
+                case "行書":
+                    GuWenZi(picEnum.行書);
+                    break;
+                case "小篆":
+                    break;
+                case "甲骨文":
+                    break;
+                case "金文":
+                    break;
+                case "隸書":
+                default:
+                    break;
+            }
+
+
+        }
+
+        void guaXing()
+        {
+            string dir = getDir(picEnum.卦圖64) + "\\";
             if (dir != "")
             {
                 PowerPnt.Presentation ppt = getPPT();
@@ -36,31 +62,76 @@ namespace insertGuaXingtoPowerpnt
                     string f = dir + sel.TextRange.Text + ".png";
                     if (System.IO.File.Exists(f))
                     {
-                        PowerPnt.TextRange tr= sel.TextRange.InsertAfter(sel.TextRange.Text);
+                        PowerPnt.TextRange tr = sel.TextRange.InsertAfter(sel.TextRange.Text);
                         tr.Select();
                         sel = sel.Application.ActiveWindow.Selection;
                         float lf = sel.TextRange.BoundLeft;
                         float tp = sel.TextRange.BoundTop;
                         int selCt = sel.TextRange2.Characters.Count;
                         float h = sel.TextRange.BoundHeight;
-                        if (sel.ShapeRange.TextFrame.Orientation==Microsoft.Office.Core.MsoTextOrientation.msoTextOrientationVerticalFarEast)
+                        if (sel.ShapeRange.TextFrame.Orientation == Microsoft.Office.Core.MsoTextOrientation.msoTextOrientationVerticalFarEast)
                         {
                             h = sel.TextRange.BoundHeight / selCt;
                         }
-                        float w = sel.TextRange.BoundWidth;                        
-                        if (sel.ShapeRange.TextFrame.Orientation==Microsoft.Office.Core.MsoTextOrientation.msoTextOrientationHorizontal)
+                        float w = sel.TextRange.BoundWidth;
+                        if (sel.ShapeRange.TextFrame.Orientation == Microsoft.Office.Core.MsoTextOrientation.msoTextOrientationHorizontal)
                         {
-                            w= sel.TextRange.BoundWidth/selCt  ;
+                            w = sel.TextRange.BoundWidth / selCt;
                         }
-                        PowerPnt.Shape spr = sld.Shapes.AddPicture(f,Microsoft.Office.Core.MsoTriState.msoFalse
-                            ,Microsoft.Office.Core.MsoTriState.msoTrue,
-                            lf,tp,w,h);
+                        PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
+                            , Microsoft.Office.Core.MsoTriState.msoTrue,
+                            lf, tp, w, h);
                         sel.TextRange.Text = "　";
-                        
+                        spTransp(ref sp, ref sel);
+                        sel.Unselect();
                     }
 
                 }
                 ppt.Application.Activate();
+            }
+        }
+
+        void GuWenZi(picEnum pE)
+        {
+            string dir = getDir(pE) + "\\";
+            if (dir != "")
+            {
+                PowerPnt.Presentation ppt = getPPT();
+                PowerPnt.Selection sel = ppt.Application.ActiveWindow.Selection;
+                if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
+                {
+                    ppt.Application.Activate();
+
+                    PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
+
+                    var tr = sel.TextRange2;
+                    foreach (Microsoft.Office.Core.TextRange2 item in tr.Characters)
+                    {
+                        
+                        string f = dir +item.Text + ".png";
+                        if (pE == picEnum.行書)
+                        {
+                            f = dir + item.Text+ ".jpg";
+                        }
+
+                        if (System.IO.File.Exists(f))
+                        {
+                            float lf = item.BoundLeft;
+                            float tp = item.BoundTop;
+                            float h = item.BoundHeight;
+                            float w = item.BoundWidth;
+                            PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
+                                , Microsoft.Office.Core.MsoTriState.msoTrue,
+                                lf, tp, w, h);
+                            item.Select();                                                     
+                            spTransp(ref sp, ref sel);
+
+                        }
+
+
+                    }
+
+                }
             }
         }
 
@@ -75,13 +146,37 @@ namespace insertGuaXingtoPowerpnt
             return ppt;
         }
 
-        string getDir()
+        string getDir(picEnum pE)
         {
+            string subFolder = "";
+            switch (pE)
+            {
+                case picEnum.卦圖64:
+                    subFolder = "\\Macros\\64卦圖";
+                    break;
+                case picEnum.行書:
+                    subFolder = "\\Macros\\古文字\\行書";
+                    break;
+                case picEnum.小篆:
+                    subFolder = "\\Macros\\古文字\\台大說文小篆字圖";
+                    break;
+                case picEnum.甲骨文:
+                    subFolder = "\\Macros\\古文字\\甲骨文";
+                    break;
+                case picEnum.金文:
+                    subFolder = "\\Macros\\古文字\\金文";
+                    break;
+                case picEnum.隸書:
+                    subFolder = "\\Macros\\古文字\\隸書";
+                    break;
+                default:
+                    break;
+            }
             string dir = "";
             List<string> dirs = new List<string> { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
             foreach (string item in dirs)
             {
-                dir = item + ":\\@@@華語文工具及資料@@@\\Macros\\64卦圖";
+                dir = item + ":\\@@@華語文工具及資料@@@" + subFolder;
                 if (System.IO.Directory.Exists(dir))
                 {
 
@@ -90,5 +185,17 @@ namespace insertGuaXingtoPowerpnt
             }
             return "";
         }
+
+        void spTransp(ref PowerPnt.Shape sp, ref PowerPnt.Selection SEL)
+        {
+            sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
+            sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
+            SEL.TextRange2.Font.Fill.Transparency = 1;
+        }
+    }
+
+    enum picEnum : byte
+    {
+        卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書
     }
 }
