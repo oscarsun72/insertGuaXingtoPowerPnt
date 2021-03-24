@@ -82,7 +82,7 @@ namespace insertGuaXingtoPowerpnt
                             , Microsoft.Office.Core.MsoTriState.msoTrue,
                             lf, tp, w, h);
                         sel.TextRange.Text = "　";
-                        spTransp(ref sp, ref sel);
+                        spTransp(ref sp,  sel.TextRange2);
                         sel.Unselect();
                     }
 
@@ -123,8 +123,7 @@ namespace insertGuaXingtoPowerpnt
                             PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
                                 , Microsoft.Office.Core.MsoTriState.msoTrue,
                                 lf, tp, w, h);
-                            item.Select();                                                     
-                            spTransp(ref sp, ref sel);
+                            spTransp(ref sp, item);
 
                         }
 
@@ -186,11 +185,11 @@ namespace insertGuaXingtoPowerpnt
             return "";
         }
 
-        void spTransp(ref PowerPnt.Shape sp, ref PowerPnt.Selection SEL)
+        void spTransp(ref PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
         {
             sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
             sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
-            SEL.TextRange2.Font.Fill.Transparency = 1;
+            tr.Font.Fill.Transparency = 1;
         }
     }
 
