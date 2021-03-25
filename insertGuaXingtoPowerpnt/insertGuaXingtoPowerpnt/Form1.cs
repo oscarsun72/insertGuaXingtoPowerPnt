@@ -355,13 +355,9 @@ namespace insertGuaXingtoPowerpnt
             tr.Font.Fill.Transparency = 1;
         }
 
-        #region 毫秒延时 界面不会卡死
+        #region 毫秒延时 界面不会卡死//果然要完美解決卡頓的問題還是要藉由多執行緒代理的方法
         public static void Delay(int mm)
-        {//https://my.oschina.net/u/4419355/blog/3452446
-            if (mm==0)
-            {
-                return;
-            }
+        {//https://my.oschina.net/u/4419355/blog/3452446            
             DateTime current = DateTime.Now;
             while (current.AddMilliseconds(mm) > DateTime.Now)
             {
