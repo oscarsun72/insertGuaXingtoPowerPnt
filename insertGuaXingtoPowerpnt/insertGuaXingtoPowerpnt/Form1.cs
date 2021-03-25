@@ -213,6 +213,7 @@ namespace insertGuaXingtoPowerpnt
             doc.Application.Activate();
             foreach (WinWord.Range item in sel.Characters)
             {
+                Delay(Convert.ToInt32( numericUpDown1.Value*1000));
                 string f = dir + item.Text + extName;
                 if (System.IO.File.Exists(f))
                 {
@@ -262,7 +263,7 @@ namespace insertGuaXingtoPowerpnt
                 var tr = sel.TextRange2;
                 foreach (Microsoft.Office.Core.TextRange2 item in tr.Characters)
                 {
-                    wait();
+                    Delay(Convert.ToInt32(numericUpDown1.Value*1000));
                     string f = dir + item.Text + ".png";
                     if (pE == picEnum.行書)
                     {
@@ -354,8 +355,27 @@ namespace insertGuaXingtoPowerpnt
             tr.Font.Fill.Transparency = 1;
         }
 
+        #region 毫秒延时 界面不会卡死
+        public static void Delay(int mm)
+        {//https://my.oschina.net/u/4419355/blog/3452446
+            if (mm==0)
+            {
+                return;
+            }
+            DateTime current = DateTime.Now;
+            while (current.AddMilliseconds(mm) > DateTime.Now)
+            {
+                Application.DoEvents();
+            }
+            return;
+        }
+        #endregion
+
         void wait()
         {
+            //https://www.itread01.com/content/1547889140.html
+            //https://www.google.com/search?q=c%23+%E4%B8%8D%E5%8D%A1%E6%AD%BB+&sxsrf=ALeKk018ozK2YgezqvoGdvu0dgRhsw77Gw%3A1616674700814&ei=jH9cYNmcMfuJr7wPur2m6Aw&oq=c%23+%E4%B8%8D%E5%8D%A1%E6%AD%BB+&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABOgUIABCwAzoECCMQJzoKCAAQsQMQgwEQQzoECAAQQzoCCAA6BAgAEB46CAgAEAgQChAeOgYIABAIEB46CAgAELEDEIMBULnzC1i_sgxgo7QMaARwAHgAgAGqA4gB1QeSAQU4LjQtMZgBAKABAaoBB2d3cy13aXrIAQHAAQE&sclient=gws-wiz&ved=0ahUKEwjZkonKtsvvAhX7xIsBHbqeCc0Q4dUDCA0&uact=5
+
             decimal fl = numericUpDown1.Value;
             if (fl > 0)
             {
