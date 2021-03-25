@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PowerPnt = Microsoft.Office.Interop.PowerPoint;
+using WinWord= Microsoft.Office.Interop.Word;
+using Excel= Microsoft.Office.Interop.Excel;
 
 namespace insertGuaXingtoPowerpnt
 {
@@ -23,17 +25,35 @@ namespace insertGuaXingtoPowerpnt
             List<string> lb = new List<string>{"64卦圖","行書","小篆","甲骨文"
                     ,"金文","隸書"};
             listBox1.DataSource = lb;
+            List<string> lb2 = new List<string>{"PowerPoint","Word","Excel"};
+            listBox2.DataSource = lb2;
+
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
+            officeEnum ofE=officeEnum.PowerPoint;
+            switch (listBox2.SelectedItem)
+            {
+                case "PowerPoint":
+                    ofE = officeEnum.PowerPoint;
+                    break;
+                case "Word":
+                    ofE = officeEnum.Word;
+                    break;
+                case "Excel":
+                    ofE = officeEnum.Excel;
+                    break;
+                default:
+                    break;
+            }
             switch (listBox1.SelectedValue)
             {
                 case "64卦圖":
-                    guaXing();
+                    guaXing(ofE);
                     break;
                 case "行書":
-                    GuWenZi(picEnum.行書);
+                    GuWenZi(picEnum.行書,ofE);
                     break;
                 case "小篆":
                     break;
@@ -49,100 +69,143 @@ namespace insertGuaXingtoPowerpnt
 
         }
 
-        void guaXing()
+        void guaXing(officeEnum oE)
         {
             string dir = getDir(picEnum.卦圖64) + "\\";
             if (dir != "")
             {
-                PowerPnt.Presentation ppt = getPPT();
-                PowerPnt.Selection sel = ppt.Application.ActiveWindow.Selection;
-                if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
+                switch (oE)
                 {
-                    PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
-                    string f = dir + sel.TextRange.Text + ".png";
-                    if (System.IO.File.Exists(f))
-                    {
-                        PowerPnt.TextRange tr = sel.TextRange.InsertAfter(sel.TextRange.Text);
-                        tr.Select();
-                        sel = sel.Application.ActiveWindow.Selection;
-                        float lf = sel.TextRange.BoundLeft;
-                        float tp = sel.TextRange.BoundTop;
-                        int selCt = sel.TextRange2.Characters.Count;
-                        float h = sel.TextRange.BoundHeight;
-                        if (sel.ShapeRange.TextFrame.Orientation == Microsoft.Office.Core.MsoTextOrientation.msoTextOrientationVerticalFarEast)
-                        {
-                            h = sel.TextRange.BoundHeight / selCt;
-                        }
-                        float w = sel.TextRange.BoundWidth;
-                        if (sel.ShapeRange.TextFrame.Orientation == Microsoft.Office.Core.MsoTextOrientation.msoTextOrientationHorizontal)
-                        {
-                            w = sel.TextRange.BoundWidth / selCt;
-                        }
-                        PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
-                            , Microsoft.Office.Core.MsoTriState.msoTrue,
-                            lf, tp, w, h);
-                        sel.TextRange.Text = "　";
-                        spTransp(ref sp,  sel.TextRange2);
-                        sel.Unselect();
-                    }
-
+                    case officeEnum.PowerPoint:
+                        runPPTGuaXing(dir);
+                        break;
+                    case officeEnum.Word:
+                        break;
+                    case officeEnum.Excel:
+                        break;
+                    default:
+                        break;
                 }
-                ppt.Application.Activate();
             }
         }
 
-        void GuWenZi(picEnum pE)
+        void runPPTGuaXing(string dir)
+        {
+            PowerPnt.Application pptApp =(PowerPnt.Application)getOffice(officeEnum.PowerPoint);
+            PowerPnt.Presentation ppt = pptApp.ActivePresentation;
+            PowerPnt.Selection sel = ppt.Application.ActiveWindow.Selection;
+            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
+            {
+                PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
+                string f = dir + sel.TextRange.Text + ".png";
+                if (System.IO.File.Exists(f))
+                {
+                    PowerPnt.TextRange tr = sel.TextRange.InsertAfter(sel.TextRange.Text);
+                    tr.Select();
+                    sel = sel.Application.ActiveWindow.Selection;
+                    float lf = sel.TextRange.BoundLeft;
+                    float tp = sel.TextRange.BoundTop;
+                    int selCt = sel.TextRange2.Characters.Count;
+                    float h = sel.TextRange.BoundHeight;
+                    if (sel.ShapeRange.TextFrame.Orientation == Microsoft.Office.Core.MsoTextOrientation.msoTextOrientationVerticalFarEast)
+                    {
+                        h = sel.TextRange.BoundHeight / selCt;
+                    }
+                    float w = sel.TextRange.BoundWidth;
+                    if (sel.ShapeRange.TextFrame.Orientation == Microsoft.Office.Core.MsoTextOrientation.msoTextOrientationHorizontal)
+                    {
+                        w = sel.TextRange.BoundWidth / selCt;
+                    }
+                    PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
+                        , Microsoft.Office.Core.MsoTriState.msoTrue,
+                        lf, tp, w, h);
+                    sel.TextRange.Text = "　";
+                    spTransp(ref sp, sel.TextRange2);
+                    sel.Unselect();
+                }
+
+            }
+            ppt.Application.Activate();
+        }
+
+        void GuWenZi(picEnum pE, officeEnum ofE)
         {
             string dir = getDir(pE) + "\\";
             if (dir != "")
             {
-                PowerPnt.Presentation ppt = getPPT();
-                PowerPnt.Selection sel = ppt.Application.ActiveWindow.Selection;
-                if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
+                switch (ofE)
                 {
-                    ppt.Application.Activate();
+                    case officeEnum.PowerPoint:
+                        runPPT(dir,pE);
+                        break;
+                    case officeEnum.Word:
+                        break;
+                    case officeEnum.Excel:
+                        break;
+                    default:
+                        break;
+                }
 
-                    PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
+            }
+        }
 
-                    var tr = sel.TextRange2;
-                    foreach (Microsoft.Office.Core.TextRange2 item in tr.Characters)
+        void runPPT(string dir,picEnum pE)
+        {
+            PowerPnt.Application oPPTapp =(PowerPnt.Application)getOffice(officeEnum.PowerPoint);
+            PowerPnt.Presentation ppt = oPPTapp.ActivePresentation;
+            PowerPnt.Selection sel = ppt.Application.ActiveWindow.Selection;
+            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
+            {
+                ppt.Application.Activate();
+
+                PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
+
+                var tr = sel.TextRange2;
+                foreach (Microsoft.Office.Core.TextRange2 item in tr.Characters)
+                {
+
+                    string f = dir + item.Text + ".png";
+                    if (pE == picEnum.行書)
                     {
-                        
-                        string f = dir +item.Text + ".png";
-                        if (pE == picEnum.行書)
-                        {
-                            f = dir + item.Text+ ".jpg";
-                        }
-
-                        if (System.IO.File.Exists(f))
-                        {
-                            float lf = item.BoundLeft;
-                            float tp = item.BoundTop;
-                            float h = item.BoundHeight;
-                            float w = item.BoundWidth;
-                            PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
-                                , Microsoft.Office.Core.MsoTriState.msoTrue,
-                                lf, tp, w, h);
-                            spTransp(ref sp, item);
-
-                        }
-
-
+                        f = dir + item.Text + ".jpg";
                     }
 
+                    if (System.IO.File.Exists(f))
+                    {
+                        float lf = item.BoundLeft;
+                        float tp = item.BoundTop;
+                        float h = item.BoundHeight;
+                        float w = item.BoundWidth;
+                        PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
+                            , Microsoft.Office.Core.MsoTriState.msoTrue,
+                            lf, tp, w, h);
+                        spTransp(ref sp, item);
+                    }
                 }
             }
         }
 
-        PowerPnt.Presentation getPPT()
+        object getOffice(officeEnum ofE)
         {
+            string CLSID = ""; object office;
+            switch (ofE)
+            {
+                case officeEnum.PowerPoint:
+                    CLSID = "PowerPoint.Application";
+                    //機碼：HKEY_CLASSES_ROOT\PowerPoint.Application
+                    break;
+                case officeEnum.Word:
+                    CLSID = "Word.Application";//HKEY_CLASSES_ROOT\Word.Application\CLSID
+                    break;
+                case officeEnum.Excel:
+                    CLSID = "Excel.Application";
+                    break;
+                default:
+                    break;
+            }
             //https://docs.microsoft.com/en-us/previous-versions/office/troubleshoot/office-developer/use-visual-c-automate-run-program-instance
-            PowerPnt.Application oPPntApp =
-                (PowerPnt.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("PowerPoint.Application");
-            //機碼：HKEY_CLASSES_ROOT\PowerPoint.Application
-            PowerPnt.Presentation ppt = oPPntApp.ActivePresentation;
-
-            return ppt;
+            office = System.Runtime.InteropServices.Marshal.GetActiveObject(CLSID);
+            return office;
         }
 
         string getDir(picEnum pE)
@@ -196,5 +259,10 @@ namespace insertGuaXingtoPowerpnt
     enum picEnum : byte
     {
         卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書
+    }
+
+    enum officeEnum
+    {
+        PowerPoint, Word, Excel
     }
 }
