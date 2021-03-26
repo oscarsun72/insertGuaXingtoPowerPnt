@@ -371,7 +371,9 @@ namespace insertGuaXingtoPowerpnt
         }
         string getFullNameNTUswxz(string dir, string x)
         {
-            if (x==""||x=="/")
+<<<<<<<<< Temporary merge branch 1
+=========
+            if (x=="/")
             {
                 return "";
             }
