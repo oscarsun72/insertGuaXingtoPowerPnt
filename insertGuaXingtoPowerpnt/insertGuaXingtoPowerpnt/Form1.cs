@@ -371,7 +371,7 @@ namespace insertGuaXingtoPowerpnt
         }
         string getFullNameNTUswxz(string dir, string x)
         {
-            if (x=="/")
+            if (x==""||x=="/")
             {
                 return "";
             }
