@@ -38,18 +38,18 @@ namespace insertGuaXingtoPowerpnt
 
         private void go()
         {
-            
-            officeEnum ofE = officeEnum.PowerPoint;
+
+            officeEnum ofcE = officeEnum.PowerPoint;
             switch (listBox2.SelectedItem)
             {
                 case "PowerPoint":
-                    ofE = officeEnum.PowerPoint;
+                    ofcE = officeEnum.PowerPoint;
                     break;
                 case "Word":
-                    ofE = officeEnum.Word;
+                    ofcE = officeEnum.Word;
                     break;
                 case "Excel":
-                    ofE = officeEnum.Excel;
+                    ofcE = officeEnum.Excel;
                     break;
                 default:
                     break;
@@ -57,18 +57,21 @@ namespace insertGuaXingtoPowerpnt
             switch (listBox1.SelectedValue)
             {
                 case "64卦圖":
-                    guaXing(ofE);
+                    guaXing(ofcE);
                     break;
                 case "行書":
-                    GuWenZi(picEnum.行書, ofE);
+                    GuWenZi(picEnum.行書, ofcE);
                     break;
                 case "小篆":
+                    GuWenZi(picEnum.小篆, ofcE);
                     break;
                 case "甲骨文":
                     break;
                 case "金文":
                     break;
                 case "隸書":
+                    GuWenZi(picEnum.隸書, ofcE);
+                    break;
                 default:
                     break;
             }
@@ -212,12 +215,16 @@ namespace insertGuaXingtoPowerpnt
                 default:
                     break;
             }
-            doc.Application.Activate();
+            doc.Application.Activate();            
             foreach (WinWord.Range item in sel.Characters)
             {
                 Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
-                //wait();
+                //wait();                
                 string f = dir + item.Text + extName;
+                if (pE == picEnum.小篆)
+                {
+                    f = getFullNameNTUswxz(dir, item.Text);
+                }
                 if (System.IO.File.Exists(f))
                 {
                     if (!inserted)
@@ -225,22 +232,32 @@ namespace insertGuaXingtoPowerpnt
                         inserted = true;
                     }
                     docApp.ScreenUpdating = false;
-                    WinWord.WdColorIndex c = sel.Range.HighlightColorIndex;
-                    //http://www.exceloffice.net/archives/3643
-                    item.Font.Fill.Transparency = 1;
+                    WinWord.WdColorIndex c = item.HighlightColorIndex;                    
                     sp = item.InlineShapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
                         , Microsoft.Office.Core.MsoTriState.msoTrue, item);
                     sp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
-                    sp.Height = (float)0.9 * (15 + sel.Range.Font.Size - 12);
+                    //sp.Height = (float)0.9 * (15 + item.Font.Size - 12);
+                    sp.Height = (float)1 * (15 + item.Font.Size - 12); 
                     sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
                     sp.PictureFormat.TransparencyColor = 16777215;
                     sp.Range.HighlightColorIndex = c;
-                    s = sp.ConvertToShape();
-                    s.WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
-                    //https://social.msdn.microsoft.com/Forums/zh-TW/b6f28a4f-be91-4b67-9dfc-378a6809eeb0/22914203092103329992vba23559word2003272843504122294292553034037197?forum=232
-                    //https://docs.microsoft.com/zh-tw/office/vba/api/word.wdwraptypemerged
+                    doc.ActiveWindow.ScrollIntoView(sp);
+                    if (checkBox1.Checked != true)
+                    {
+                        //http://www.exceloffice.net/archives/3643
+                        item.Font.Fill.Transparency = 1;
+                        s = sp.ConvertToShape();
+                        s.WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
+                        //https://social.msdn.microsoft.com/Forums/zh-TW/b6f28a4f-be91-4b67-9dfc-378a6809eeb0/22914203092103329992vba23559word2003272843504122294292553034037197?forum=232
+                        //https://docs.microsoft.com/zh-tw/office/vba/api/word.wdwraptypemerged
+                    }
+                    if (docApp.Selection.Type != WinWord.WdSelectionType.wdSelectionIP)
+                    {
+
+                        item.SetRange(item.Start + 1, item.End);
+                        item.Delete();
+                    }
                     docApp.ScreenUpdating = true;
-                    doc.ActiveWindow.ScrollIntoView(s);
                 }
             }
             if (inserted)
@@ -352,11 +369,30 @@ namespace insertGuaXingtoPowerpnt
             }
             return "";
         }
+        string getFullNameNTUswxz(string dir, string x)
+        {
+            string s = dir.Substring(0, dir.IndexOf("古文字"));
+            ADODB.Recordset rst = new ADODB.Recordset();
+            ADODB.Connection cnt = new ADODB.Connection();
+            cnt.Open("Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Data Source=" +
+                s + "\\說文資料庫原造字取代為系統字參照用.mdb");
+            rst.Open("SELECT 台大說文小篆字圖卷數表.檔名, Format([卷],\"00\") " +
+                "AS V FROM 台大說文小篆字圖卷數表 WHERE (((" +
+                "InStr([檔名],\"" + x + "\"))>0))", cnt, ADODB.CursorTypeEnum.adOpenKeyset,
+                ADODB.LockTypeEnum.adLockReadOnly);
+            if (rst.RecordCount > 0)
+            {
+                return dir + "\\說文卷" + rst.Fields["V"].Value + "\\" + rst.Fields["檔名"].Value;
+            }
+            return "";
+        }
+
 
         void spTransp(ref PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
         {
             sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
             sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
+                                                           //if (checkBox1.Checked != true)
             tr.Font.Fill.Transparency = 1;
         }
 
@@ -388,9 +424,9 @@ namespace insertGuaXingtoPowerpnt
             }
         }
 
-        
 
-        
+
+
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
@@ -413,7 +449,6 @@ namespace insertGuaXingtoPowerpnt
             }
         }
     }
-
     enum picEnum : byte
     {
         卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書
@@ -423,6 +458,4 @@ namespace insertGuaXingtoPowerpnt
     {
         PowerPoint, Word, Excel
     }
-
-
 }
