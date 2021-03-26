@@ -20,6 +20,7 @@ namespace insertGuaXingtoPowerpnt
             InitializeComponent();
         }
 
+
         private void Form1_Load(object sender, EventArgs e)
         {
             List<string> lb = new List<string>{"64卦圖","行書","小篆","甲骨文"
@@ -37,6 +38,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void go()
         {
+            
             officeEnum ofE = officeEnum.PowerPoint;
             switch (listBox2.SelectedItem)
             {
@@ -213,7 +215,8 @@ namespace insertGuaXingtoPowerpnt
             doc.Application.Activate();
             foreach (WinWord.Range item in sel.Characters)
             {
-                Delay(Convert.ToInt32( numericUpDown1.Value*1000));
+                Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
+                //wait();
                 string f = dir + item.Text + extName;
                 if (System.IO.File.Exists(f))
                 {
@@ -237,6 +240,7 @@ namespace insertGuaXingtoPowerpnt
                     //https://social.msdn.microsoft.com/Forums/zh-TW/b6f28a4f-be91-4b67-9dfc-378a6809eeb0/22914203092103329992vba23559word2003272843504122294292553034037197?forum=232
                     //https://docs.microsoft.com/zh-tw/office/vba/api/word.wdwraptypemerged
                     docApp.ScreenUpdating = true;
+                    doc.ActiveWindow.ScrollIntoView(s);
                 }
             }
             if (inserted)
@@ -263,7 +267,8 @@ namespace insertGuaXingtoPowerpnt
                 var tr = sel.TextRange2;
                 foreach (Microsoft.Office.Core.TextRange2 item in tr.Characters)
                 {
-                    Delay(Convert.ToInt32(numericUpDown1.Value*1000));
+                    Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
+                    //wait();
                     string f = dir + item.Text + ".png";
                     if (pE == picEnum.行書)
                     {
@@ -355,11 +360,13 @@ namespace insertGuaXingtoPowerpnt
             tr.Font.Fill.Transparency = 1;
         }
 
-        #region 毫秒延时 界面不会卡死//果然要完美解決卡頓的問題還是要藉由多執行緒代理的方法
+        #region 毫秒延时 界面不会卡死
+        //果然要完美解決卡頓的問題還是要藉由多執行緒代理的方法，未必也；蓋是用BackgroundWorker 類別比較對，詳部件篩選器實作 //https://docs.microsoft.com/zh-tw/dotnet/api/system.componentmodel.backgroundworker?view=netframework-4.0&f1url=%3FappId%3DDev15IDEF1%26l%3DZH-TW%26k%3Dk(System.ComponentModel.BackgroundWorker);k(TargetFrameworkMoniker-.NETFramework,Version%253Dv4.0);k(DevLang-csharp)%26rd%3Dtrue 
         public static void Delay(int mm)
         {//https://my.oschina.net/u/4419355/blog/3452446            
             DateTime current = DateTime.Now;
-            while (current.AddMilliseconds(mm) > DateTime.Now)
+            //Application.DoEvents();
+            while (current.AddMilliseconds(mm) >= DateTime.Now)
             {
                 Application.DoEvents();
             }
@@ -380,6 +387,10 @@ namespace insertGuaXingtoPowerpnt
                 System.Threading.Thread.Sleep(Convert.ToInt32(1000 * fl));
             }
         }
+
+        
+
+        
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {

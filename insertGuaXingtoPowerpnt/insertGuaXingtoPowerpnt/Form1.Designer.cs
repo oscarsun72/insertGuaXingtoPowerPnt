@@ -80,7 +80,7 @@
             // 
             this.numericUpDown1.DecimalPlaces = 1;
             this.numericUpDown1.Increment = new decimal(new int[] {
-            3,
+            1,
             0,
             0,
             65536});
