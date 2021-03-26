@@ -38,7 +38,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void go()
         {
-
+            listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false;checkBox1.Enabled = false;
             officeEnum ofcE = officeEnum.PowerPoint;
             switch (listBox2.SelectedItem)
             {
@@ -75,6 +75,7 @@ namespace insertGuaXingtoPowerpnt
                 default:
                     break;
             }
+            listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true; checkBox1.Enabled = true;
         }
 
         void guaXing(officeEnum oE)
@@ -215,7 +216,11 @@ namespace insertGuaXingtoPowerpnt
                 default:
                     break;
             }
-            doc.Application.Activate();            
+            doc.Application.Activate();
+            if (sel.ParagraphFormat.BaseLineAlignment != WinWord.WdBaselineAlignment.wdBaselineAlignCenter)
+            {
+                sel.ParagraphFormat.BaseLineAlignment = WinWord.WdBaselineAlignment.wdBaselineAlignCenter;
+            }
             foreach (WinWord.Range item in sel.Characters)
             {
                 Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
@@ -227,17 +232,13 @@ namespace insertGuaXingtoPowerpnt
                 }
                 if (System.IO.File.Exists(f))
                 {
-                    if (!inserted)
-                    {
-                        inserted = true;
-                    }
                     docApp.ScreenUpdating = false;
-                    WinWord.WdColorIndex c = item.HighlightColorIndex;                    
+                    WinWord.WdColorIndex c = item.HighlightColorIndex;
                     sp = item.InlineShapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
                         , Microsoft.Office.Core.MsoTriState.msoTrue, item);
                     sp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
                     //sp.Height = (float)0.9 * (15 + item.Font.Size - 12);
-                    sp.Height = (float)1 * (15 + item.Font.Size - 12); 
+                    sp.Height = (float)1 * (15 + item.Font.Size - 12);
                     sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
                     sp.PictureFormat.TransparencyColor = 16777215;
                     sp.Range.HighlightColorIndex = c;
@@ -251,23 +252,19 @@ namespace insertGuaXingtoPowerpnt
                         //https://social.msdn.microsoft.com/Forums/zh-TW/b6f28a4f-be91-4b67-9dfc-378a6809eeb0/22914203092103329992vba23559word2003272843504122294292553034037197?forum=232
                         //https://docs.microsoft.com/zh-tw/office/vba/api/word.wdwraptypemerged
                     }
-                    if (docApp.Selection.Type != WinWord.WdSelectionType.wdSelectionIP)
+                    else
                     {
+                        if (docApp.Selection.Type != WinWord.WdSelectionType.wdSelectionIP)
+                        {
 
-                        item.SetRange(item.Start + 1, item.End);
-                        item.Delete();
+                            item.SetRange(item.Start + 1, item.End);
+                            item.Delete();
+                        }
                     }
                     docApp.ScreenUpdating = true;
                 }
             }
-            if (inserted)
-            {
-                if (sel.ParagraphFormat.BaseLineAlignment != WinWord.WdBaselineAlignment.wdBaselineAlignCenter)
-                {
-                    sel.ParagraphFormat.BaseLineAlignment = WinWord.WdBaselineAlignment.wdBaselineAlignCenter;
-                }
-                sel.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
-            }
+            sel.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
         }
 
         void runPPT(string dir, picEnum pE)
@@ -287,10 +284,26 @@ namespace insertGuaXingtoPowerpnt
                     Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
                     //wait();
                     string f = dir + item.Text + ".png";
-                    if (pE == picEnum.行書)
+                    switch (pE)
                     {
-                        f = dir + item.Text + ".jpg";
+                        case picEnum.卦圖64:
+                            break;
+                        case picEnum.行書:
+                            f = dir + item.Text + ".jpg";
+                            break;
+                        case picEnum.小篆:
+                            f = getFullNameNTUswxz(dir, item.Text);
+                            break;
+                        case picEnum.甲骨文:
+                            break;
+                        case picEnum.金文:
+                            break;
+                        case picEnum.隸書:
+                            break;
+                        default:
+                            break;
                     }
+
 
                     if (System.IO.File.Exists(f))
                     {
@@ -371,10 +384,15 @@ namespace insertGuaXingtoPowerpnt
         }
         string getFullNameNTUswxz(string dir, string x)
         {
-            if (x==""||x=="/")
-            {
+            //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/best-practices-strings
+            //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/character-classes-in-regular-expressions
+            //https://walterinuniverse.wordpress.com/2014/09/03/asp-net-c-%E5%88%A4%E6%96%B7%E5%AD%97%E4%B8%B2-%E6%98%AF%E5%90%A6%E7%94%B1%E8%8B%B1%E6%96%87%E8%88%87%E6%95%B8%E5%AD%97%E7%B5%84%E6%88%90/
+            System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex("[^A-Za-z0-9() 　/]");
+            if (!re.IsMatch(x))
                 return "";
-            }
+            if (x == "" || x == "/")
+                return "";
+
             string s = dir.Substring(0, dir.IndexOf("古文字"));
             ADODB.Recordset rst = new ADODB.Recordset();
             ADODB.Connection cnt = new ADODB.Connection();
