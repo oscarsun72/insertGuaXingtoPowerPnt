@@ -20,6 +20,15 @@ namespace insertGuaXingtoPowerpnt
             InitializeComponent();
         }
 
+        PowerPnt.Application pptApp;
+        PowerPnt.Presentation ppt;
+        PowerPnt.Selection sel;
+        PowerPnt.Slide sld;
+        WinWord.Application docApp;
+        WinWord.Document doc;
+        WinWord.Selection selDoc;
+        WinWord.InlineShape inlSp;
+        WinWord.Range rng;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -39,7 +48,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void go()
         {
-            listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false;checkBox1.Enabled = false;
+            listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false;
             officeEnum ofcE = officeEnum.PowerPoint;
             switch (listBox2.SelectedItem)
             {
@@ -77,7 +86,7 @@ namespace insertGuaXingtoPowerpnt
                     break;
             }
             listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true;
-            if ((string)listBox2.SelectedValue=="Word")
+            if ((string)listBox2.SelectedValue == "Word")
             {
                 checkBox1.Enabled = true;
             }
@@ -90,7 +99,7 @@ namespace insertGuaXingtoPowerpnt
             {
                 switch (ofE)
                 {
-                    case officeEnum.PowerPoint:                        
+                    case officeEnum.PowerPoint:
                         pptApp = (PowerPnt.Application)getOffice(ofE);
                         ppt = pptApp.ActivePresentation;
                         sel = pptApp.ActiveWindow.Selection;
@@ -111,14 +120,9 @@ namespace insertGuaXingtoPowerpnt
                 }
             }
         }
-        static PowerPnt.Application pptApp;
-        static PowerPnt.Presentation ppt;
-        static PowerPnt.Selection sel ;
-        static PowerPnt.Slide sld;
 
         void runPPTGuaXing(string dir)
         {
-            
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
             {
                 //PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
@@ -153,11 +157,6 @@ namespace insertGuaXingtoPowerpnt
             ppt.Application.Activate();
         }
 
-        static WinWord.Application docApp ;
-        static WinWord.Document doc ;
-        static WinWord.Selection selDoc ;
-        static WinWord.InlineShape inlSp;
-        static WinWord.Range rng ;
         void runDOCGuaXing(string dir)//Word插入卦形
         {
             string f = dir + selDoc.Text + ".png";
@@ -174,7 +173,7 @@ namespace insertGuaXingtoPowerpnt
                     , Microsoft.Office.Core.MsoTriState.msoTrue);
                 inlSp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
                 inlSp.Height = (float)0.9 * (15 + selDoc.Range.Font.Size - 12);
-                spTransp(inlSp, selDoc.Range,  checkBox1.Checked);
+                spTransp(inlSp, selDoc.Range, checkBox1.Checked);
                 inlSp.Range.HighlightColorIndex = c;
                 if (selDoc.ParagraphFormat.BaseLineAlignment != WinWord.WdBaselineAlignment.wdBaselineAlignCenter)
                 {
@@ -217,7 +216,7 @@ namespace insertGuaXingtoPowerpnt
                         doc = docApp.ActiveDocument;
                         selDoc = doc.ActiveWindow.Selection;
                         rng = selDoc.Range;
-                        
+
                         runDOC(dir, pE);
                         break;
                     case officeEnum.Excel:
@@ -277,7 +276,7 @@ namespace insertGuaXingtoPowerpnt
                     inlSp.Height = (float)1 * (15 + item.Font.Size - 12);
                     //sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
                     //sp.PictureFormat.TransparencyColor = 16777215;
-                    spTransp(inlSp, item,  checkBox1.Checked);
+                    spTransp(inlSp, item, checkBox1.Checked);
                     inlSp.Range.HighlightColorIndex = c;
                     doc.ActiveWindow.ScrollIntoView(inlSp.Range);
                     if (checkBox1.Checked != true)
@@ -358,7 +357,7 @@ namespace insertGuaXingtoPowerpnt
             }
         }
 
-        static object getOffice(officeEnum ofE)
+        object getOffice(officeEnum ofE)
         {
             string CLSID = ""; object office;
             switch (ofE)
@@ -431,7 +430,7 @@ namespace insertGuaXingtoPowerpnt
             if (x == "" || x == "/")
                 return "";
 
-            string s = dir.Substring(0, dir.IndexOf("古文字"));                
+            string s = dir.Substring(0, dir.IndexOf("古文字"));
             ADODB.Recordset rst = new ADODB.Recordset();
             ADODB.Connection cnt = new ADODB.Connection();
             cnt.Open("Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Data Source=" +
@@ -442,8 +441,8 @@ namespace insertGuaXingtoPowerpnt
                 ADODB.LockTypeEnum.adLockReadOnly);
             if (rst.RecordCount > 0)
             {
-                string  v = rst.Fields["V"].Value, f = rst.Fields["檔名"].Value;
-                rst.Close();cnt.Close();
+                string v = rst.Fields["V"].Value, f = rst.Fields["檔名"].Value;
+                rst.Close(); cnt.Close();
                 return dir + "\\說文卷" + v + "\\" + f;
             }
             rst.Close(); cnt.Close();
@@ -471,7 +470,7 @@ namespace insertGuaXingtoPowerpnt
         {//圖片、字型透明化 for MS Word
             if (!inlineShpape)
             {
-                WinWord.Shape sp =inlsp.ConvertToShape();
+                WinWord.Shape sp = inlsp.ConvertToShape();
                 sp.PictureFormat.TransparencyColor = 16777215;
                 sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
                 tr.Font.Fill.Transparency = 1;
@@ -480,12 +479,14 @@ namespace insertGuaXingtoPowerpnt
             {
                 inlsp.PictureFormat.TransparencyColor = 16777215;
                 inlsp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
-            }            
+            }
         }
         #region 毫秒延时 界面不会卡死
         //果然要完美解決卡頓的問題還是要藉由多執行緒代理的方法，未必也；蓋是用BackgroundWorker 類別比較對，詳部件篩選器實作 //https://docs.microsoft.com/zh-tw/dotnet/api/system.componentmodel.backgroundworker?view=netframework-4.0&f1url=%3FappId%3DDev15IDEF1%26l%3DZH-TW%26k%3Dk(System.ComponentModel.BackgroundWorker);k(TargetFrameworkMoniker-.NETFramework,Version%253Dv4.0);k(DevLang-csharp)%26rd%3Dtrue 
-        public static void Delay(int mm)
-        {//https://my.oschina.net/u/4419355/blog/3452446            
+        //https://my.oschina.net/u/4419355/blog/3452446            
+        //public static void Delay(int mm)
+        void Delay(int mm)
+        {
             DateTime current = DateTime.Now;
             //Application.DoEvents();
             while (current.AddMilliseconds(mm) >= DateTime.Now)
@@ -546,7 +547,7 @@ namespace insertGuaXingtoPowerpnt
                 checkBox1.Checked = false;//N/A inlineShape
                 checkBox1.Enabled = false;
             }
-            
+
         }
     }
     enum picEnum : byte
