@@ -243,7 +243,18 @@ namespace insertGuaXingtoPowerpnt
                 foreach (WinWord.Cell c in selDoc.Cells)
                 {
                     charBycharDoc(dir, pE, c.Range);
+                    //if (c.Range.Characters[c.Range.Characters.Count-1].Text==" ")
+                    //{
+                    //    c.Range.Characters[c.Range.Characters.Count - 1].Delete();//還是刪不掉
+                    //}
                 }
+                //foreach (WinWord.Cell c in selDoc.Cells)
+                //{
+                //    if (c.Range.Characters[c.Range.Characters.Count - 1].Text == " ")
+                //    {
+                //        c.Range.Characters[c.Range.Characters.Count - 1].Delete();//還是刪不掉
+                //    }
+                //}
             }
             else
                 charBycharDoc(dir, pE, selDoc.Range);
@@ -266,7 +277,7 @@ namespace insertGuaXingtoPowerpnt
                     docApp.ScreenUpdating = false;
                     WinWord.WdColorIndex c = item.HighlightColorIndex;
                     inlSp = item.InlineShapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
-                        , Microsoft.Office.Core.MsoTriState.msoTrue, item);
+                        , Microsoft.Office.Core.MsoTriState.msoTrue, item);//照線上說明所說,item若未collapsed，則當可取代，然也未能被取代，與所說不同！2021/3/28
                     inlSp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
                     //sp.Height = (float)0.9 * (15 + item.Font.Size - 12);
                     inlSp.Height = (float)1 * (15 + item.Font.Size - 12);
@@ -285,12 +296,12 @@ namespace insertGuaXingtoPowerpnt
                         {
                             //item.SetRange(item.Start + 1, item.End);
                             //item.Delete();
-                            string n = item.Characters[2].Next().Text;
+                            //string n = item.Characters[2].Next().Text;
                             item.Characters[2].Delete();
-                            if (item.Characters[1].Next().Text == " " && n != "")
-                            {
-                                item.Characters[1].Next().Delete();//插入圖後，再刪原文字，所生的半形空格就是刪不掉？！
-                            }
+                            //if (item.Characters[1].Next().Text == " " && n != "")
+                            //{
+                            //    item.Characters[1].Next().Delete();//插入圖後，再刪原文字，所生的半形空格就是刪不掉？！
+                            //}
                         }
                     }
                     docApp.ScreenUpdating = true;
