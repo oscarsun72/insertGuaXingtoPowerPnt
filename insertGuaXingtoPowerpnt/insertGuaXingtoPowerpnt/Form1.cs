@@ -296,33 +296,84 @@ namespace insertGuaXingtoPowerpnt
 
         void runPPT(string dir, picEnum pE)
         {
-            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
+            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText ||
+                sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes)
             {
                 ppt.Application.Activate();
                 PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
-                Microsoft.Office.Core.TextRange2 tr = sel.TextRange2;
-                foreach (Microsoft.Office.Core.TextRange2 item in tr.Characters)
+                if (sel.ShapeRange.HasTable == Microsoft.Office.Core.MsoTriState.msoTrue)
+                {//有表格
+                    //PowerPnt.CellRange cr = (PowerPnt.CellRange)sel.ShapeRange;//轉型失敗，改用下方「.Selected」屬性來判斷應用
+                    //for (int i = 0; i < cr.Count; i++)
+                    //{
+                    //    if (cr[i].Selected)
+                    //    {
+                    //        cr[i].Select();
+                    //        PowerPnt.Selection s = cr.Application.ActiveWindow.Selection;
+                    //        charBycharPpt(dir, pE, sld, s.TextRange2,
+                    //            true, s.ShapeRange.Table.Parent.left, s.ShapeRange.Table.Parent.top);
+                    //    }
+                    //}
+
+                    PowerPnt.Table tb = sel.ShapeRange.Table;
+                    int r = tb.Rows.Count;
+                    int c = tb.Columns.Count;
+                    List<PowerPnt.Cell> cels=new List<PowerPnt.Cell> { };//list容器初始化
+                    for (int i = 1; i <= r; i++)//這是表格中所有儲存格都處理
+                    {//https://docs.microsoft.com/zh-tw/office/vba/api/powerpoint.table.cell
+                        for (int j = 1; j <= c; j++)
+                        {//https://docs.microsoft.com/zh-tw/office/vba/api/powerpoint.cellrange?f1url=%3FappId%3DDev11IDEF1%26l%3Dzh-TW%26k%3Dk(vbapp10.chm627000);k(TargetFrameworkMoniker-Office.Version%3Dv16)%26rd%3Dtrue
+                            if (tb.Cell(i, j).Selected)//判斷儲存格是否有被選取
+                            {
+                                cels.Add(tb.Cell(i, j));//記下已選取的儲存格，以備用
+                            }
+                        }
+                    }
+                    foreach (PowerPnt.Cell item in cels)
+                    {
+                        item.Select();
+                        PowerPnt.Selection selCell = tb.Application.ActiveWindow.Selection;
+                        charBycharPpt(dir, pE, sld, selCell.TextRange2, true, tb.Parent.left, tb.Parent.top);
+                    }
+
+                }
+                else//純文字方塊
                 {
-                    if (!checkCharsValid(item.Text))
-                    {
-                        continue;
-                    }
-                    string f = picFullName(dir, pE, item.Text);
-                    Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
-                    //wait();
-                    if (System.IO.File.Exists(f))
-                    {
-                        float lf = item.BoundLeft;
-                        float tp = item.BoundTop;
-                        float h = item.BoundHeight;
-                        float w = item.BoundWidth;
-                        PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
-                            , Microsoft.Office.Core.MsoTriState.msoTrue,
-                            lf, tp, w, h);
-                        spTransp(sp, item);
-                    }
+                    Microsoft.Office.Core.TextRange2 tr = sel.TextRange2;
+                    charBycharPpt(dir, pE, sld, tr);
                 }
                 sel.Unselect();
+            }
+        }
+
+        private void charBycharPpt(string dir, picEnum pE, PowerPnt.Slide sld,
+            Microsoft.Office.Core.TextRange2 tr,
+            bool inTable = false, float tbLeft = 0, float tbTop = 0)
+        {
+            foreach (Microsoft.Office.Core.TextRange2 item in tr.Characters)
+            {
+                if (!checkCharsValid(item.Text))
+                {
+                    continue;
+                }
+                string f = picFullName(dir, pE, item.Text);
+                Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
+                //wait();
+                if (System.IO.File.Exists(f))
+                {
+                    float lf = item.BoundLeft;
+                    float tp = item.BoundTop;
+                    float h = item.BoundHeight;
+                    float w = item.BoundWidth;
+                    if (inTable)
+                    {
+                        lf = lf + tbLeft; tp = tp + tbTop;
+                    }
+                    PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
+                        , Microsoft.Office.Core.MsoTriState.msoTrue,
+                        lf, tp, w, h);
+                    spTransp(sp, item);
+                }
             }
         }
 
@@ -417,7 +468,7 @@ namespace insertGuaXingtoPowerpnt
             //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/best-practices-strings
             //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/character-classes-in-regular-expressions
             //https://walterinuniverse.wordpress.com/2014/09/03/asp-net-c-%E5%88%A4%E6%96%B7%E5%AD%97%E4%B8%B2-%E6%98%AF%E5%90%A6%E7%94%B1%E8%8B%B1%E6%96%87%E8%88%87%E6%95%B8%E5%AD%97%E7%B5%84%E6%88%90/
-            
+
             if (!checkCharsValid(x))
                 return "";
             if (x == "")
