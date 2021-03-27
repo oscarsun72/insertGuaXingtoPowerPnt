@@ -317,6 +317,7 @@ namespace insertGuaXingtoPowerpnt
                         spTransp(ref sp, item);
                     }
                 }
+                sel.Unselect();
             }
         }
 
@@ -410,8 +411,27 @@ namespace insertGuaXingtoPowerpnt
         }
 
 
-        void spTransp(ref PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
-        {
+        void spTransp(ref object sp, Microsoft.Office.Core.TextRange2 tr,
+            ,officeEnum ofcEnm, bool inlineShpape=false)
+        {//圖片、字型透明化
+            switch (ofcEnm)
+            {
+                case officeEnum.PowerPoint:
+                    sp = (PowerPnt.Shape)sp;
+                    break;
+                case officeEnum.Word:
+                    if (inlineShpape)
+                    {
+                        sp = (WinWord.InlineShape)sp;
+                    }
+                    else
+                        sp = (WinWord.Shape)sp;
+                    break;
+                case officeEnum.Excel:
+                    break;
+                default:
+                    break;
+            }
             sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
             sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
                                                            //if (checkBox1.Checked != true)
