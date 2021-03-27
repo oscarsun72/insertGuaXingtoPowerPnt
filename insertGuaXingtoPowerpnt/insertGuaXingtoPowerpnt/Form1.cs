@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PowerPnt = Microsoft.Office.Interop.PowerPoint;
 using WinWord = Microsoft.Office.Interop.Word;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Text.RegularExpressions;
 
 namespace insertGuaXingtoPowerpnt
 {
@@ -29,6 +30,7 @@ namespace insertGuaXingtoPowerpnt
         WinWord.Selection selDoc;
         WinWord.InlineShape inlSp;
         WinWord.Range rng;
+        WinWord.WdSelectionType selDocType;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -103,6 +105,7 @@ namespace insertGuaXingtoPowerpnt
                         pptApp = (PowerPnt.Application)getOffice(ofE);
                         ppt = pptApp.ActivePresentation;
                         sel = pptApp.ActiveWindow.Selection;
+                        selDocType = selDoc.Type;
                         sld = ppt.Application.ActiveWindow.View.Slide;
                         runPPTGuaXing(dir);
                         break;
@@ -214,8 +217,8 @@ namespace insertGuaXingtoPowerpnt
                         docApp = (WinWord.Application)getOffice(ofE);
                         doc = docApp.ActiveDocument;
                         selDoc = doc.ActiveWindow.Selection;
+                        selDocType = selDoc.Type;
                         rng = selDoc.Range;
-
                         runDOC(dir, pE);
                         break;
                     case officeEnum.Excel:
@@ -265,10 +268,14 @@ namespace insertGuaXingtoPowerpnt
         }
 
         private void charBycharDoc(string dir, picEnum pE, string extName,
-            WinWord.Range selDoc)
+            WinWord.Range rng)
         {
-            foreach (WinWord.Range item in selDoc.Characters)
+            foreach (WinWord.Range item in rng.Characters)
             {
+                if (!checkCharsValid(item.Text))
+                {
+                    continue;
+                }
                 Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
                 //wait();                
                 string f = dir + item.Text + extName;
@@ -294,14 +301,21 @@ namespace insertGuaXingtoPowerpnt
                         //https://social.msdn.microsoft.com/Forums/zh-TW/b6f28a4f-be91-4b67-9dfc-378a6809eeb0/22914203092103329992vba23559word2003272843504122294292553034037197?forum=232
                         //https://docs.microsoft.com/zh-tw/office/vba/api/word.wdwraptypemerged
                     }
-                    else
+                    else//inlineShape
                     {
-                        if (docApp.Selection.Type != WinWord.WdSelectionType.wdSelectionIP)
+                        //if (item.Information[WinWord.WdInformation.wdWithInTable])
+                        //{
+                        //    item.SetRange(item.Start + 1, item.End);
+                        //    item.Delete();
+                        //}
+                        //else { 
+                        //if (docApp.Selection.Type != WinWord.WdSelectionType.wdSelectionIP)
+                        if (selDocType != WinWord.WdSelectionType.wdSelectionIP)
                         {
-
                             item.SetRange(item.Start + 1, item.End);
                             item.Delete();
                         }
+                        //}
                     }
                     docApp.ScreenUpdating = true;
                     //docApp.ScreenRefresh();//若有逐字展示的需求才需要此行 2021/3/27
@@ -514,7 +528,15 @@ namespace insertGuaXingtoPowerpnt
         }
 
 
-
+        bool checkCharsValid(string character)
+        {
+            Regex r = new Regex("[\r\a ]");
+            if (r.IsMatch(character))
+            {
+                return false;
+            }
+            return true;
+        }
 
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
