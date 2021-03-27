@@ -251,6 +251,22 @@ namespace insertGuaXingtoPowerpnt
             {
                 selDoc.ParagraphFormat.BaseLineAlignment = WinWord.WdBaselineAlignment.wdBaselineAlignCenter;
             }
+
+            if (selDoc.Information[WinWord.WdInformation.wdWithInTable])
+            {//若在表格中
+                foreach (WinWord.Cell c in selDoc.Cells)
+                {
+                    charBycharDoc(dir, pE, extName, c.Range);
+                }
+            }
+            else
+                charBycharDoc(dir, pE, extName,selDoc.Range);
+            selDoc.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
+        }
+
+        private void charBycharDoc(string dir, picEnum pE, string extName,
+            WinWord.Range selDoc)
+        {
             foreach (WinWord.Range item in selDoc.Characters)
             {
                 Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
@@ -269,15 +285,11 @@ namespace insertGuaXingtoPowerpnt
                     inlSp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
                     //sp.Height = (float)0.9 * (15 + item.Font.Size - 12);
                     inlSp.Height = (float)1 * (15 + item.Font.Size - 12);
-                    //sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
-                    //sp.PictureFormat.TransparencyColor = 16777215;
                     spTransp(inlSp, item, checkBox1.Checked);
                     inlSp.Range.HighlightColorIndex = c;
                     doc.ActiveWindow.ScrollIntoView(inlSp.Range);
                     if (checkBox1.Checked != true)
                     {
-                        //http://www.exceloffice.net/archives/3643
-                        //item.Font.Fill.Transparency = 1;
                         inlSp.ConvertToShape().WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
                         //https://social.msdn.microsoft.com/Forums/zh-TW/b6f28a4f-be91-4b67-9dfc-378a6809eeb0/22914203092103329992vba23559word2003272843504122294292553034037197?forum=232
                         //https://docs.microsoft.com/zh-tw/office/vba/api/word.wdwraptypemerged
@@ -295,7 +307,6 @@ namespace insertGuaXingtoPowerpnt
                     //docApp.ScreenRefresh();//若有逐字展示的需求才需要此行 2021/3/27
                 }
             }
-            selDoc.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
         }
 
         void runPPT(string dir, picEnum pE)
@@ -441,7 +452,7 @@ namespace insertGuaXingtoPowerpnt
             return "";
         }
 
-
+        //http://www.exceloffice.net/archives/3643
         void spTransp(PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
         {//圖片、字型透明化
             /*
