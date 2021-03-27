@@ -298,6 +298,7 @@ namespace insertGuaXingtoPowerpnt
                         }
                     }
                     docApp.ScreenUpdating = true;
+                    //docApp.ScreenRefresh();//若有逐字展示的需求才需要此行 2021/3/27
                 }
             }
             selDoc.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
