@@ -28,7 +28,7 @@ namespace insertGuaXingtoPowerpnt
             listBox1.DataSource = lb;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
             listBox2.DataSource = lb2;
-
+            //checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
@@ -38,7 +38,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void go()
         {
-            listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false;checkBox1.Enabled = false;
+            listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false;
             officeEnum ofcE = officeEnum.PowerPoint;
             switch (listBox2.SelectedItem)
             {
@@ -130,7 +130,7 @@ namespace insertGuaXingtoPowerpnt
                         , Microsoft.Office.Core.MsoTriState.msoTrue,
                         lf, tp, w, h);
                     sel.TextRange.Text = "　";
-                    spTransp(ref sp, sel.TextRange2);
+                    spTransp(sp, sel.TextRange2);
                     sel.Unselect();
                 }
 
@@ -159,12 +159,23 @@ namespace insertGuaXingtoPowerpnt
                     , Microsoft.Office.Core.MsoTriState.msoTrue);
                 sp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
                 sp.Height = (float)0.9 * (15 + sel.Range.Font.Size - 12);
-                sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
-                sp.PictureFormat.TransparencyColor = 16777215;
+                spTransp(sp, sel.Range,  checkBox1.Checked);
                 sp.Range.HighlightColorIndex = c;
                 if (sel.ParagraphFormat.BaseLineAlignment != WinWord.WdBaselineAlignment.wdBaselineAlignCenter)
                 {
                     sel.ParagraphFormat.BaseLineAlignment = WinWord.WdBaselineAlignment.wdBaselineAlignCenter;
+                }
+                if (checkBox1.Checked != true)//shape
+                {
+                    sp.ConvertToShape().WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
+                }
+                else
+                {//inlineshape
+                    if (sel.Type != WinWord.WdSelectionType.wdSelectionIP)
+                    {
+                        sel.Range.SetRange(sel.Start + 1, sel.End);
+                        sel.Delete();
+                    }
                 }
                 docApp.ScreenUpdating = true;
             }
@@ -197,9 +208,8 @@ namespace insertGuaXingtoPowerpnt
             WinWord.Application docApp = (WinWord.Application)getOffice(officeEnum.Word);
             WinWord.Document doc = docApp.ActiveDocument;
             WinWord.Selection sel = doc.Application.ActiveWindow.Selection;
-            WinWord.InlineShape sp; WinWord.Shape s;
+            WinWord.InlineShape sp;
             string extName = ".png";
-            bool inserted = false;
             switch (pE)
             {
                 case picEnum.行書:
@@ -239,16 +249,16 @@ namespace insertGuaXingtoPowerpnt
                     sp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
                     //sp.Height = (float)0.9 * (15 + item.Font.Size - 12);
                     sp.Height = (float)1 * (15 + item.Font.Size - 12);
-                    sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
-                    sp.PictureFormat.TransparencyColor = 16777215;
+                    //sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
+                    //sp.PictureFormat.TransparencyColor = 16777215;
+                    spTransp(sp, item,  checkBox1.Checked);
                     sp.Range.HighlightColorIndex = c;
-                    doc.ActiveWindow.ScrollIntoView(sp);
+                    doc.ActiveWindow.ScrollIntoView(sp.Range);
                     if (checkBox1.Checked != true)
                     {
                         //http://www.exceloffice.net/archives/3643
-                        item.Font.Fill.Transparency = 1;
-                        s = sp.ConvertToShape();
-                        s.WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
+                        //item.Font.Fill.Transparency = 1;
+                        sp.ConvertToShape().WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
                         //https://social.msdn.microsoft.com/Forums/zh-TW/b6f28a4f-be91-4b67-9dfc-378a6809eeb0/22914203092103329992vba23559word2003272843504122294292553034037197?forum=232
                         //https://docs.microsoft.com/zh-tw/office/vba/api/word.wdwraptypemerged
                     }
@@ -314,7 +324,7 @@ namespace insertGuaXingtoPowerpnt
                         PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
                             , Microsoft.Office.Core.MsoTriState.msoTrue,
                             lf, tp, w, h);
-                        spTransp(ref sp, item);
+                        spTransp(sp, item);
                     }
                 }
                 sel.Unselect();
@@ -394,7 +404,7 @@ namespace insertGuaXingtoPowerpnt
             if (x == "" || x == "/")
                 return "";
 
-            string s = dir.Substring(0, dir.IndexOf("古文字"));
+            string s = dir.Substring(0, dir.IndexOf("古文字"));                
             ADODB.Recordset rst = new ADODB.Recordset();
             ADODB.Connection cnt = new ADODB.Connection();
             cnt.Open("Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Data Source=" +
@@ -405,39 +415,46 @@ namespace insertGuaXingtoPowerpnt
                 ADODB.LockTypeEnum.adLockReadOnly);
             if (rst.RecordCount > 0)
             {
-                return dir + "\\說文卷" + rst.Fields["V"].Value + "\\" + rst.Fields["檔名"].Value;
+                string  v = rst.Fields["V"].Value, f = rst.Fields["檔名"].Value;
+                rst.Close();cnt.Close();
+                return dir + "\\說文卷" + v + "\\" + f;
             }
+            rst.Close(); cnt.Close();
             return "";
         }
 
 
-        void spTransp(ref object sp, Microsoft.Office.Core.TextRange2 tr,
-            ,officeEnum ofcEnm, bool inlineShpape=false)
+        void spTransp(PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
         {//圖片、字型透明化
-            switch (ofcEnm)
-            {
-                case officeEnum.PowerPoint:
-                    sp = (PowerPnt.Shape)sp;
-                    break;
-                case officeEnum.Word:
-                    if (inlineShpape)
-                    {
-                        sp = (WinWord.InlineShape)sp;
-                    }
-                    else
-                        sp = (WinWord.Shape)sp;
-                    break;
-                case officeEnum.Excel:
-                    break;
-                default:
-                    break;
-            }
+            /*
+             * System.InvalidCastException
+            HResult=0x80004002
+            Message=無法將類型 'System.__ComObject' 的 COM 物件轉換為介面類型 'Microsoft.Office.Interop.Word.Range'。由於發生下列錯誤，介面 (IID 為 '{0002095E-0000-0000-C000-000000000046}') 之 COM 元件上的 QueryInterface 呼叫失敗而導致作業失敗: 不支援此種介面 (發生例外狀況於 HRESULT: 0x80004002 (E_NOINTERFACE))。
+            所以必須用多載的方式，函式（方法）多載（重載）的需求也應運而生
+             …… */
             sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
             sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
                                                            //if (checkBox1.Checked != true)
             tr.Font.Fill.Transparency = 1;
+
         }
 
+        void spTransp(WinWord.InlineShape inlsp, WinWord.Range tr,
+            bool inlineShpape = false)
+        {//圖片、字型透明化 for MS Word
+            if (!inlineShpape)
+            {
+                WinWord.Shape sp =inlsp.ConvertToShape();
+                sp.PictureFormat.TransparencyColor = 16777215;
+                sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
+                tr.Font.Fill.Transparency = 1;
+            }
+            else
+            {
+                inlsp.PictureFormat.TransparencyColor = 16777215;
+                inlsp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
+            }            
+        }
         #region 毫秒延时 界面不会卡死
         //果然要完美解決卡頓的問題還是要藉由多執行緒代理的方法，未必也；蓋是用BackgroundWorker 類別比較對，詳部件篩選器實作 //https://docs.microsoft.com/zh-tw/dotnet/api/system.componentmodel.backgroundworker?view=netframework-4.0&f1url=%3FappId%3DDev15IDEF1%26l%3DZH-TW%26k%3Dk(System.ComponentModel.BackgroundWorker);k(TargetFrameworkMoniker-.NETFramework,Version%253Dv4.0);k(DevLang-csharp)%26rd%3Dtrue 
         public static void Delay(int mm)
@@ -489,6 +506,20 @@ namespace insertGuaXingtoPowerpnt
             {
                 this.Close();
             }
+        }
+
+
+
+        private void listBox2_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if ((string)listBox2.SelectedValue == "Word")
+                checkBox1.Enabled = true;//inlineShape？
+            else
+            {
+                checkBox1.Checked = false;//N/A inlineShape
+                checkBox1.Enabled = false;
+            }
+            
         }
     }
     enum picEnum : byte
