@@ -125,7 +125,6 @@ namespace insertGuaXingtoPowerpnt
         {
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
             {
-                //PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
                 string f = dir + sel.TextRange.Text + ".png";
                 if (System.IO.File.Exists(f))
                 {
@@ -230,10 +229,6 @@ namespace insertGuaXingtoPowerpnt
 
         void runDOC(string dir, picEnum pE)//Word插入字圖
         {
-            //WinWord.Application docApp = (WinWord.Application)getOffice(officeEnum.Word);
-            //WinWord.Document doc = docApp.ActiveDocument;
-            //WinWord.Selection selDoc = doc.Application.ActiveWindow.Selection;
-            //WinWord.InlineShape inlSp;
             string extName = ".png";
             switch (pE)
             {
@@ -305,9 +300,6 @@ namespace insertGuaXingtoPowerpnt
 
         void runPPT(string dir, picEnum pE)
         {
-            //PowerPnt.Application pptApp = (PowerPnt.Application)getOffice(officeEnum.PowerPoint);
-            //PowerPnt.Presentation ppt = pptApp.ActivePresentation;
-            //PowerPnt.Selection sel = ppt.Application.ActiveWindow.Selection;
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
             {
                 ppt.Application.Activate();
@@ -488,7 +480,6 @@ namespace insertGuaXingtoPowerpnt
         void Delay(int mm)
         {
             DateTime current = DateTime.Now;
-            //Application.DoEvents();
             while (current.AddMilliseconds(mm) >= DateTime.Now)
             {
                 Application.DoEvents();
