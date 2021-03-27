@@ -285,7 +285,12 @@ namespace insertGuaXingtoPowerpnt
                         {
                             //item.SetRange(item.Start + 1, item.End);
                             //item.Delete();
+                            string n = item.Characters[2].Next().Text;
                             item.Characters[2].Delete();
+                            if (item.Characters[1].Next().Text == " " && n != "")
+                            {
+                                item.Characters[1].Next().Delete();//插入圖後，再刪原文字，所生的半形空格就是刪不掉？！
+                            }
                         }
                     }
                     docApp.ScreenUpdating = true;
