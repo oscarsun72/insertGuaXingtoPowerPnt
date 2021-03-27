@@ -232,23 +232,6 @@ namespace insertGuaXingtoPowerpnt
 
         void runDOC(string dir, picEnum pE)//Word插入字圖
         {
-            string extName = ".png";
-            switch (pE)
-            {
-                case picEnum.行書:
-                    extName = ".jpg";
-                    break;
-                case picEnum.小篆:
-                    break;
-                case picEnum.甲骨文:
-                    break;
-                case picEnum.金文:
-                    break;
-                case picEnum.隸書:
-                    break;
-                default:
-                    break;
-            }
             doc.Application.Activate();
             if (selDoc.ParagraphFormat.BaseLineAlignment != WinWord.WdBaselineAlignment.wdBaselineAlignCenter)
             {
@@ -259,16 +242,15 @@ namespace insertGuaXingtoPowerpnt
             {//若在表格中
                 foreach (WinWord.Cell c in selDoc.Cells)
                 {
-                    charBycharDoc(dir, pE, extName, c.Range);
+                    charBycharDoc(dir, pE, c.Range);
                 }
             }
             else
-                charBycharDoc(dir, pE, extName,selDoc.Range);
+                charBycharDoc(dir, pE, selDoc.Range);
             selDoc.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
         }
 
-        private void charBycharDoc(string dir, picEnum pE, string extName,
-            WinWord.Range rng)
+        private void charBycharDoc(string dir, picEnum pE, WinWord.Range rng)
         {
             foreach (WinWord.Range item in rng.Characters)
             {
@@ -277,12 +259,8 @@ namespace insertGuaXingtoPowerpnt
                     continue;
                 }
                 Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
-                //wait();                
-                string f = dir + item.Text + extName;
-                if (pE == picEnum.小篆)
-                {
-                    f = getFullNameNTUswxz(dir, item.Text);
-                }
+                //wait();
+                string f = picFullName(dir, pE, item.Text);
                 if (System.IO.File.Exists(f))
                 {
                     docApp.ScreenUpdating = false;
@@ -303,19 +281,12 @@ namespace insertGuaXingtoPowerpnt
                     }
                     else//inlineShape
                     {
-                        //if (item.Information[WinWord.WdInformation.wdWithInTable])
-                        //{
-                        //    item.SetRange(item.Start + 1, item.End);
-                        //    item.Delete();
-                        //}
-                        //else { 
-                        //if (docApp.Selection.Type != WinWord.WdSelectionType.wdSelectionIP)
                         if (selDocType != WinWord.WdSelectionType.wdSelectionIP)
                         {
-                            item.SetRange(item.Start + 1, item.End);
-                            item.Delete();
+                            //item.SetRange(item.Start + 1, item.End);
+                            //item.Delete();
+                            item.Characters[2].Delete();
                         }
-                        //}
                     }
                     docApp.ScreenUpdating = true;
                     //docApp.ScreenRefresh();//若有逐字展示的需求才需要此行 2021/3/27
@@ -328,36 +299,17 @@ namespace insertGuaXingtoPowerpnt
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
             {
                 ppt.Application.Activate();
-
                 PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
-
-                var tr = sel.TextRange2;
+                Microsoft.Office.Core.TextRange2 tr = sel.TextRange2;
                 foreach (Microsoft.Office.Core.TextRange2 item in tr.Characters)
                 {
+                    if (!checkCharsValid(item.Text))
+                    {
+                        continue;
+                    }
+                    string f = picFullName(dir, pE, item.Text);
                     Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
                     //wait();
-                    string f = dir + item.Text + ".png";
-                    switch (pE)
-                    {
-                        case picEnum.卦圖64:
-                            break;
-                        case picEnum.行書:
-                            f = dir + item.Text + ".jpg";
-                            break;
-                        case picEnum.小篆:
-                            f = getFullNameNTUswxz(dir, item.Text);
-                            break;
-                        case picEnum.甲骨文:
-                            break;
-                        case picEnum.金文:
-                            break;
-                        case picEnum.隸書:
-                            break;
-                        default:
-                            break;
-                    }
-
-
                     if (System.IO.File.Exists(f))
                     {
                         float lf = item.BoundLeft;
@@ -372,6 +324,31 @@ namespace insertGuaXingtoPowerpnt
                 }
                 sel.Unselect();
             }
+        }
+
+        private string picFullName(string dir, picEnum pE, string itemText)
+        {
+            string f = dir + itemText + ".png";
+            switch (pE)
+            {
+                case picEnum.卦圖64:
+                    break;
+                case picEnum.行書:
+                    f = dir + itemText + ".jpg";
+                    break;
+                case picEnum.小篆:
+                    f = getFullNameNTUswxz(dir, itemText);
+                    break;
+                case picEnum.甲骨文:
+                    break;
+                case picEnum.金文:
+                    break;
+                case picEnum.隸書:
+                    break;
+                default:
+                    break;
+            }
+            return f;
         }
 
         object getOffice(officeEnum ofE)
@@ -430,7 +407,6 @@ namespace insertGuaXingtoPowerpnt
                 dir = item + ":\\@@@華語文工具及資料@@@" + subFolder;
                 if (System.IO.Directory.Exists(dir))
                 {
-
                     return dir;
                 }
             }
@@ -441,10 +417,10 @@ namespace insertGuaXingtoPowerpnt
             //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/best-practices-strings
             //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/character-classes-in-regular-expressions
             //https://walterinuniverse.wordpress.com/2014/09/03/asp-net-c-%E5%88%A4%E6%96%B7%E5%AD%97%E4%B8%B2-%E6%98%AF%E5%90%A6%E7%94%B1%E8%8B%B1%E6%96%87%E8%88%87%E6%95%B8%E5%AD%97%E7%B5%84%E6%88%90/
-            System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex("[^A-Za-z0-9() 　/]");
-            if (!re.IsMatch(x))
+            
+            if (!checkCharsValid(x))
                 return "";
-            if (x == "" || x == "/")
+            if (x == "")
                 return "";
 
             string s = dir.Substring(0, dir.IndexOf("古文字"));
@@ -498,6 +474,8 @@ namespace insertGuaXingtoPowerpnt
                 inlsp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
             }
         }
+
+
         #region 毫秒延时 界面不会卡死
         //果然要完美解決卡頓的問題還是要藉由多執行緒代理的方法，未必也；蓋是用BackgroundWorker 類別比較對，詳部件篩選器實作 //https://docs.microsoft.com/zh-tw/dotnet/api/system.componentmodel.backgroundworker?view=netframework-4.0&f1url=%3FappId%3DDev15IDEF1%26l%3DZH-TW%26k%3Dk(System.ComponentModel.BackgroundWorker);k(TargetFrameworkMoniker-.NETFramework,Version%253Dv4.0);k(DevLang-csharp)%26rd%3Dtrue 
         //https://my.oschina.net/u/4419355/blog/3452446            
@@ -530,7 +508,8 @@ namespace insertGuaXingtoPowerpnt
 
         bool checkCharsValid(string character)
         {
-            Regex r = new Regex("[\r\a ]");
+            Regex r = new Regex("[\r\a A-Za-z0-9()　/]");
+            //Regex re = new System.Text.RegularExpressions.Regex("[^A-Za-z0-9() 　/]");
             if (r.IsMatch(character))
             {
                 return false;
