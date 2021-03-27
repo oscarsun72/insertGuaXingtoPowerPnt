@@ -28,7 +28,8 @@ namespace insertGuaXingtoPowerpnt
             listBox1.DataSource = lb;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
             listBox2.DataSource = lb2;
-            //checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件
+            checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件            
+
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
@@ -38,7 +39,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void go()
         {
-            listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false;
+            listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false;checkBox1.Enabled = false;
             officeEnum ofcE = officeEnum.PowerPoint;
             switch (listBox2.SelectedItem)
             {
@@ -75,20 +76,32 @@ namespace insertGuaXingtoPowerpnt
                 default:
                     break;
             }
-            listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true; checkBox1.Enabled = true;
+            listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true;
+            if ((string)listBox2.SelectedValue=="Word")
+            {
+                checkBox1.Enabled = true;
+            }
         }
 
-        void guaXing(officeEnum oE)
+        void guaXing(officeEnum ofE)
         {
             string dir = getDir(picEnum.卦圖64) + "\\";
             if (dir != "")
             {
-                switch (oE)
+                switch (ofE)
                 {
-                    case officeEnum.PowerPoint:
+                    case officeEnum.PowerPoint:                        
+                        pptApp = (PowerPnt.Application)getOffice(ofE);
+                        ppt = pptApp.ActivePresentation;
+                        sel = pptApp.ActiveWindow.Selection;
+                        sld = ppt.Application.ActiveWindow.View.Slide;
                         runPPTGuaXing(dir);
                         break;
                     case officeEnum.Word:
+                        docApp = (WinWord.Application)getOffice(ofE);
+                        doc = docApp.ActiveDocument;
+                        selDoc = doc.ActiveWindow.Selection;
+                        rng = selDoc.Range;
                         runDOCGuaXing(dir);
                         break;
                     case officeEnum.Excel:
@@ -98,15 +111,17 @@ namespace insertGuaXingtoPowerpnt
                 }
             }
         }
+        static PowerPnt.Application pptApp;
+        static PowerPnt.Presentation ppt;
+        static PowerPnt.Selection sel ;
+        static PowerPnt.Slide sld;
 
         void runPPTGuaXing(string dir)
         {
-            PowerPnt.Application pptApp = (PowerPnt.Application)getOffice(officeEnum.PowerPoint);
-            PowerPnt.Presentation ppt = pptApp.ActivePresentation;
-            PowerPnt.Selection sel = ppt.Application.ActiveWindow.Selection;
+            
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
             {
-                PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
+                //PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
                 string f = dir + sel.TextRange.Text + ".png";
                 if (System.IO.File.Exists(f))
                 {
@@ -138,14 +153,14 @@ namespace insertGuaXingtoPowerpnt
             ppt.Application.Activate();
         }
 
+        static WinWord.Application docApp ;
+        static WinWord.Document doc ;
+        static WinWord.Selection selDoc ;
+        static WinWord.InlineShape inlSp;
+        static WinWord.Range rng ;
         void runDOCGuaXing(string dir)//Word插入卦形
         {
-            WinWord.Application docApp = (WinWord.Application)getOffice(officeEnum.Word);
-            WinWord.Document doc = docApp.ActiveDocument;
-            WinWord.Selection sel = doc.Application.ActiveWindow.Selection;
-            WinWord.InlineShape sp;
-            WinWord.Range rng = sel.Range;
-            string f = dir + sel.Text + ".png";
+            string f = dir + selDoc.Text + ".png";
             if (!System.IO.File.Exists(f) && rng.Characters.Count == 1)
             {
                 rng.SetRange(rng.Start, rng.Characters[1].Next().End);
@@ -154,33 +169,35 @@ namespace insertGuaXingtoPowerpnt
             if (System.IO.File.Exists(f))
             {
                 docApp.ScreenUpdating = false;
-                WinWord.WdColorIndex c = sel.Range.HighlightColorIndex;
-                sp = sel.InlineShapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
+                WinWord.WdColorIndex c = selDoc.Range.HighlightColorIndex;
+                inlSp = selDoc.InlineShapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
                     , Microsoft.Office.Core.MsoTriState.msoTrue);
-                sp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
-                sp.Height = (float)0.9 * (15 + sel.Range.Font.Size - 12);
-                spTransp(sp, sel.Range,  checkBox1.Checked);
-                sp.Range.HighlightColorIndex = c;
-                if (sel.ParagraphFormat.BaseLineAlignment != WinWord.WdBaselineAlignment.wdBaselineAlignCenter)
+                inlSp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
+                inlSp.Height = (float)0.9 * (15 + selDoc.Range.Font.Size - 12);
+                spTransp(inlSp, selDoc.Range,  checkBox1.Checked);
+                inlSp.Range.HighlightColorIndex = c;
+                if (selDoc.ParagraphFormat.BaseLineAlignment != WinWord.WdBaselineAlignment.wdBaselineAlignCenter)
                 {
-                    sel.ParagraphFormat.BaseLineAlignment = WinWord.WdBaselineAlignment.wdBaselineAlignCenter;
+                    selDoc.ParagraphFormat.BaseLineAlignment = WinWord.WdBaselineAlignment.wdBaselineAlignCenter;
                 }
                 if (checkBox1.Checked != true)//shape
                 {
-                    sp.ConvertToShape().WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
+                    inlSp.ConvertToShape().WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
                 }
                 else
                 {//inlineshape
-                    if (sel.Type != WinWord.WdSelectionType.wdSelectionIP)
+                    if (selDoc.Type != WinWord.WdSelectionType.wdSelectionIP)
                     {
-                        sel.Range.SetRange(sel.Start + 1, sel.End);
-                        sel.Delete();
+                        selDoc.Range.SetRange(selDoc.Start + 1, selDoc.End);
+                        selDoc.Delete();
                     }
                 }
                 docApp.ScreenUpdating = true;
             }
             doc.Application.Activate();
         }
+
+
         void GuWenZi(picEnum pE, officeEnum ofE)
         {
             string dir = getDir(pE) + "\\";
@@ -189,9 +206,18 @@ namespace insertGuaXingtoPowerpnt
                 switch (ofE)
                 {
                     case officeEnum.PowerPoint:
+                        pptApp = (PowerPnt.Application)getOffice(ofE);
+                        ppt = pptApp.ActivePresentation;
+                        sel = pptApp.ActiveWindow.Selection;
+                        sld = pptApp.ActiveWindow.View.Slide;
                         runPPT(dir, pE);
                         break;
                     case officeEnum.Word:
+                        docApp = (WinWord.Application)getOffice(ofE);
+                        doc = docApp.ActiveDocument;
+                        selDoc = doc.ActiveWindow.Selection;
+                        rng = selDoc.Range;
+                        
                         runDOC(dir, pE);
                         break;
                     case officeEnum.Excel:
@@ -205,10 +231,10 @@ namespace insertGuaXingtoPowerpnt
 
         void runDOC(string dir, picEnum pE)//Word插入字圖
         {
-            WinWord.Application docApp = (WinWord.Application)getOffice(officeEnum.Word);
-            WinWord.Document doc = docApp.ActiveDocument;
-            WinWord.Selection sel = doc.Application.ActiveWindow.Selection;
-            WinWord.InlineShape sp;
+            //WinWord.Application docApp = (WinWord.Application)getOffice(officeEnum.Word);
+            //WinWord.Document doc = docApp.ActiveDocument;
+            //WinWord.Selection selDoc = doc.Application.ActiveWindow.Selection;
+            //WinWord.InlineShape inlSp;
             string extName = ".png";
             switch (pE)
             {
@@ -227,11 +253,11 @@ namespace insertGuaXingtoPowerpnt
                     break;
             }
             doc.Application.Activate();
-            if (sel.ParagraphFormat.BaseLineAlignment != WinWord.WdBaselineAlignment.wdBaselineAlignCenter)
+            if (selDoc.ParagraphFormat.BaseLineAlignment != WinWord.WdBaselineAlignment.wdBaselineAlignCenter)
             {
-                sel.ParagraphFormat.BaseLineAlignment = WinWord.WdBaselineAlignment.wdBaselineAlignCenter;
+                selDoc.ParagraphFormat.BaseLineAlignment = WinWord.WdBaselineAlignment.wdBaselineAlignCenter;
             }
-            foreach (WinWord.Range item in sel.Characters)
+            foreach (WinWord.Range item in selDoc.Characters)
             {
                 Delay(Convert.ToInt32(numericUpDown1.Value * 1000));
                 //wait();                
@@ -244,21 +270,21 @@ namespace insertGuaXingtoPowerpnt
                 {
                     docApp.ScreenUpdating = false;
                     WinWord.WdColorIndex c = item.HighlightColorIndex;
-                    sp = item.InlineShapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
+                    inlSp = item.InlineShapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
                         , Microsoft.Office.Core.MsoTriState.msoTrue, item);
-                    sp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
+                    inlSp.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
                     //sp.Height = (float)0.9 * (15 + item.Font.Size - 12);
-                    sp.Height = (float)1 * (15 + item.Font.Size - 12);
+                    inlSp.Height = (float)1 * (15 + item.Font.Size - 12);
                     //sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
                     //sp.PictureFormat.TransparencyColor = 16777215;
-                    spTransp(sp, item,  checkBox1.Checked);
-                    sp.Range.HighlightColorIndex = c;
-                    doc.ActiveWindow.ScrollIntoView(sp.Range);
+                    spTransp(inlSp, item,  checkBox1.Checked);
+                    inlSp.Range.HighlightColorIndex = c;
+                    doc.ActiveWindow.ScrollIntoView(inlSp.Range);
                     if (checkBox1.Checked != true)
                     {
                         //http://www.exceloffice.net/archives/3643
                         //item.Font.Fill.Transparency = 1;
-                        sp.ConvertToShape().WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
+                        inlSp.ConvertToShape().WrapFormat.Type = WinWord.WdWrapType.wdWrapFront;//文繞圖 文字在後
                         //https://social.msdn.microsoft.com/Forums/zh-TW/b6f28a4f-be91-4b67-9dfc-378a6809eeb0/22914203092103329992vba23559word2003272843504122294292553034037197?forum=232
                         //https://docs.microsoft.com/zh-tw/office/vba/api/word.wdwraptypemerged
                     }
@@ -274,14 +300,14 @@ namespace insertGuaXingtoPowerpnt
                     docApp.ScreenUpdating = true;
                 }
             }
-            sel.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
+            selDoc.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
         }
 
         void runPPT(string dir, picEnum pE)
         {
-            PowerPnt.Application oPPTapp = (PowerPnt.Application)getOffice(officeEnum.PowerPoint);
-            PowerPnt.Presentation ppt = oPPTapp.ActivePresentation;
-            PowerPnt.Selection sel = ppt.Application.ActiveWindow.Selection;
+            //PowerPnt.Application pptApp = (PowerPnt.Application)getOffice(officeEnum.PowerPoint);
+            //PowerPnt.Presentation ppt = pptApp.ActivePresentation;
+            //PowerPnt.Selection sel = ppt.Application.ActiveWindow.Selection;
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
             {
                 ppt.Application.Activate();
@@ -331,7 +357,7 @@ namespace insertGuaXingtoPowerpnt
             }
         }
 
-        object getOffice(officeEnum ofE)
+        static object getOffice(officeEnum ofE)
         {
             string CLSID = ""; object office;
             switch (ofE)
