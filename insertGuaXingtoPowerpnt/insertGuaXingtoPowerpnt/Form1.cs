@@ -327,7 +327,8 @@ namespace insertGuaXingtoPowerpnt
         void runPPT(string dir, picEnum pE)
         {
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText ||
-                sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes)
+                sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes &
+                sel.ShapeRange.HasTextFrame==Microsoft.Office.Core.MsoTriState.msoTrue)
             {
                 ppt.Application.Activate();
                 PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
@@ -614,7 +615,7 @@ namespace insertGuaXingtoPowerpnt
                     {
                         sp = sld.Shapes[i];
                         if (sp.Type == Microsoft.Office.Core.MsoShapeType.msoPicture &&
-                            sp.Title == "")
+                            sp.Title == ""&& sp.AlternativeText.Length<2 && sp.ActionSettings[PowerPnt.PpMouseActivation.ppMouseClick].Hyperlink.Address!="")
                         {
                             sp.Delete();
                             i--;
@@ -631,16 +632,22 @@ namespace insertGuaXingtoPowerpnt
                         case PowerPnt.PpSelectionType.ppSelectionShapes:
                             if (sel.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
                             {
-                                sel.TextRange.Select();
+                                sel.TextRange2.Select();
                                 sel.TextRange2.Font.Fill.Transparency = 0;
                             }
                             break;
                         case PowerPnt.PpSelectionType.ppSelectionNone:
                             if (sld.Shapes.Count > 0)
                             {
-                                if (sld.Shapes[1].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)
+                                int i=0;
+                                while (sld.Shapes[++i].Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
                                 {
-                                    sld.Shapes[1].TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                    if (i>200)
+                                        break;
+                                }
+                                if (sld.Shapes[i].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)
+                                {
+                                    sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency = 0;
                                 }
 
                             }
