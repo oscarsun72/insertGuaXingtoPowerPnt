@@ -32,6 +32,8 @@ namespace insertGuaXingtoPowerpnt
         WinWord.Range rng;
         WinWord.WdSelectionType selDocType;
         officeEnum officE;
+        ADODB.Connection cnt;
+        ADODB.Recordset rst;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -492,229 +494,232 @@ namespace insertGuaXingtoPowerpnt
                 return "";
 
             string s = dir.Substring(0, dir.IndexOf("古文字"));
-            ADODB.Recordset rst = new ADODB.Recordset();
-            ADODB.Connection cnt = new ADODB.Connection();
-            cnt.Open("Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Data Source=" +
-                s + "\\說文資料庫原造字取代為系統字參照用.mdb");
+            if (cnt == null)
+                cnt = new ADODB.Connection();
+            //ADODB.ObjectStateEnum.adStateClosed
+            if (cnt.State == 0) cnt.Open("Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Data Source=" +
+                    s + "\\說文資料庫原造字取代為系統字參照用.mdb");
+            if (rst == null)
+                rst = new ADODB.Recordset();
             rst.Open("SELECT 台大說文小篆字圖卷數表.檔名, Format([卷],\"00\") " +
-                "AS V FROM 台大說文小篆字圖卷數表 WHERE (((" +
-                "InStr([檔名],\"" + x + "\"))>0))", cnt, ADODB.CursorTypeEnum.adOpenKeyset,
-                ADODB.LockTypeEnum.adLockReadOnly);
+                    "AS V FROM 台大說文小篆字圖卷數表 WHERE (((" +
+                    "InStr([檔名],\"" + x + "\"))>0))", cnt, ADODB.CursorTypeEnum.adOpenKeyset,
+                    ADODB.LockTypeEnum.adLockReadOnly);
             if (rst.RecordCount > 0)
             {
                 string v = rst.Fields["V"].Value, f = rst.Fields["檔名"].Value;
-                rst.Close(); cnt.Close();
+                rst.Close();// cnt.Close();//改為欄位則應不用再開開關關了
                 return dir + "\\說文卷" + v + "\\" + f;
             }
-            rst.Close(); cnt.Close();
+            rst.Close();// cnt.Close();//改為欄位則應不用再開開關關了
             return "";
-        }
-
-        //http://www.exceloffice.net/archives/3643
-        void spTransp(PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
-        {//圖片、字型透明化
-            /*
-             * System.InvalidCastException
-            HResult=0x80004002
-            Message=無法將類型 'System.__ComObject' 的 COM 物件轉換為介面類型 'Microsoft.Office.Interop.Word.Range'。由於發生下列錯誤，介面 (IID 為 '{0002095E-0000-0000-C000-000000000046}') 之 COM 元件上的 QueryInterface 呼叫失敗而導致作業失敗: 不支援此種介面 (發生例外狀況於 HRESULT: 0x80004002 (E_NOINTERFACE))。
-            所以必須用多載的方式，函式（方法）多載（重載）的需求也應運而生
-             …… */
-            sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
-            sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
-                                                           //if (checkBox1.Checked != true)
-            tr.Font.Fill.Transparency = 1;
 
         }
-
-        void spTransp(WinWord.InlineShape inlsp, WinWord.Range tr,
-            bool inlineShpape = false)
-        {//圖片、字型透明化 for MS Word
-            if (!inlineShpape)
-            {
-                WinWord.Shape sp = inlsp.ConvertToShape();
-                sp.PictureFormat.TransparencyColor = 16777215;
+            //http://www.exceloffice.net/archives/3643
+            void spTransp(PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
+            {//圖片、字型透明化
+             /*
+              * System.InvalidCastException
+             HResult=0x80004002
+             Message=無法將類型 'System.__ComObject' 的 COM 物件轉換為介面類型 'Microsoft.Office.Interop.Word.Range'。由於發生下列錯誤，介面 (IID 為 '{0002095E-0000-0000-C000-000000000046}') 之 COM 元件上的 QueryInterface 呼叫失敗而導致作業失敗: 不支援此種介面 (發生例外狀況於 HRESULT: 0x80004002 (E_NOINTERFACE))。
+             所以必須用多載的方式，函式（方法）多載（重載）的需求也應運而生
+              …… */
                 sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
+                sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
+                                                               //if (checkBox1.Checked != true)
                 tr.Font.Fill.Transparency = 1;
+
             }
-            else
+
+            void spTransp(WinWord.InlineShape inlsp, WinWord.Range tr,
+                bool inlineShpape = false)
+            {//圖片、字型透明化 for MS Word
+                if (!inlineShpape)
+                {
+                    WinWord.Shape sp = inlsp.ConvertToShape();
+                    sp.PictureFormat.TransparencyColor = 16777215;
+                    sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
+                    tr.Font.Fill.Transparency = 1;
+                }
+                else
+                {
+                    inlsp.PictureFormat.TransparencyColor = 16777215;
+                    inlsp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
+                }
+            }
+
+
+            #region 毫秒延时 界面不会卡死
+            //果然要完美解決卡頓的問題還是要藉由多執行緒代理的方法，未必也；蓋是用BackgroundWorker 類別比較對，詳部件篩選器實作 //https://docs.microsoft.com/zh-tw/dotnet/api/system.componentmodel.backgroundworker?view=netframework-4.0&f1url=%3FappId%3DDev15IDEF1%26l%3DZH-TW%26k%3Dk(System.ComponentModel.BackgroundWorker);k(TargetFrameworkMoniker-.NETFramework,Version%253Dv4.0);k(DevLang-csharp)%26rd%3Dtrue 
+            //https://my.oschina.net/u/4419355/blog/3452446            
+            //public static void Delay(int mm)
+            void Delay(int mm)
             {
-                inlsp.PictureFormat.TransparencyColor = 16777215;
-                inlsp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
+                DateTime current = DateTime.Now;
+                while (current.AddMilliseconds(mm) >= DateTime.Now)
+                {
+                    Application.DoEvents();
+                }
+                return;
             }
-        }
-
-
-        #region 毫秒延时 界面不会卡死
-        //果然要完美解決卡頓的問題還是要藉由多執行緒代理的方法，未必也；蓋是用BackgroundWorker 類別比較對，詳部件篩選器實作 //https://docs.microsoft.com/zh-tw/dotnet/api/system.componentmodel.backgroundworker?view=netframework-4.0&f1url=%3FappId%3DDev15IDEF1%26l%3DZH-TW%26k%3Dk(System.ComponentModel.BackgroundWorker);k(TargetFrameworkMoniker-.NETFramework,Version%253Dv4.0);k(DevLang-csharp)%26rd%3Dtrue 
-        //https://my.oschina.net/u/4419355/blog/3452446            
-        //public static void Delay(int mm)
-        void Delay(int mm)
-        {
-            DateTime current = DateTime.Now;
-            while (current.AddMilliseconds(mm) >= DateTime.Now)
-            {
-                Application.DoEvents();
-            }
-            return;
-        }
-        #endregion
-
-        void wait()
-        {
-            //https://www.itread01.com/content/1547889140.html
-            //https://www.google.com/search?q=c%23+%E4%B8%8D%E5%8D%A1%E6%AD%BB+&sxsrf=ALeKk018ozK2YgezqvoGdvu0dgRhsw77Gw%3A1616674700814&ei=jH9cYNmcMfuJr7wPur2m6Aw&oq=c%23+%E4%B8%8D%E5%8D%A1%E6%AD%BB+&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABOgUIABCwAzoECCMQJzoKCAAQsQMQgwEQQzoECAAQQzoCCAA6BAgAEB46CAgAEAgQChAeOgYIABAIEB46CAgAELEDEIMBULnzC1i_sgxgo7QMaARwAHgAgAGqA4gB1QeSAQU4LjQtMZgBAKABAaoBB2d3cy13aXrIAQHAAQE&sclient=gws-wiz&ved=0ahUKEwjZkonKtsvvAhX7xIsBHbqeCc0Q4dUDCA0&uact=5
-
-            decimal fl = numericUpDown1.Value;
-            if (fl > 0)
-            {
-                //System.Threading.CountdownEvent w = new System.Threading.CountdownEvent(0);
-                //w.Wait(Convert.ToInt32(1000 * fl));
-                System.Threading.Thread.Sleep(Convert.ToInt32(1000 * fl));
-            }
-        }
-
-
-        bool checkCharsValid(string character)
-        {
-            Regex r = new Regex("[\r\a A-Za-z0-9()　/]");
-            //Regex re = new System.Text.RegularExpressions.Regex("[^A-Za-z0-9() 　/]");
-            if (r.IsMatch(character))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        void resetClearAllPicsandFontTranspSel(officeEnum ofE)
-        {
-            switch (ofE)
-            {
-                case officeEnum.PowerPoint:
-                    pptApp = (PowerPnt.Application)getOffice(ofE);
-                    sld = pptApp.ActiveWindow.View.Slide;
-                    PowerPnt.Shape sp;
-                    pptApp.Activate();
-                    for (int i = 1; i <= sld.Shapes.Count; i++)
-                    {
-                        sp = sld.Shapes[i];
-                        if (sp.Type == Microsoft.Office.Core.MsoShapeType.msoPicture &&
-                            sp.Title == "")
-                        {
-                            sp.Delete();
-                            i--;
-                        }
-                    }
-                    sel = pptApp.ActiveWindow.Selection;
-                    switch (sel.Type)
-                    {
-                        case PowerPnt.PpSelectionType.ppSelectionText:
-                            sel.TextRange2.Font.Fill.Transparency = 0;
-                            break;
-                        case PowerPnt.PpSelectionType.ppSelectionShapes:
-                            if (sel.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
-                            {
-                                sel.TextRange.Select();
-                                sel.TextRange2.Font.Fill.Transparency = 0;
-                            }
-                            break;
-                        case PowerPnt.PpSelectionType.ppSelectionNone:
-                            if (sld.Shapes.Count > 0)
-                            {
-                                if (sld.Shapes[1].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)
-                                {
-                                    sld.Shapes[1].TextFrame2.TextRange.Font.Fill.Transparency = 0;
-                                }
-
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case officeEnum.Word:
-                    docApp = (WinWord.Application)getOffice(ofE);
-                    selDoc = docApp.ActiveWindow.Selection;
-                    rng = selDoc.Range;
-                    docApp.Activate();
-                    while (rng.InlineShapes.Count > 0)
-                        rng.InlineShapes[1].Delete();
-                    if (rng.ShapeRange.Count > 0)
-                    { rng.ShapeRange.Select(); selDoc.Delete(); } //rng.ShapeRange[1].Delete();
-                    rng.Font.Fill.Transparency = 0;
-                    break;
-                case officeEnum.Excel:
-                    break;
-                default:
-                    break;
-            }
-
-            #region clearAllPics
-
             #endregion
-        }
 
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            if (numericUpDown1.Value < 0)
+            void wait()
             {
-                numericUpDown1.Value = 0;
-            }
-        }
+                //https://www.itread01.com/content/1547889140.html
+                //https://www.google.com/search?q=c%23+%E4%B8%8D%E5%8D%A1%E6%AD%BB+&sxsrf=ALeKk018ozK2YgezqvoGdvu0dgRhsw77Gw%3A1616674700814&ei=jH9cYNmcMfuJr7wPur2m6Aw&oq=c%23+%E4%B8%8D%E5%8D%A1%E6%AD%BB+&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABOgUIABCwAzoECCMQJzoKCAAQsQMQgwEQQzoECAAQQzoCCAA6BAgAEB46CAgAEAgQChAeOgYIABAIEB46CAgAELEDEIMBULnzC1i_sgxgo7QMaARwAHgAgAGqA4gB1QeSAQU4LjQtMZgBAKABAaoBB2d3cy13aXrIAQHAAQE&sclient=gws-wiz&ved=0ahUKEwjZkonKtsvvAhX7xIsBHbqeCc0Q4dUDCA0&uact=5
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.go();
-        }
-
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                this.Close();
-            }
-        }
-
-
-
-        private void listBox2_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if ((string)listBox2.SelectedValue == "Word")
-                checkBox1.Enabled = true;//inlineShape？
-            else
-            {
-                checkBox1.Checked = false;//N/A inlineShape
-                checkBox1.Enabled = false;
-            }
-            switch (listBox2.SelectedValue)
-            {
-                case "PowerPoint":
-                    officE = officeEnum.PowerPoint;
-                    break;
-                case "Word":
-                    officE = officeEnum.Word;
-                    break;
-                case "Excel":
-                    officE = officeEnum.Excel;
-                    break;
-                default:
-                    break;
+                decimal fl = numericUpDown1.Value;
+                if (fl > 0)
+                {
+                    //System.Threading.CountdownEvent w = new System.Threading.CountdownEvent(0);
+                    //w.Wait(Convert.ToInt32(1000 * fl));
+                    System.Threading.Thread.Sleep(Convert.ToInt32(1000 * fl));
+                }
             }
 
+
+            bool checkCharsValid(string character)
+            {
+                Regex r = new Regex("[\r\a A-Za-z0-9()　/]");
+                //Regex re = new System.Text.RegularExpressions.Regex("[^A-Za-z0-9() 　/]");
+                if (r.IsMatch(character))
+                {
+                    return false;
+                }
+                return true;
+            }
+
+            void resetClearAllPicsandFontTranspSel(officeEnum ofE)
+            {
+                switch (ofE)
+                {
+                    case officeEnum.PowerPoint:
+                        pptApp = (PowerPnt.Application)getOffice(ofE);
+                        sld = pptApp.ActiveWindow.View.Slide;
+                        PowerPnt.Shape sp;
+                        pptApp.Activate();
+                        for (int i = 1; i <= sld.Shapes.Count; i++)
+                        {
+                            sp = sld.Shapes[i];
+                            if (sp.Type == Microsoft.Office.Core.MsoShapeType.msoPicture &&
+                                sp.Title == "")
+                            {
+                                sp.Delete();
+                                i--;
+                            }
+                        }
+                        sel = pptApp.ActiveWindow.Selection;
+                        switch (sel.Type)
+                        {
+                            case PowerPnt.PpSelectionType.ppSelectionText:
+                                sel.TextRange2.Font.Fill.Transparency = 0;
+                                break;
+                            case PowerPnt.PpSelectionType.ppSelectionShapes:
+                                if (sel.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                                {
+                                    sel.TextRange.Select();
+                                    sel.TextRange2.Font.Fill.Transparency = 0;
+                                }
+                                break;
+                            case PowerPnt.PpSelectionType.ppSelectionNone:
+                                if (sld.Shapes.Count > 0)
+                                {
+                                    if (sld.Shapes[1].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)
+                                    {
+                                        sld.Shapes[1].TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                    }
+
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case officeEnum.Word:
+                        docApp = (WinWord.Application)getOffice(ofE);
+                        selDoc = docApp.ActiveWindow.Selection;
+                        rng = selDoc.Range;
+                        docApp.Activate();
+                        while (rng.InlineShapes.Count > 0)
+                            rng.InlineShapes[1].Delete();
+                        if (rng.ShapeRange.Count > 0)
+                        { rng.ShapeRange.Select(); selDoc.Delete(); } //rng.ShapeRange[1].Delete();
+                        rng.Font.Fill.Transparency = 0;
+                        break;
+                    case officeEnum.Excel:
+                        break;
+                    default:
+                        break;
+                }
+
+                #region clearAllPics
+
+                #endregion
+            }
+
+
+            private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+            {
+                if (numericUpDown1.Value < 0)
+                {
+                    numericUpDown1.Value = 0;
+                }
+            }
+
+            private void button1_Click(object sender, EventArgs e)
+            {
+                this.go();
+            }
+
+            private void Form1_KeyDown(object sender, KeyEventArgs e)
+            {
+                if (e.KeyCode == Keys.Escape)
+                {
+                    this.Close();
+                }
+            }
+
+
+
+            private void listBox2_SelectedValueChanged(object sender, EventArgs e)
+            {
+                if ((string)listBox2.SelectedValue == "Word")
+                    checkBox1.Enabled = true;//inlineShape？
+                else
+                {
+                    checkBox1.Checked = false;//N/A inlineShape
+                    checkBox1.Enabled = false;
+                }
+                switch (listBox2.SelectedValue)
+                {
+                    case "PowerPoint":
+                        officE = officeEnum.PowerPoint;
+                        break;
+                    case "Word":
+                        officE = officeEnum.Word;
+                        break;
+                    case "Excel":
+                        officE = officeEnum.Excel;
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
+            private void button2_Click(object sender, EventArgs e)
+            {
+                resetClearAllPicsandFontTranspSel(officE);
+            }
+        }
+        enum picEnum : byte
+        {
+            卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        enum officeEnum
         {
-            resetClearAllPicsandFontTranspSel(officE);
+            PowerPoint, Word, Excel
         }
     }
-    enum picEnum : byte
-    {
-        卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書
-    }
-
-    enum officeEnum
-    {
-        PowerPoint, Word, Excel
-    }
-}
