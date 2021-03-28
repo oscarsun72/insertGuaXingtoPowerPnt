@@ -39,7 +39,7 @@ namespace insertGuaXingtoPowerpnt
         {
             List<string> lb = new List<string>{"64卦圖","行書","小篆","甲骨文"
                     ,"金文","隸書"};
-            listBox1.DataSource = lb;
+            listBox1.DataSource = lb;   listBox1.SetSelected(1,true) ;// 設定預設值為"行書";
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
             listBox2.DataSource = lb2;
             checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件
