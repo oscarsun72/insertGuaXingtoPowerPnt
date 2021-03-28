@@ -35,6 +35,7 @@
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,9 +50,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(208, 137);
+            this.button1.Location = new System.Drawing.Point(139, 137);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(79, 32);
+            this.button1.Size = new System.Drawing.Size(230, 49);
             this.button1.TabIndex = 1;
             this.button1.Text = "Go~";
             this.button1.UseVisualStyleBackColor = true;
@@ -96,18 +97,29 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(176, 77);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(109, 16);
             this.checkBox1.TabIndex = 5;
             this.checkBox1.Text = "Word.InlineShape";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(11, 154);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(79, 32);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "reset~";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(381, 213);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.listBox2);
@@ -135,6 +147,7 @@
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

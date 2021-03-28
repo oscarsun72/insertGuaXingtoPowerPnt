@@ -31,6 +31,7 @@ namespace insertGuaXingtoPowerpnt
         WinWord.InlineShape inlSp;
         WinWord.Range rng;
         WinWord.WdSelectionType selDocType;
+        officeEnum officE;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -39,18 +40,18 @@ namespace insertGuaXingtoPowerpnt
             listBox1.DataSource = lb;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
             listBox2.DataSource = lb2;
-            checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件            
-
+            checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件
+            officE = officeEnum.PowerPoint;
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            go();
+            //go();
         }
 
         private void go()
         {
-            listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false;
+            listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false; button2.Enabled = false;
             officeEnum ofcE = officeEnum.PowerPoint;
             switch (listBox2.SelectedItem)
             {
@@ -87,7 +88,7 @@ namespace insertGuaXingtoPowerpnt
                 default:
                     break;
             }
-            listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true;
+            listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true; button2.Enabled = true;
             if ((string)listBox2.SelectedValue == "Word")
             {
                 checkBox1.Enabled = true;
@@ -334,7 +335,7 @@ namespace insertGuaXingtoPowerpnt
                     PowerPnt.Table tb = sel.ShapeRange.Table;
                     int r = tb.Rows.Count;
                     int c = tb.Columns.Count;
-                    List<PowerPnt.Cell> cels=new List<PowerPnt.Cell> { };//list容器初始化
+                    List<PowerPnt.Cell> cels = new List<PowerPnt.Cell> { };//list容器初始化
                     for (int i = 1; i <= r; i++)//這是表格中所有儲存格都處理
                     {//https://docs.microsoft.com/zh-tw/office/vba/api/powerpoint.table.cell
                         for (int j = 1; j <= c; j++)
@@ -584,6 +585,74 @@ namespace insertGuaXingtoPowerpnt
             return true;
         }
 
+        void resetClearAllPicsandFontTranspSel(officeEnum ofE)
+        {
+            switch (ofE)
+            {
+                case officeEnum.PowerPoint:
+                    pptApp = (PowerPnt.Application)getOffice(ofE);
+                    sld = pptApp.ActiveWindow.View.Slide;
+                    PowerPnt.Shape sp;
+                    pptApp.Activate();
+                    for (int i = 1; i <= sld.Shapes.Count; i++)
+                    {
+                        sp = sld.Shapes[i];
+                        if (sp.Type == Microsoft.Office.Core.MsoShapeType.msoPicture &&
+                            sp.Title == "")
+                        {
+                            sp.Delete();
+                            i--;
+                        }
+                    }
+                    sel = pptApp.ActiveWindow.Selection;
+                    switch (sel.Type)
+                    {
+                        case PowerPnt.PpSelectionType.ppSelectionText:
+                            sel.TextRange2.Font.Fill.Transparency = 0;
+                            break;
+                        case PowerPnt.PpSelectionType.ppSelectionShapes:
+                            if (sel.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                            {
+                                sel.TextRange.Select();
+                                sel.TextRange2.Font.Fill.Transparency = 0;
+                            }
+                            break;
+                        case PowerPnt.PpSelectionType.ppSelectionNone:
+                            if (sld.Shapes.Count > 0)
+                            {
+                                if (sld.Shapes[1].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)
+                                {
+                                    sld.Shapes[1].TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                }
+
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case officeEnum.Word:
+                    docApp = (WinWord.Application)getOffice(ofE);
+                    selDoc = docApp.ActiveWindow.Selection;
+                    rng = selDoc.Range;
+                    docApp.Activate();
+                    while (rng.InlineShapes.Count > 0)
+                        rng.InlineShapes[1].Delete();
+                    if (rng.ShapeRange.Count > 0)
+                    { rng.ShapeRange.Select(); selDoc.Delete(); } //rng.ShapeRange[1].Delete();
+                    rng.Font.Fill.Transparency = 0;
+                    break;
+                case officeEnum.Excel:
+                    break;
+                default:
+                    break;
+            }
+
+            #region clearAllPics
+
+            #endregion
+        }
+
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
@@ -617,7 +686,26 @@ namespace insertGuaXingtoPowerpnt
                 checkBox1.Checked = false;//N/A inlineShape
                 checkBox1.Enabled = false;
             }
+            switch (listBox2.SelectedValue)
+            {
+                case "PowerPoint":
+                    officE = officeEnum.PowerPoint;
+                    break;
+                case "Word":
+                    officE = officeEnum.Word;
+                    break;
+                case "Excel":
+                    officE = officeEnum.Excel;
+                    break;
+                default:
+                    break;
+            }
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            resetClearAllPicsandFontTranspSel(officE);
         }
     }
     enum picEnum : byte
