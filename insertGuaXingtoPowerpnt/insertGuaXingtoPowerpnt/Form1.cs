@@ -326,6 +326,7 @@ namespace insertGuaXingtoPowerpnt
 
         void runPPT(string dir, picEnum pE)
         {
+            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionNone) return;
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText ||
                 sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes &
                 sel.ShapeRange.HasTextFrame==Microsoft.Office.Core.MsoTriState.msoTrue)
@@ -615,7 +616,9 @@ namespace insertGuaXingtoPowerpnt
                     {
                         sp = sld.Shapes[i];
                         if (sp.Type == Microsoft.Office.Core.MsoShapeType.msoPicture &&
-                            sp.Title == ""&& sp.AlternativeText.Length<2 && sp.ActionSettings[PowerPnt.PpMouseActivation.ppMouseClick].Hyperlink.Address!="")
+                            sp.Title == ""&& sp.AlternativeText.Length<2 && 
+                            sp.ActionSettings[PowerPnt.PpMouseActivation.ppMouseClick]
+                                .Hyperlink.Address==null)
                         {
                             sp.Delete();
                             i--;
