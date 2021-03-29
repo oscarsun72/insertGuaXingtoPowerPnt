@@ -314,13 +314,7 @@ namespace insertGuaXingtoPowerpnt
                 sel.ShapeRange.HasTextFrame==Microsoft.Office.Core.MsoTriState.msoTrue)
             {
                 PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
-                if (checkBox2.Checked)
-                {//http://www.exceloffice.net/archives/4127
-                 //執行後即播放投影片
-                    PowerPnt.SlideShowSettings oSSS = ppt.SlideShowSettings;
-                    oSSS.Run();
-                }
-                else ppt.Application.Activate();
+                runSlideShow();
                 if (sel.ShapeRange.HasTable == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {//有表格
                     //PowerPnt.CellRange cr = (PowerPnt.CellRange)sel.ShapeRange;//轉型失敗，改用下方「.Selected」屬性來判斷應用
@@ -364,6 +358,18 @@ namespace insertGuaXingtoPowerpnt
                 }
                 sel.Unselect();
             }
+        }
+
+        private void runSlideShow()
+        {
+            if (checkBox2.Checked)
+            {//http://www.exceloffice.net/archives/4127
+             //執行後即播放投影片
+                PowerPnt.SlideShowSettings oSSS = ppt.SlideShowSettings;
+                PowerPnt.SlideShowWindow ssw= oSSS.Run();
+                ssw.View.GotoSlide(sld.SlideIndex);
+            }
+            else ppt.Application.Activate();
         }
 
         private void charBycharPpt(string dir, picEnum pE, PowerPnt.Slide sld,
@@ -733,6 +739,11 @@ namespace insertGuaXingtoPowerpnt
         private void button2_Click(object sender, EventArgs e)
         {
             resetClearAllPicsandFontTranspSel(officE);
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            runSlideShow();
         }
     }
     enum picEnum : byte
