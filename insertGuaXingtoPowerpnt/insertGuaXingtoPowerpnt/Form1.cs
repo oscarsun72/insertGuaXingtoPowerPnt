@@ -257,18 +257,7 @@ namespace insertGuaXingtoPowerpnt
                 foreach (WinWord.Cell c in selDoc.Cells)
                 {
                     charBycharDoc(dir, pE, c.Range);
-                    //if (c.Range.Characters[c.Range.Characters.Count-1].Text==" ")
-                    //{
-                    //    c.Range.Characters[c.Range.Characters.Count - 1].Delete();//還是刪不掉
-                    //}
                 }
-                //foreach (WinWord.Cell c in selDoc.Cells)
-                //{
-                //    if (c.Range.Characters[c.Range.Characters.Count - 1].Text == " ")
-                //    {
-                //        c.Range.Characters[c.Range.Characters.Count - 1].Delete();//還是刪不掉
-                //    }
-                //}
             }
             else
                 charBycharDoc(dir, pE, selDoc.Range);
@@ -307,15 +296,8 @@ namespace insertGuaXingtoPowerpnt
                     else//inlineShape
                     {
                         if (selDocType != WinWord.WdSelectionType.wdSelectionIP)
-                        {
-                            //item.SetRange(item.Start + 1, item.End);
-                            //item.Delete();
-                            //string n = item.Characters[2].Next().Text;
+                        {                            
                             item.Characters[2].Delete();
-                            //if (item.Characters[1].Next().Text == " " && n != "")
-                            //{
-                            //    item.Characters[1].Next().Delete();//插入圖後，再刪原文字，所生的半形空格就是刪不掉？！
-                            //}
                         }
                     }
                     docApp.ScreenUpdating = true;
@@ -593,8 +575,8 @@ namespace insertGuaXingtoPowerpnt
 
 
         bool checkCharsValid(string character)
-        {
-            Regex r = new Regex("[\r\a A-Za-z0-9()　/]");
+        {   //由[\r\a... 改成 [\r\r\a ...果然解決跑出刪不掉的半形空格了
+            Regex r = new Regex("[\r\r\a A-Za-z0-9()　/]");
             //Regex re = new System.Text.RegularExpressions.Regex("[^A-Za-z0-9() 　/]");
             if (r.IsMatch(character))
             {
@@ -630,13 +612,18 @@ namespace insertGuaXingtoPowerpnt
                         case PowerPnt.PpSelectionType.ppSelectionText:
                             if (sel.TextRange2.Characters.Count==0)
                                 sel.ShapeRange.TextFrame.TextRange.Select();
-                            sel.TextRange2.Font.Fill.Transparency = 0;
+                            {
+                                sel.ShapeRange.TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                //sel.TextRange2.Select();
+                                //sel.TextRange2.Font.Fill.Transparency = 0;
+                            }
                             break;
                         case PowerPnt.PpSelectionType.ppSelectionShapes:
                             if (sel.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
                             {
-                                sel.TextRange2.Select();
-                                sel.TextRange2.Font.Fill.Transparency = 0;
+                                sel.ShapeRange.TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                //sel.TextRange2.Select();
+                                //sel.TextRange2.Font.Fill.Transparency = 0;
                             }
                             break;
                         case PowerPnt.PpSelectionType.ppSelectionNone:
