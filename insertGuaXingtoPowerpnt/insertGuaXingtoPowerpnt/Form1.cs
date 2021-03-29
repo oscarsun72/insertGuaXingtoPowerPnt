@@ -220,7 +220,7 @@ namespace insertGuaXingtoPowerpnt
                             {
                                 sel.ShapeRange.TextFrame.TextRange.Select();
                             }
-                        }
+                        }                        
                         runPPT(dir, pE);
                         break;
                     case officeEnum.Word:
@@ -313,8 +313,14 @@ namespace insertGuaXingtoPowerpnt
                 sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes &
                 sel.ShapeRange.HasTextFrame==Microsoft.Office.Core.MsoTriState.msoTrue)
             {
-                ppt.Application.Activate();
                 PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
+                if (checkBox2.Checked)
+                {//http://www.exceloffice.net/archives/4127
+                 //執行後即播放投影片
+                    PowerPnt.SlideShowSettings oSSS = ppt.SlideShowSettings;
+                    oSSS.Run();
+                }
+                else ppt.Application.Activate();
                 if (sel.ShapeRange.HasTable == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {//有表格
                     //PowerPnt.CellRange cr = (PowerPnt.CellRange)sel.ShapeRange;//轉型失敗，改用下方「.Selected」屬性來判斷應用
@@ -381,7 +387,7 @@ namespace insertGuaXingtoPowerpnt
                     float w = item.BoundWidth;
                     if (inTable)
                     {
-                        lf = lf + tbLeft; tp = tp + tbTop;
+                        lf += tbLeft; tp += tbTop;
                     }
                     PowerPnt.Shape sp = sld.Shapes.AddPicture(f, Microsoft.Office.Core.MsoTriState.msoFalse
                         , Microsoft.Office.Core.MsoTriState.msoTrue,
@@ -632,7 +638,7 @@ namespace insertGuaXingtoPowerpnt
                                 int i=0;
                                 while (sld.Shapes[++i].Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
                                 {
-                                    if (i>200)
+                                    if (i==sld.Shapes.Count|| i>200)
                                         break;
                                 }
                                 if (sld.Shapes[i].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)
@@ -699,23 +705,24 @@ namespace insertGuaXingtoPowerpnt
 
         private void listBox2_SelectedValueChanged(object sender, EventArgs e)
         {
-            if ((string)listBox2.SelectedValue == "Word")
-                checkBox1.Enabled = true;//inlineShape？
-            else
-            {
-                checkBox1.Checked = false;//N/A inlineShape
-                checkBox1.Enabled = false;
-            }
-            switch (listBox2.SelectedValue)
+            switch ((string)listBox2.SelectedValue)
             {
                 case "PowerPoint":
                     officE = officeEnum.PowerPoint;
+                    checkBox1.Checked = false;//N/A inlineShape
+                    checkBox1.Enabled = false;
+                    checkBox2.Enabled = true;
                     break;
                 case "Word":
                     officE = officeEnum.Word;
+                    checkBox1.Enabled = true;//inlineShape？
+                    checkBox2.Enabled = false;
                     break;
                 case "Excel":
                     officE = officeEnum.Excel;
+                    checkBox1.Checked = false;//N/A inlineShape
+                    checkBox1.Enabled = false;
+                    checkBox2.Enabled = false;
                     break;
                 default:
                     break;
