@@ -144,6 +144,7 @@
             this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "簡報插入字圖";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);

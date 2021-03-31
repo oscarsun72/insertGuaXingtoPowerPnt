@@ -109,6 +109,7 @@ namespace insertGuaXingtoPowerpnt
                         ppt = pptApp.ActivePresentation;
                         sel = pptApp.ActiveWindow.Selection;
                         selDocType = selDoc.Type;
+                        ppt.Application.Activate();
                         sld = ppt.Application.ActiveWindow.View.Slide;
                         runPPTGuaXing(dir);
                         break;
@@ -212,6 +213,7 @@ namespace insertGuaXingtoPowerpnt
                     case officeEnum.PowerPoint:
                         pptApp = (PowerPnt.Application)getOffice(ofE);
                         ppt = pptApp.ActivePresentation;
+                        ppt.Application.Activate();
                         sel = pptApp.ActiveWindow.Selection;
                         sld = pptApp.ActiveWindow.View.Slide;
                         if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
@@ -313,6 +315,7 @@ namespace insertGuaXingtoPowerpnt
                 sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes &
                 sel.ShapeRange.HasTextFrame==Microsoft.Office.Core.MsoTriState.msoTrue)
             {
+                ppt.Application.Activate();
                 PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
                 runSlideShow();
                 if (sel.ShapeRange.HasTable == Microsoft.Office.Core.MsoTriState.msoTrue)
@@ -365,6 +368,13 @@ namespace insertGuaXingtoPowerpnt
             if (checkBox2.Checked)
             {//http://www.exceloffice.net/archives/4127
              //執行後即播放投影片
+                if (ppt==null)
+                {
+                    pptApp=(PowerPnt.Application)getOffice(officeEnum.PowerPoint);
+                    ppt = pptApp.ActivePresentation;
+                    ppt.Application.Activate();
+                    sld = pptApp.ActiveWindow.View.Slide;
+                }
                 PowerPnt.SlideShowSettings oSSS = ppt.SlideShowSettings;
                 PowerPnt.SlideShowWindow ssw= oSSS.Run();
                 ssw.View.GotoSlide(sld.SlideIndex);
@@ -603,6 +613,7 @@ namespace insertGuaXingtoPowerpnt
             {
                 case officeEnum.PowerPoint:
                     pptApp = (PowerPnt.Application)getOffice(ofE);
+                    ppt.Application.Activate();
                     sld = pptApp.ActiveWindow.View.Slide;
                     PowerPnt.Shape sp;
                     pptApp.Activate();
