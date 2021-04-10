@@ -50,42 +50,11 @@ namespace insertGuaXingtoPowerpnt
         private void go()
         {
             listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false; button2.Enabled = false;
-            //officeEnum ofcE = officeEnum.PowerPoint;
-            //switch (listBox2.SelectedItem)
-            //{
-            //    case "PowerPoint":
-            //        ofcE = officeEnum.PowerPoint;
-            //        break;
-            //    case "Word":
-            //        ofcE = officeEnum.Word;
-            //        break;
-            //    case "Excel":
-            //        ofcE = officeEnum.Excel;
-            //        break;
-            //    default:
-            //        break;
-            //}
             switch (picE)
             {
                 case picEnum.卦圖64:// "64卦圖":
                     guaXing(officE);
                     break;
-                //case "行書":
-                //    GuWenZi(picEnum.行書, ofcE);
-                //    break;
-                //case "小篆":
-                //    GuWenZi(picEnum.小篆, ofcE);
-                //    break;
-                //case "甲骨文":
-                //    break;
-                //case "金文":
-                //    break;
-                //case "隸書":
-                //    GuWenZi(picEnum.隸書, ofcE);
-                //    break;
-                //case "華康行書體":
-                //    GuWenZi(picEnum.華康行書體, ofcE);
-                //    break;
                 default:
                     GuWenZi(picE, officE);
                     break;
@@ -311,6 +280,24 @@ namespace insertGuaXingtoPowerpnt
         void runPPT(string dir, picEnum pE)
         {
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionNone) return;
+            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionSlides)
+            {
+                for (int i = 1; i <= sel.SlideRange.Shapes.Count; i++)
+                {
+                    if (sel.SlideRange.Shapes[i].HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                    {
+                        sel.SlideRange.Shapes[i].Select();
+                        //如果sel可以因Select方法而即時變動，即不用此行:sel = sel.Application.ActiveWindow.Selection;
+                        break;
+                    }
+                }
+                if (sel.Type == PowerPnt.PpSelectionType.ppSelectionSlides)
+                {
+                    MessageBox.Show("請先選取要處理的文字方塊！再執行……");
+                    return;
+                }
+            }
+
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText ||
                 sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes &
                 sel.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
@@ -472,19 +459,7 @@ namespace insertGuaXingtoPowerpnt
                 case picEnum.小篆:
                     subFolder = "\\Macros\\古文字\\台大說文小篆字圖";
                     break;
-                //case picEnum.行書:
-                //    subFolder = "\\Macros\\古文字\\行書";
-                //    break;
-                //case picEnum.甲骨文:
-                //    subFolder = "\\Macros\\古文字\\甲骨文";
-                //    break;
-                //case picEnum.金文:
-                //    subFolder = "\\Macros\\古文字\\金文";
-                //    break;
-                //case picEnum.隸書:
-                //    subFolder = "\\Macros\\古文字\\隸書";
-                //    break;
-                default:
+                default://路徑特殊的就析出寫在上面20210410
                     subFolder = "\\Macros\\古文字\\" + listBox1.Text;
                     break;
             }
@@ -663,6 +638,7 @@ namespace insertGuaXingtoPowerpnt
                                         {
                                             sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency = 0;
                                             sld.Shapes[i].Select();
+                                            //這裡不要 break; 讓所有文字變透明的都恢復不透明就好20210410
                                         }
                                     }
                                 }
@@ -761,7 +737,7 @@ namespace insertGuaXingtoPowerpnt
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        {//設定欄位picE的值
             switch (listBox1.SelectedValue)
             {
                 case "64卦圖":
