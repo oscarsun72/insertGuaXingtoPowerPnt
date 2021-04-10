@@ -34,7 +34,7 @@ namespace insertGuaXingtoPowerpnt
         {
             List<string> lb = new List<string>{"64卦圖","行書",
                 "小篆","甲骨文","金文","隸書","華康行書體","文鼎行楷L",
-                "Adobe 仿宋 Std R"};
+                "Adobe 仿宋 Std R","文鼎魏碑B"};
             listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";
             picE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
@@ -768,6 +768,9 @@ namespace insertGuaXingtoPowerpnt
                 case "Adobe 仿宋 Std R":
                     picE = picEnum.Adobe仿宋StdR;
                     break;
+                case "文鼎魏碑B":
+                    picE = picEnum.文鼎魏碑B;
+                    break;
                 default:
                     break;
             }
@@ -776,7 +779,7 @@ namespace insertGuaXingtoPowerpnt
     enum picEnum : byte
     {
         卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書, 華康行書體
-            , 文鼎行楷L, Adobe仿宋StdR
+            , 文鼎行楷L, Adobe仿宋StdR,文鼎魏碑B
     }
 
     enum officeEnum
