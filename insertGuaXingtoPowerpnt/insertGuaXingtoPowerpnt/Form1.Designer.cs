@@ -51,9 +51,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(139, 137);
+            this.button1.Location = new System.Drawing.Point(176, 137);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(230, 49);
+            this.button1.Size = new System.Drawing.Size(193, 49);
             this.button1.TabIndex = 1;
             this.button1.Text = "Go~";
             this.button1.UseVisualStyleBackColor = true;
@@ -66,8 +66,9 @@
             this.listBox1.ItemHeight = 21;
             this.listBox1.Location = new System.Drawing.Point(11, 18);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(111, 130);
+            this.listBox1.Size = new System.Drawing.Size(159, 130);
             this.listBox1.TabIndex = 2;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // listBox2
             // 

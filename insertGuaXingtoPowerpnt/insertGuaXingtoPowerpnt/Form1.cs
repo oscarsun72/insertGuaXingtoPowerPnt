@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPnt = Microsoft.Office.Interop.PowerPoint;
 using WinWord = Microsoft.Office.Interop.Word;
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Text.RegularExpressions;
 
 namespace insertGuaXingtoPowerpnt
 {
@@ -32,14 +25,17 @@ namespace insertGuaXingtoPowerpnt
         WinWord.Range rng;
         WinWord.WdSelectionType selDocType;
         officeEnum officE;
+        picEnum picE;
         ADODB.Connection cnt;
         ADODB.Recordset rst;
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
             List<string> lb = new List<string>{"64卦圖","行書","小篆","甲骨文"
-                    ,"金文","隸書"};
-            listBox1.DataSource = lb;   listBox1.SetSelected(1,true) ;// 設定預設值為"行書";
+                    ,"金文","隸書","華康行書體"};
+            listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";
+            picE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
             listBox2.DataSource = lb2;
             checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件
@@ -54,40 +50,44 @@ namespace insertGuaXingtoPowerpnt
         private void go()
         {
             listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false; button2.Enabled = false;
-            officeEnum ofcE = officeEnum.PowerPoint;
-            switch (listBox2.SelectedItem)
+            //officeEnum ofcE = officeEnum.PowerPoint;
+            //switch (listBox2.SelectedItem)
+            //{
+            //    case "PowerPoint":
+            //        ofcE = officeEnum.PowerPoint;
+            //        break;
+            //    case "Word":
+            //        ofcE = officeEnum.Word;
+            //        break;
+            //    case "Excel":
+            //        ofcE = officeEnum.Excel;
+            //        break;
+            //    default:
+            //        break;
+            //}
+            switch (picE)
             {
-                case "PowerPoint":
-                    ofcE = officeEnum.PowerPoint;
+                case picEnum.卦圖64:// "64卦圖":
+                    guaXing(officE);
                     break;
-                case "Word":
-                    ofcE = officeEnum.Word;
-                    break;
-                case "Excel":
-                    ofcE = officeEnum.Excel;
-                    break;
+                //case "行書":
+                //    GuWenZi(picEnum.行書, ofcE);
+                //    break;
+                //case "小篆":
+                //    GuWenZi(picEnum.小篆, ofcE);
+                //    break;
+                //case "甲骨文":
+                //    break;
+                //case "金文":
+                //    break;
+                //case "隸書":
+                //    GuWenZi(picEnum.隸書, ofcE);
+                //    break;
+                //case "華康行書體":
+                //    GuWenZi(picEnum.華康行書體, ofcE);
+                //    break;
                 default:
-                    break;
-            }
-            switch (listBox1.SelectedValue)
-            {
-                case "64卦圖":
-                    guaXing(ofcE);
-                    break;
-                case "行書":
-                    GuWenZi(picEnum.行書, ofcE);
-                    break;
-                case "小篆":
-                    GuWenZi(picEnum.小篆, ofcE);
-                    break;
-                case "甲骨文":
-                    break;
-                case "金文":
-                    break;
-                case "隸書":
-                    GuWenZi(picEnum.隸書, ofcE);
-                    break;
-                default:
+                    GuWenZi(picE, officE);
                     break;
             }
             listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true; button2.Enabled = true;
@@ -222,7 +222,7 @@ namespace insertGuaXingtoPowerpnt
                             {
                                 sel.ShapeRange.TextFrame.TextRange.Select();
                             }
-                        }                        
+                        }
                         runPPT(dir, pE);
                         break;
                     case officeEnum.Word:
@@ -230,7 +230,7 @@ namespace insertGuaXingtoPowerpnt
                         doc = docApp.ActiveDocument;
                         selDoc = doc.ActiveWindow.Selection;
                         selDocType = selDoc.Type;
-                        if (selDocType==WinWord.WdSelectionType.wdSelectionIP)
+                        if (selDocType == WinWord.WdSelectionType.wdSelectionIP)
                         {
                             doc.Content.Select();
                         }
@@ -298,7 +298,7 @@ namespace insertGuaXingtoPowerpnt
                     else//inlineShape
                     {
                         if (selDocType != WinWord.WdSelectionType.wdSelectionIP)
-                        {                            
+                        {
                             item.Characters[2].Delete();
                         }
                     }
@@ -313,7 +313,7 @@ namespace insertGuaXingtoPowerpnt
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionNone) return;
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText ||
                 sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes &
-                sel.ShapeRange.HasTextFrame==Microsoft.Office.Core.MsoTriState.msoTrue)
+                sel.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
             {
                 ppt.Application.Activate();
                 PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
@@ -368,15 +368,15 @@ namespace insertGuaXingtoPowerpnt
             if (checkBox2.Checked)
             {//http://www.exceloffice.net/archives/4127
              //執行後即播放投影片
-                if (ppt==null)
+                if (ppt == null)
                 {
-                    pptApp=(PowerPnt.Application)getOffice(officeEnum.PowerPoint);
+                    pptApp = (PowerPnt.Application)getOffice(officeEnum.PowerPoint);
                     ppt = pptApp.ActivePresentation;
                     ppt.Application.Activate();
                     sld = pptApp.ActiveWindow.View.Slide;
                 }
                 PowerPnt.SlideShowSettings oSSS = ppt.SlideShowSettings;
-                PowerPnt.SlideShowWindow ssw= oSSS.Run();
+                PowerPnt.SlideShowWindow ssw = oSSS.Run();
                 ssw.View.GotoSlide(sld.SlideIndex);
             }
             else ppt.Application.Activate();
@@ -469,22 +469,23 @@ namespace insertGuaXingtoPowerpnt
                 case picEnum.卦圖64:
                     subFolder = "\\Macros\\64卦圖";
                     break;
-                case picEnum.行書:
-                    subFolder = "\\Macros\\古文字\\行書";
-                    break;
                 case picEnum.小篆:
                     subFolder = "\\Macros\\古文字\\台大說文小篆字圖";
                     break;
-                case picEnum.甲骨文:
-                    subFolder = "\\Macros\\古文字\\甲骨文";
-                    break;
-                case picEnum.金文:
-                    subFolder = "\\Macros\\古文字\\金文";
-                    break;
-                case picEnum.隸書:
-                    subFolder = "\\Macros\\古文字\\隸書";
-                    break;
+                //case picEnum.行書:
+                //    subFolder = "\\Macros\\古文字\\行書";
+                //    break;
+                //case picEnum.甲骨文:
+                //    subFolder = "\\Macros\\古文字\\甲骨文";
+                //    break;
+                //case picEnum.金文:
+                //    subFolder = "\\Macros\\古文字\\金文";
+                //    break;
+                //case picEnum.隸書:
+                //    subFolder = "\\Macros\\古文字\\隸書";
+                //    break;
                 default:
+                    subFolder = "\\Macros\\古文字\\" + listBox1.Text;
                     break;
             }
             string dir = "";
@@ -535,12 +536,12 @@ namespace insertGuaXingtoPowerpnt
         //http://www.exceloffice.net/archives/3643
         void spTransp(PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
         {//圖片、字型透明化
-         /*
-          * System.InvalidCastException
-         HResult=0x80004002
-         Message=無法將類型 'System.__ComObject' 的 COM 物件轉換為介面類型 'Microsoft.Office.Interop.Word.Range'。由於發生下列錯誤，介面 (IID 為 '{0002095E-0000-0000-C000-000000000046}') 之 COM 元件上的 QueryInterface 呼叫失敗而導致作業失敗: 不支援此種介面 (發生例外狀況於 HRESULT: 0x80004002 (E_NOINTERFACE))。
-         所以必須用多載的方式，函式（方法）多載（重載）的需求也應運而生
-          …… */
+            /*
+             * System.InvalidCastException
+            HResult=0x80004002
+            Message=無法將類型 'System.__ComObject' 的 COM 物件轉換為介面類型 'Microsoft.Office.Interop.Word.Range'。由於發生下列錯誤，介面 (IID 為 '{0002095E-0000-0000-C000-000000000046}') 之 COM 元件上的 QueryInterface 呼叫失敗而導致作業失敗: 不支援此種介面 (發生例外狀況於 HRESULT: 0x80004002 (E_NOINTERFACE))。
+            所以必須用多載的方式，函式（方法）多載（重載）的需求也應運而生
+             …… */
             sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
             sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
                                                            //if (checkBox1.Checked != true)
@@ -613,7 +614,7 @@ namespace insertGuaXingtoPowerpnt
             {
                 case officeEnum.PowerPoint:
                     pptApp = (PowerPnt.Application)getOffice(ofE);
-                    ppt.Application.Activate();
+                    pptApp.Activate();
                     sld = pptApp.ActiveWindow.View.Slide;
                     PowerPnt.Shape sp;
                     pptApp.Activate();
@@ -621,9 +622,9 @@ namespace insertGuaXingtoPowerpnt
                     {
                         sp = sld.Shapes[i];
                         if (sp.Type == Microsoft.Office.Core.MsoShapeType.msoPicture &&
-                            sp.Title == ""&& sp.AlternativeText.Length<2 && 
+                            sp.Title == "" && sp.AlternativeText.Length < 2 &&
                             sp.ActionSettings[PowerPnt.PpMouseActivation.ppMouseClick]
-                                .Hyperlink.Address==null)
+                                .Hyperlink.Address == null)
                         {
                             sp.Delete();
                             i--;
@@ -633,7 +634,7 @@ namespace insertGuaXingtoPowerpnt
                     switch (sel.Type)
                     {
                         case PowerPnt.PpSelectionType.ppSelectionText:
-                            if (sel.TextRange2.Characters.Count==0)
+                            if (sel.TextRange2.Characters.Count == 0)
                                 sel.ShapeRange.TextFrame.TextRange.Select();
                             {
                                 sel.ShapeRange.TextFrame2.TextRange.Font.Fill.Transparency = 0;
@@ -650,19 +651,21 @@ namespace insertGuaXingtoPowerpnt
                             }
                             break;
                         case PowerPnt.PpSelectionType.ppSelectionNone:
-                            if (sld.Shapes.Count > 0)
+                            int shpCnt = sld.Shapes.Count;
+                            if (shpCnt > 0)
                             {
-                                int i=0;
-                                while (sld.Shapes[++i].Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
+                                for (int i = 1; i <= shpCnt; i++)
                                 {
-                                    if (i==sld.Shapes.Count|| i>200)
-                                        break;
+                                    //if (sld.Shapes[i].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)//不是TextBox，卻有TextFrame(msoPlaceholder即有TextFrame)
+                                    if (sld.Shapes[i].HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                                    {
+                                        if (sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency != 0)
+                                        {
+                                            sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                            sld.Shapes[i].Select();
+                                        }
+                                    }
                                 }
-                                if (sld.Shapes[i].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)
-                                {
-                                    sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency = 0;
-                                }
-
                             }
                             break;
                         default:
@@ -673,7 +676,7 @@ namespace insertGuaXingtoPowerpnt
                     docApp = (WinWord.Application)getOffice(ofE);
                     selDoc = docApp.ActiveWindow.Selection;
                     selDocType = selDoc.Type;
-                    if (selDocType==WinWord.WdSelectionType.wdSelectionIP)
+                    if (selDocType == WinWord.WdSelectionType.wdSelectionIP)
                     {
                         selDoc.Document.Content.Select();
                     }
@@ -756,10 +759,40 @@ namespace insertGuaXingtoPowerpnt
         {
             runSlideShow();
         }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (listBox1.SelectedValue)
+            {
+                case "64卦圖":
+                    picE = picEnum.卦圖64;
+                    break;
+                case "行書":
+                    picE = picEnum.行書;
+                    break;
+                case "小篆":
+                    picE = picEnum.小篆;
+                    break;
+                case "甲骨文":
+                    picE = picEnum.甲骨文;
+                    break;
+                case "金文":
+                    picE = picEnum.金文;
+                    break;
+                case "隸書":
+                    picE = picEnum.隸書;
+                    break;
+                case "華康行書體":
+                    picE = picEnum.華康行書體;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     enum picEnum : byte
     {
-        卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書
+        卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書, 華康行書體
     }
 
     enum officeEnum
