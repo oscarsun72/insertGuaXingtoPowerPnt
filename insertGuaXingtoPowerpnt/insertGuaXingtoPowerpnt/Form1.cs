@@ -35,7 +35,7 @@ namespace insertGuaXingtoPowerpnt
             List<string> lb = new List<string>{"64卦圖","行書",
                 "小篆","甲骨文","金文","隸書",
                 "華康行書體","文鼎行楷L",
-                "Adobe 仿宋 Std R","文鼎魏碑B",
+                "Adobe 仿宋 Std R","文鼎魏碑B","文鼎行楷碑體B",
                 "教育部標準楷書","文鼎顏楷H","文鼎顏楷U","Adobe 楷体 Std R",
                 "KaiTi"};
             listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
@@ -45,12 +45,16 @@ namespace insertGuaXingtoPowerpnt
             checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件
             officE = officeEnum.PowerPoint;
         }
-
-        private void Form1_MouseClick(object sender, MouseEventArgs e)
+                
+        private void listBox2_DoubleClick(object sender, EventArgs e)
         {
-            //go();
+            this.go();
         }
 
+        private void listBox1_DoubleClick(object sender, EventArgs e)
+        {
+            this.go();
+        }
         private void go()
         {
             listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false; button2.Enabled = false;
@@ -761,22 +765,14 @@ namespace insertGuaXingtoPowerpnt
             }*/
         }
 
-        private void listBox2_DoubleClick(object sender, EventArgs e)
-        {
-            this.go(); 
-        }
-
-        private void listBox1_DoubleClick(object sender, EventArgs e)
-        {
-            this.go();
-        }
-    }
-    enum picEnum : byte
+        enum picEnum : byte
     {//the zero-based index as listbox 20210411
         卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書,
         華康行書體, 文鼎行楷L,
-        Adobe_仿宋_Std_R, 文鼎魏碑B,
+        Adobe_仿宋_Std_R, 文鼎魏碑B, 文鼎行楷碑體B,
         教育部標準楷書, 文鼎顏楷H,文鼎顏楷U, Adobe_楷体_StdR, KaiTi
+    }
+        
     }
 
     enum officeEnum
