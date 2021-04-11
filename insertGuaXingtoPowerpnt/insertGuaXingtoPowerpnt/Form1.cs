@@ -311,17 +311,17 @@ namespace insertGuaXingtoPowerpnt
                 runSlideShow();
                 if (sel.ShapeRange.HasTable == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {//有表格
-                    //PowerPnt.CellRange cr = (PowerPnt.CellRange)sel.ShapeRange;//轉型失敗，改用下方「.Selected」屬性來判斷應用
-                    //for (int i = 0; i < cr.Count; i++)
-                    //{
-                    //    if (cr[i].Selected)
-                    //    {
-                    //        cr[i].Select();
-                    //        PowerPnt.Selection s = cr.Application.ActiveWindow.Selection;
-                    //        charBycharPpt(dir, pE, sld, s.TextRange2,
-                    //            true, s.ShapeRange.Table.Parent.left, s.ShapeRange.Table.Parent.top);
-                    //    }
-                    //}
+                 /* PowerPnt.CellRange cr = (PowerPnt.CellRange)sel.ShapeRange;//轉型失敗，改用下方「.Selected」屬性來判斷應用
+                 for (int i = 0; i < cr.Count; i++)
+                 {
+                     if (cr[i].Selected)
+                     {
+                         cr[i].Select();
+                         PowerPnt.Selection s = cr.Application.ActiveWindow.Selection;
+                         charBycharPpt(dir, pE, sld, s.TextRange2,
+                             true, s.ShapeRange.Table.Parent.left, s.ShapeRange.Table.Parent.top);
+                     }
+                 } */
 
                     PowerPnt.Table tb = sel.ShapeRange.Table;
                     int r = tb.Rows.Count;
@@ -515,12 +515,12 @@ namespace insertGuaXingtoPowerpnt
         //http://www.exceloffice.net/archives/3643
         void spTransp(PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
         {//圖片、字型透明化
-            /*
-             * System.InvalidCastException
-            HResult=0x80004002
-            Message=無法將類型 'System.__ComObject' 的 COM 物件轉換為介面類型 'Microsoft.Office.Interop.Word.Range'。由於發生下列錯誤，介面 (IID 為 '{0002095E-0000-0000-C000-000000000046}') 之 COM 元件上的 QueryInterface 呼叫失敗而導致作業失敗: 不支援此種介面 (發生例外狀況於 HRESULT: 0x80004002 (E_NOINTERFACE))。
-            所以必須用多載的方式，函式（方法）多載（重載）的需求也應運而生
-             …… */
+         /*
+          * System.InvalidCastException
+         HResult=0x80004002
+         Message=無法將類型 'System.__ComObject' 的 COM 物件轉換為介面類型 'Microsoft.Office.Interop.Word.Range'。由於發生下列錯誤，介面 (IID 為 '{0002095E-0000-0000-C000-000000000046}') 之 COM 元件上的 QueryInterface 呼叫失敗而導致作業失敗: 不支援此種介面 (發生例外狀況於 HRESULT: 0x80004002 (E_NOINTERFACE))。
+         所以必須用多載的方式，函式（方法）多載（重載）的需求也應運而生
+          …… */
             sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
             sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
                                                            //if (checkBox1.Checked != true)
@@ -744,52 +744,42 @@ namespace insertGuaXingtoPowerpnt
         {//設定欄位picE的值
             picE = (picEnum)listBox1.SelectedIndex;//https://docs.microsoft.com/zh-tw/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
             //https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
-            //switch (listBox1.SelectedValue)
-            //{
-            //    case "64卦圖":
-            //        picE = picEnum.卦圖64;
-            //        break;
-            //    case "行書":
-            //        picE = picEnum.行書;
-            //        break;
-            //    case "小篆":
-            //        picE = picEnum.小篆;
-            //        break;
-            //    case "甲骨文":
-            //        picE = picEnum.甲骨文;
-            //        break;
-            //    case "金文":
-            //        picE = picEnum.金文;
-            //        break;
-            //    case "隸書":
-            //        picE = picEnum.隸書;
-            //        break;
-            //    case "華康行書體":
-            //        picE = picEnum.華康行書體;
-            //        break;
-            //    case "文鼎行楷L":
-            //        picE = picEnum.文鼎行楷L;
-            //        break;
-            //    case "Adobe 仿宋 Std R":
-            //        picE = picEnum.Adobe仿宋StdR;
-            //        break;
-            //    case "文鼎魏碑B":
-            //        picE = picEnum.文鼎魏碑B;
-            //        break;
-            //    case "文鼎顏楷H":
-            //        picE = picEnum.文鼎顏楷H;
-            //        break;
-            //    default:
-            //        break;
-            //}
+            /* switch (listBox1.SelectedValue)
+            {
+                case "64卦圖":
+                    picE = picEnum.卦圖64;
+                    break;
+                case "行書":
+                    picE = picEnum.行書;
+                    break;
+                case "小篆":
+                    picE = picEnum.小篆;
+                    break;
+                case "甲骨文":
+                    picE = picEnum.甲骨文;
+                    break;
+            ……
+                default:
+                    break;
+            }*/
+        }
+
+        private void listBox2_DoubleClick(object sender, EventArgs e)
+        {
+            this.go(); 
+        }
+
+        private void listBox1_DoubleClick(object sender, EventArgs e)
+        {
+            this.go();
         }
     }
     enum picEnum : byte
     {//the zero-based index as listbox 20210411
         卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書,
-        華康行書體,文鼎行楷L,
-        Adobe_仿宋_Std_R,文鼎魏碑B,
-        教育部標準楷書, 文鼎顏楷H,Adobe_楷体_StdR,KaiTi
+        華康行書體, 文鼎行楷L,
+        Adobe_仿宋_Std_R, 文鼎魏碑B,
+        教育部標準楷書, 文鼎顏楷H, Adobe_楷体_StdR, KaiTi
     }
 
     enum officeEnum

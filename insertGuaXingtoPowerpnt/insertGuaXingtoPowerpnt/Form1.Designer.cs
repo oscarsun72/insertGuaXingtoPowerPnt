@@ -61,7 +61,7 @@
             // 
             // listBox1
             // 
-            this.listBox1.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.listBox1.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 21;
             this.listBox1.Location = new System.Drawing.Point(11, 18);
@@ -69,10 +69,11 @@
             this.listBox1.Size = new System.Drawing.Size(159, 130);
             this.listBox1.TabIndex = 2;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             // 
             // listBox2
             // 
-            this.listBox2.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.listBox2.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.listBox2.FormattingEnabled = true;
             this.listBox2.ItemHeight = 21;
             this.listBox2.Location = new System.Drawing.Point(176, 18);
@@ -80,6 +81,7 @@
             this.listBox2.Size = new System.Drawing.Size(111, 46);
             this.listBox2.TabIndex = 3;
             this.listBox2.SelectedValueChanged += new System.EventHandler(this.listBox2_SelectedValueChanged);
+            this.listBox2.DoubleClick += new System.EventHandler(this.listBox2_DoubleClick);
             // 
             // numericUpDown1
             // 
