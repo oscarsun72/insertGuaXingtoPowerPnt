@@ -36,8 +36,8 @@ namespace insertGuaXingtoPowerpnt
                 "小篆","甲骨文","金文","隸書",
                 "華康行書體","文鼎行楷L",
                 "Adobe 仿宋 Std R","文鼎魏碑B","文鼎行楷碑體B",
-                "教育部標準楷書","文鼎顏楷H","文鼎顏楷U","Adobe 楷体 Std R",
-                "KaiTi"};
+                "教育部標準楷書","Adobe 楷体 Std R",
+                "KaiTi","文鼎顏楷H","文鼎顏楷U","文鼎毛楷B"};
             listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
             picE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
@@ -770,7 +770,8 @@ namespace insertGuaXingtoPowerpnt
         卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書,
         華康行書體, 文鼎行楷L,
         Adobe_仿宋_Std_R, 文鼎魏碑B, 文鼎行楷碑體B,
-        教育部標準楷書, 文鼎顏楷H,文鼎顏楷U, Adobe_楷体_StdR, KaiTi
+        教育部標準楷書, Adobe_楷体_StdR, KaiTi,
+        文鼎顏楷H,文鼎顏楷U,文鼎毛楷B
     }
         
     }
