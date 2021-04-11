@@ -33,9 +33,12 @@ namespace insertGuaXingtoPowerpnt
         private void Form1_Load(object sender, EventArgs e)
         {
             List<string> lb = new List<string>{"64卦圖","行書",
-                "小篆","甲骨文","金文","隸書","華康行書體","文鼎行楷L",
-                "Adobe 仿宋 Std R","文鼎魏碑B"};
-            listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";
+                "小篆","甲骨文","金文","隸書",
+                "華康行書體","文鼎行楷L",
+                "Adobe 仿宋 Std R","文鼎魏碑B",
+                "教育部標準楷書","文鼎顏楷H","Adobe 楷体 Std R",
+                "KaiTi"};
+            listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
             picE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
             listBox2.DataSource = lb2;
@@ -739,47 +742,54 @@ namespace insertGuaXingtoPowerpnt
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {//設定欄位picE的值
-            switch (listBox1.SelectedValue)
-            {
-                case "64卦圖":
-                    picE = picEnum.卦圖64;
-                    break;
-                case "行書":
-                    picE = picEnum.行書;
-                    break;
-                case "小篆":
-                    picE = picEnum.小篆;
-                    break;
-                case "甲骨文":
-                    picE = picEnum.甲骨文;
-                    break;
-                case "金文":
-                    picE = picEnum.金文;
-                    break;
-                case "隸書":
-                    picE = picEnum.隸書;
-                    break;
-                case "華康行書體":
-                    picE = picEnum.華康行書體;
-                    break;
-                case "文鼎行楷L":
-                    picE = picEnum.文鼎行楷L;
-                    break;
-                case "Adobe 仿宋 Std R":
-                    picE = picEnum.Adobe仿宋StdR;
-                    break;
-                case "文鼎魏碑B":
-                    picE = picEnum.文鼎魏碑B;
-                    break;
-                default:
-                    break;
-            }
+            picE = (picEnum)listBox1.SelectedIndex;//https://docs.microsoft.com/zh-tw/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
+            //https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
+            //switch (listBox1.SelectedValue)
+            //{
+            //    case "64卦圖":
+            //        picE = picEnum.卦圖64;
+            //        break;
+            //    case "行書":
+            //        picE = picEnum.行書;
+            //        break;
+            //    case "小篆":
+            //        picE = picEnum.小篆;
+            //        break;
+            //    case "甲骨文":
+            //        picE = picEnum.甲骨文;
+            //        break;
+            //    case "金文":
+            //        picE = picEnum.金文;
+            //        break;
+            //    case "隸書":
+            //        picE = picEnum.隸書;
+            //        break;
+            //    case "華康行書體":
+            //        picE = picEnum.華康行書體;
+            //        break;
+            //    case "文鼎行楷L":
+            //        picE = picEnum.文鼎行楷L;
+            //        break;
+            //    case "Adobe 仿宋 Std R":
+            //        picE = picEnum.Adobe仿宋StdR;
+            //        break;
+            //    case "文鼎魏碑B":
+            //        picE = picEnum.文鼎魏碑B;
+            //        break;
+            //    case "文鼎顏楷H":
+            //        picE = picEnum.文鼎顏楷H;
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
     }
     enum picEnum : byte
-    {
-        卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書, 華康行書體
-            , 文鼎行楷L, Adobe仿宋StdR,文鼎魏碑B
+    {//the zero-based index as listbox 20210411
+        卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書,
+        華康行書體,文鼎行楷L,
+        Adobe_仿宋_Std_R,文鼎魏碑B,
+        教育部標準楷書, 文鼎顏楷H,Adobe_楷体_StdR,KaiTi
     }
 
     enum officeEnum
