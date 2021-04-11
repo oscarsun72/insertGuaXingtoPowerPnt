@@ -755,10 +755,7 @@ namespace insertGuaXingtoPowerpnt
                 case "小篆":
                     picE = picEnum.小篆;
                     break;
-                case "甲骨文":
-                    picE = picEnum.甲骨文;
-                    break;
-            ……
+                    ……
                 default:
                     break;
             }*/
