@@ -38,7 +38,7 @@ namespace insertGuaXingtoPowerpnt
                 "FangSong","Adobe 仿宋 Std R","文鼎魏碑B","文鼎行楷碑體B",
                 "教育部標準楷書","Adobe 楷体 Std R",
                 "KaiTi","文鼎顏楷H","文鼎顏楷U","文鼎毛楷B","文鼎毛楷EB","文鼎毛楷H",
-                "DFGKanTeiRyu-W11"};
+                "DFGKanTeiRyu-W11","文鼎古印體B"};
             listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
             picE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
@@ -773,7 +773,7 @@ namespace insertGuaXingtoPowerpnt
         FangSong,Adobe_仿宋_Std_R, 文鼎魏碑B, 文鼎行楷碑體B,
         教育部標準楷書, Adobe_楷体_StdR, KaiTi,
         文鼎顏楷H,文鼎顏楷U,文鼎毛楷B,文鼎毛楷EB,文鼎毛楷H,
-        DFGKanTeiRyu_W11
+        DFGKanTeiRyu_W11,文鼎古印體B
 
     }
         
