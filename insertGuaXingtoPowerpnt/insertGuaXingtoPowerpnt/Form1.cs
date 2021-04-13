@@ -36,7 +36,7 @@ namespace insertGuaXingtoPowerpnt
                 "小篆","甲骨文","金文","隸書",
                 "華康行書體","文鼎行楷L",
                 "FangSong","Adobe 仿宋 Std R","文鼎仿宋B",
-                    "文鼎魏碑B","文鼎行楷碑體B",
+                    "文鼎魏碑B","文鼎行楷碑體B","文鼎鋼筆行楷M",
                 "教育部標準楷書","Adobe 楷体 Std R","KaiTi","文鼎標準楷體ProM",
                 "文鼎顏楷H","文鼎顏楷U","文鼎毛楷B","文鼎毛楷EB","文鼎毛楷H",
                 "DFMinchoP-W5",
@@ -49,7 +49,7 @@ namespace insertGuaXingtoPowerpnt
             checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件
             officE = officeEnum.PowerPoint;
         }
-                
+
         private void listBox2_DoubleClick(object sender, EventArgs e)
         {
             this.go();
@@ -319,17 +319,17 @@ namespace insertGuaXingtoPowerpnt
                 runSlideShow();
                 if (sel.ShapeRange.HasTable == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {//有表格
-                 /* PowerPnt.CellRange cr = (PowerPnt.CellRange)sel.ShapeRange;//轉型失敗，改用下方「.Selected」屬性來判斷應用
-                 for (int i = 0; i < cr.Count; i++)
-                 {
-                     if (cr[i].Selected)
-                     {
-                         cr[i].Select();
-                         PowerPnt.Selection s = cr.Application.ActiveWindow.Selection;
-                         charBycharPpt(dir, pE, sld, s.TextRange2,
-                             true, s.ShapeRange.Table.Parent.left, s.ShapeRange.Table.Parent.top);
-                     }
-                 } */
+                    /* PowerPnt.CellRange cr = (PowerPnt.CellRange)sel.ShapeRange;//轉型失敗，改用下方「.Selected」屬性來判斷應用
+                    for (int i = 0; i < cr.Count; i++)
+                    {
+                        if (cr[i].Selected)
+                        {
+                            cr[i].Select();
+                            PowerPnt.Selection s = cr.Application.ActiveWindow.Selection;
+                            charBycharPpt(dir, pE, sld, s.TextRange2,
+                                true, s.ShapeRange.Table.Parent.left, s.ShapeRange.Table.Parent.top);
+                        }
+                    } */
 
                     PowerPnt.Table tb = sel.ShapeRange.Table;
                     int r = tb.Rows.Count;
@@ -523,12 +523,12 @@ namespace insertGuaXingtoPowerpnt
         //http://www.exceloffice.net/archives/3643
         void spTransp(PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
         {//圖片、字型透明化
-         /*
-          * System.InvalidCastException
-         HResult=0x80004002
-         Message=無法將類型 'System.__ComObject' 的 COM 物件轉換為介面類型 'Microsoft.Office.Interop.Word.Range'。由於發生下列錯誤，介面 (IID 為 '{0002095E-0000-0000-C000-000000000046}') 之 COM 元件上的 QueryInterface 呼叫失敗而導致作業失敗: 不支援此種介面 (發生例外狀況於 HRESULT: 0x80004002 (E_NOINTERFACE))。
-         所以必須用多載的方式，函式（方法）多載（重載）的需求也應運而生
-          …… */
+            /*
+             * System.InvalidCastException
+            HResult=0x80004002
+            Message=無法將類型 'System.__ComObject' 的 COM 物件轉換為介面類型 'Microsoft.Office.Interop.Word.Range'。由於發生下列錯誤，介面 (IID 為 '{0002095E-0000-0000-C000-000000000046}') 之 COM 元件上的 QueryInterface 呼叫失敗而導致作業失敗: 不支援此種介面 (發生例外狀況於 HRESULT: 0x80004002 (E_NOINTERFACE))。
+            所以必須用多載的方式，函式（方法）多載（重載）的需求也應運而生
+             …… */
             sp.PictureFormat.TransparentBackground = Microsoft.Office.Core.MsoTriState.msoTrue;
             sp.PictureFormat.TransparencyColor = 16777215; //Microsoft.VisualBasic.Information.RGB(255, 255, 255);
                                                            //if (checkBox1.Checked != true)
@@ -770,19 +770,19 @@ namespace insertGuaXingtoPowerpnt
         }
 
         enum picEnum : byte
-    {//the zero-based index as listbox 20210411
-        卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書,
-        華康行書體, 文鼎行楷L,
-        FangSong,Adobe_仿宋_Std_R,文鼎仿宋B,
-            文鼎魏碑B, 文鼎行楷碑體B,
-        教育部標準楷書, Adobe_楷体_StdR, KaiTi, 文鼎標準楷體ProM,
-        文鼎顏楷H,文鼎顏楷U,文鼎毛楷B,文鼎毛楷EB,文鼎毛楷H,
-        DFMinchoP_W5,
-        DFGothicP_W5,
-            DFGKanTeiRyu_W11,文鼎古印體B
+        {//the zero-based index as listbox 20210411
+            卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書,
+            華康行書體, 文鼎行楷L,
+            FangSong, Adobe_仿宋_Std_R, 文鼎仿宋B,
+            文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M,
+            教育部標準楷書, Adobe_楷体_StdR, KaiTi, 文鼎標準楷體ProM,
+            文鼎顏楷H, 文鼎顏楷U, 文鼎毛楷B, 文鼎毛楷EB, 文鼎毛楷H,
+            DFMinchoP_W5,
+            DFGothicP_W5,
+            DFGKanTeiRyu_W11, 文鼎古印體B
 
-    }
-        
+        }
+
     }
 
     enum officeEnum
