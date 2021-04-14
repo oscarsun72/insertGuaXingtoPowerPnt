@@ -33,7 +33,7 @@ namespace insertGuaXingtoPowerpnt
         private void Form1_Load(object sender, EventArgs e)
         {
             List<string> lb = new List<string>{"64卦圖","行書",
-                "小篆","甲骨文","金文","隸書","文鼎隸書B",
+                "小篆","甲骨文","金文","隸書","文鼎隸書B","文鼎隸書DB",
 
                 "華康行書體","文鼎行楷L","DFGGyoSho-W7","文鼎魏碑B","文鼎行楷碑體B","文鼎鋼筆行楷M",
 
@@ -774,7 +774,7 @@ namespace insertGuaXingtoPowerpnt
 
         enum picEnum : byte
         {//the zero-based index as listbox 20210411
-            卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書, 文鼎隸書B,
+            卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB,
             華康行書體, 文鼎行楷L, DFGGyoSho_W7, 文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M,
 
             FangSong, Adobe_仿宋_Std_R, 文鼎仿宋B,
