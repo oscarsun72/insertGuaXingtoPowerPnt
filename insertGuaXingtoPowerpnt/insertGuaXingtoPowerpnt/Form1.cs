@@ -34,14 +34,17 @@ namespace insertGuaXingtoPowerpnt
         {
             List<string> lb = new List<string>{"64卦圖","行書",
                 "小篆","甲骨文","金文","隸書",
-                "華康行書體","文鼎行楷L",
+
+                "華康行書體","文鼎行楷L","DFGGyoSho-W7","文鼎魏碑B","文鼎行楷碑體B","文鼎鋼筆行楷M",
+
                 "FangSong","Adobe 仿宋 Std R","文鼎仿宋B",
-                    "文鼎魏碑B","文鼎行楷碑體B","文鼎鋼筆行楷M",
+
                 "教育部標準楷書","Adobe 楷体 Std R","KaiTi","文鼎標準楷體ProM",
                 "文鼎顏楷H","文鼎顏楷U","文鼎毛楷B","文鼎毛楷EB","文鼎毛楷H",
                 "DFMinchoP-W5",
                 "DFGothicP-W5",
-                "DFGKanTeiRyu-W11","文鼎古印體B"};
+                "DFGKanTeiRyu-W11","文鼎古印體B",
+                "文鼎雕刻體B"};
             listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
             picE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
@@ -772,14 +775,16 @@ namespace insertGuaXingtoPowerpnt
         enum picEnum : byte
         {//the zero-based index as listbox 20210411
             卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書,
-            華康行書體, 文鼎行楷L,
+            華康行書體, 文鼎行楷L, DFGGyoSho_W7, 文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M,
+
             FangSong, Adobe_仿宋_Std_R, 文鼎仿宋B,
-            文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M,
+
             教育部標準楷書, Adobe_楷体_StdR, KaiTi, 文鼎標準楷體ProM,
             文鼎顏楷H, 文鼎顏楷U, 文鼎毛楷B, 文鼎毛楷EB, 文鼎毛楷H,
             DFMinchoP_W5,
             DFGothicP_W5,
-            DFGKanTeiRyu_W11, 文鼎古印體B
+            DFGKanTeiRyu_W11, 文鼎古印體B,
+            文鼎雕刻體B,
 
         }
 
