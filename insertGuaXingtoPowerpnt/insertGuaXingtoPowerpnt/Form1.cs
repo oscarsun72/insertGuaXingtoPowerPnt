@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPnt = Microsoft.Office.Interop.PowerPoint;
@@ -771,6 +772,25 @@ namespace insertGuaXingtoPowerpnt
                 default:
                     break;
             }*/
+            showFontPreview();
+        }
+
+        private void showFontPreview()
+        {
+            string ext = "png";
+            if (picE == picEnum.行書)
+                ext = "jpg";
+            string picsFullname = getDir(picE) + "\\真." + ext;
+            if (System.IO.File.Exists(picsFullname))
+            {
+                Bitmap pic = new Bitmap(picsFullname);//https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.picturebox.image?view=netframework-4.6.1&f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(System.Windows.Forms.PictureBox.Image);k(TargetFrameworkMoniker-.NETFramework,Version%253Dv4.6.1);k(DevLang-csharp)%26rd%3Dtrue
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;//https://docs.microsoft.com/zh-tw/dotnet/api/system.windows.forms.pictureboxsizemode?view=net-5.0
+                pictureBox1.Image = pic;
+
+            }
+            else
+                pictureBox1.Image = null;//https://stackoverflow.com/questions/5856196/clear-image-on-picturebox //https://www.codeproject.com/Questions/1205981/How-to-reset-the-image-in-a-picture-box-in-Csharp
+            //throw new NotImplementedException();
         }
 
         enum picEnum : byte
