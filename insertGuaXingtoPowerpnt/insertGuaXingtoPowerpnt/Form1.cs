@@ -467,7 +467,7 @@ namespace insertGuaXingtoPowerpnt
 
         string getDir(picEnum pE)
         {
-            string subFolder = "";
+            string subFolder ;
             switch (pE)
             {
                 case picEnum.卦圖64:
@@ -480,7 +480,7 @@ namespace insertGuaXingtoPowerpnt
                     subFolder = "\\Macros\\古文字\\" + listBox1.Text;
                     break;
             }
-            string dir = "";
+            string dir;
             List<string> dirs = new List<string> { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
             foreach (string item in dirs)
             {
