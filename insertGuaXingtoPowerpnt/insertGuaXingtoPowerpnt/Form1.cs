@@ -45,7 +45,7 @@ namespace insertGuaXingtoPowerpnt
                 "DFMinchoP-W5",
                 "DFGothicP-W5",
                 "DFGKanTeiRyu-W11","文鼎古印體B",
-                "文鼎雕刻體B",
+                "文鼎雕刻體B","DFKinBun-W3",
                 "DFGFuun-W7"};
             listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
             picE = picEnum.行書;
@@ -708,9 +708,16 @@ namespace insertGuaXingtoPowerpnt
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
+            switch (e.KeyCode)
             {
-                this.Close();
+                case Keys.Escape:
+                    this.Close();
+                    break;
+                case Keys.R:
+                    resetClearAllPicsandFontTranspSel(officE);
+                    break;
+                default:
+                    break;            
             }
         }
 
@@ -805,7 +812,7 @@ namespace insertGuaXingtoPowerpnt
             DFMinchoP_W5,
             DFGothicP_W5,
             DFGKanTeiRyu_W11, 文鼎古印體B,
-            文鼎雕刻體B,
+            文鼎雕刻體B, DFKinBun_W3,
             DFGFuun_W7
         }
 
