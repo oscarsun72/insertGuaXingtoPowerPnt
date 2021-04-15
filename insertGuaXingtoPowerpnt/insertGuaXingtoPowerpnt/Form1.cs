@@ -808,7 +808,7 @@ namespace insertGuaXingtoPowerpnt
         enum picEnum : byte
         {//the zero-based index as listbox 20210411
             卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB, 文鼎隸書HKM, 文鼎隸書M,
-            華康行書體, 文鼎行楷L, DFGGyoSho_W7, DFPGyoSho_W7,文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M, DFPOYoJun_W5,DFPPenJi-W4,
+            華康行書體, 文鼎行楷L, DFGGyoSho_W7, DFPGyoSho_W7,文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M, DFPOYoJun_W5,DFPPenJi_W4,
 
             FangSong, Adobe_仿宋_Std_R, 文鼎仿宋B, 文鼎仿宋L,
 
