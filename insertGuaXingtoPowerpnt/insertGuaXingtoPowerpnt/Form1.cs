@@ -467,7 +467,7 @@ namespace insertGuaXingtoPowerpnt
 
         string getDir(picEnum pE)
         {
-            string subFolder ;
+            string subFolder;
             switch (pE)
             {
                 case picEnum.卦圖64:
@@ -717,7 +717,7 @@ namespace insertGuaXingtoPowerpnt
                     resetClearAllPicsandFontTranspSel(officE);
                     break;
                 default:
-                    break;            
+                    break;
             }
         }
 
@@ -785,9 +785,14 @@ namespace insertGuaXingtoPowerpnt
         private void showFontPreview()
         {
             string ext = "png";
+            string dir = getDir(picE);
+            string picsFullname;
             if (picE == picEnum.行書)
                 ext = "jpg";
-            string picsFullname = getDir(picE) + "\\真." + ext;
+            picsFullname = dir + "\\真." + ext;
+            if (picE == picEnum.小篆)
+                picsFullname = getFullNameNTUswxz(dir, "真");
+
             if (System.IO.File.Exists(picsFullname))
             {
                 Bitmap pic = new Bitmap(picsFullname);//https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.picturebox.image?view=netframework-4.6.1&f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(System.Windows.Forms.PictureBox.Image);k(TargetFrameworkMoniker-.NETFramework,Version%253Dv4.6.1);k(DevLang-csharp)%26rd%3Dtrue
