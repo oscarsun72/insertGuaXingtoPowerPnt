@@ -496,6 +496,10 @@ namespace insertGuaXingtoPowerpnt
         {//為免ADO存取資料庫失敗而增此
             return FindFileThruLINQ.getfilefullnameIn古文字(x,dir);            
         }
+#region ADODB
+        /*ADODB參考：操作方法使用 ADO 和 Jet OLE DB 提供者尋找記錄: https://docs.microsoft.com/zh-tw/office/troubleshoot/access/find-record-by-ado-and-jet-ole-db-provider
+         與各種資料庫的連線字串:http://web12.ravs.ntct.edu.tw/know/show.asp?QUESTIONID=47 
+         * */
         string getFullNameNTUswxzADODB(string dir, string x)
         {
             //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/best-practices-strings
@@ -529,6 +533,7 @@ namespace insertGuaXingtoPowerpnt
             return "";
 
         }
+#endregion
         //http://www.exceloffice.net/archives/3643
         void spTransp(PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
         {//圖片、字型透明化
