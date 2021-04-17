@@ -29,7 +29,7 @@ namespace insertGuaXingtoPowerpnt
         picEnum picE;
         ADODB.Connection cnt;
         ADODB.Recordset rst;
-
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -492,7 +492,11 @@ namespace insertGuaXingtoPowerpnt
             }
             return "";
         }
-        string getFullNameNTUswxz(string dir, string x)
+        string getFullNameNTUswxz(string dir,string x)
+        {//為免ADO存取資料庫失敗而增此
+            return FindFileThruLINQ.getfilefullnameIn古文字(x,dir);            
+        }
+        string getFullNameNTUswxzADODB(string dir, string x)
         {
             //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/best-practices-strings
             //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/character-classes-in-regular-expressions
@@ -779,6 +783,7 @@ namespace insertGuaXingtoPowerpnt
                 default:
                     break;
             }*/
+
             showFontPreview();
         }
 
