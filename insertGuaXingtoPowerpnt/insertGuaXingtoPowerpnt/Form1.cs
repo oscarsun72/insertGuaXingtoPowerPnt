@@ -36,7 +36,7 @@ namespace insertGuaXingtoPowerpnt
             List<string> lb = new List<string>{"64卦圖","行書",
                 "小篆","甲骨文","金文","隸書","文鼎隸書B","文鼎隸書DB","文鼎隸書HKM","文鼎隸書M",
 
-                "華康行書體","文鼎行楷L","DFGGyoSho-W7","DFPGyoSho_W7","文鼎魏碑B","文鼎行楷碑體B","文鼎鋼筆行楷M","DFPOYoJun-W5","DFPPenJi-W4",
+                "華康行書體","文鼎行楷L","DFGGyoSho-W7","DFPGyoSho-W7","文鼎魏碑B","文鼎行楷碑體B","文鼎鋼筆行楷M","DFPOYoJun-W5","DFPPenJi-W4",
 
                 "FangSong","Adobe 仿宋 Std R","文鼎仿宋B","文鼎仿宋L",
 
@@ -66,6 +66,7 @@ namespace insertGuaXingtoPowerpnt
         }
         private void go()
         {
+            //為免誤按，故使控制項失效
             listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false; button2.Enabled = false;
             switch (picE)
             {
@@ -76,6 +77,7 @@ namespace insertGuaXingtoPowerpnt
                     GuWenZi(picE, officE);
                     break;
             }
+            //執行完後恢復控制項狀態
             listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true; button2.Enabled = true;
             if ((string)listBox2.SelectedValue == "Word")
             {
@@ -429,12 +431,6 @@ namespace insertGuaXingtoPowerpnt
                     break;
                 case picEnum.小篆:
                     f = getFullNameNTUswxz(dir, itemText);
-                    break;
-                case picEnum.甲骨文:
-                    break;
-                case picEnum.金文:
-                    break;
-                case picEnum.隸書:
                     break;
                 default:
                     break;
@@ -816,9 +812,14 @@ namespace insertGuaXingtoPowerpnt
             //throw new NotImplementedException();
         }
 
+        #region 圖片
+        //特殊的才需要，其他的不需要了。（只要路徑有規則、圖片皆為png，就不必列出了
+        //此只是作為判斷時參考爾。卦圖、小篆是路徑；行書是 jpg，故須列出作判斷
+        //餘均由listBox1來控制判斷項即可）
         enum picEnum : byte
         {//the zero-based index as listbox 20210411
-            卦圖64, 行書, 小篆, 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB, 文鼎隸書HKM, 文鼎隸書M,
+            卦圖64, 行書, 小篆 }
+                /* , 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB, 文鼎隸書HKM, 文鼎隸書M,
             華康行書體, 文鼎行楷L, DFGGyoSho_W7, DFPGyoSho_W7,文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M, DFPOYoJun_W5,DFPPenJi_W4,
 
             FangSong, Adobe_仿宋_Std_R, 文鼎仿宋B, 文鼎仿宋L,
@@ -830,8 +831,8 @@ namespace insertGuaXingtoPowerpnt
             DFGKanTeiRyu_W11, 文鼎古印體B,
             文鼎雕刻體B, DFKinBun_W3,
             DFGFuun_W7
-        }
-
+        } */
+        #endregion
     }
 
     enum officeEnum
