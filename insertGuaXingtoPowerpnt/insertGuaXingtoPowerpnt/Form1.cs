@@ -496,10 +496,11 @@ namespace insertGuaXingtoPowerpnt
         {//為免ADO存取資料庫失敗而增此
             return FindFileThruLINQ.getfilefullnameIn古文字(x,dir);            
         }
-#region ADODB
+        #region ADODB
         /*ADODB參考：操作方法使用 ADO 和 Jet OLE DB 提供者尋找記錄: https://docs.microsoft.com/zh-tw/office/troubleshoot/access/find-record-by-ado-and-jet-ole-db-provider
-         與各種資料庫的連線字串:http://web12.ravs.ntct.edu.tw/know/show.asp?QUESTIONID=47 
-         * */
+         *與各種資料庫的連線字串:http://web12.ravs.ntct.edu.tw/know/show.asp?QUESTIONID=47 
+         *Create an ADO connection string:https://docs.microsoft.com/zh-tw/office/vba/access/concepts/activex-data-objects/create-an-ado-connection-string
+         *MSAccess 資料庫 ADO source provider*/
         string getFullNameNTUswxzADODB(string dir, string x)
         {
             //https://docs.microsoft.com/zh-tw/dotnet/standard/base-types/best-practices-strings
