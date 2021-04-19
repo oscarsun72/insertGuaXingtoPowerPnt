@@ -74,6 +74,7 @@
             this.listBox1.TabIndex = 2;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+            this.listBox1.MouseHover += new System.EventHandler(this.listBox1_MouseHover);
             // 
             // listBox2
             // 

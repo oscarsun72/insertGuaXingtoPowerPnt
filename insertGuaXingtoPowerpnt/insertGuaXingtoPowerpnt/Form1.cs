@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CharacterConverttoCharacterPics;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -6,7 +7,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPnt = Microsoft.Office.Interop.PowerPoint;
 using WinWord = Microsoft.Office.Interop.Word;
-using CharacterConverttoCharacterPics;
 
 namespace insertGuaXingtoPowerpnt
 {
@@ -31,7 +31,7 @@ namespace insertGuaXingtoPowerpnt
         picEnum picE;
         ADODB.Connection cnt;
         ADODB.Recordset rst;
-        
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -490,9 +490,9 @@ namespace insertGuaXingtoPowerpnt
             }
             return "";
         }
-        string getFullNameNTUswxz(string dir,string x)
+        string getFullNameNTUswxz(string dir, string x)
         {//為免ADO存取資料庫失敗而增此
-            return FindFileThruLINQ.getfilefullnameIn古文字(x,dir);            
+            return FindFileThruLINQ.getfilefullnameIn古文字(x, dir);
         }
         #region ADODB
         /*ADODB參考：操作方法使用 ADO 和 Jet OLE DB 提供者尋找記錄: https://docs.microsoft.com/zh-tw/office/troubleshoot/access/find-record-by-ado-and-jet-ole-db-provider
@@ -532,7 +532,7 @@ namespace insertGuaXingtoPowerpnt
             return "";
 
         }
-#endregion
+        #endregion
         //http://www.exceloffice.net/archives/3643
         void spTransp(PowerPnt.Shape sp, Microsoft.Office.Core.TextRange2 tr)
         {//圖片、字型透明化
@@ -822,7 +822,8 @@ namespace insertGuaXingtoPowerpnt
         //餘均由listBox1來控制判斷項即可）
         enum picEnum : byte
         {//the zero-based index as listbox 20210411
-            卦圖64, 行書, 小篆 }
+            卦圖64, 行書, 小篆
+        }
         /* , 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB, 文鼎隸書HKM, 文鼎隸書M,
     華康行書體, 文鼎行楷L, DFGGyoSho_W7, DFPGyoSho_W7,文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M, DFPOYoJun_W5,DFPPenJi_W4,
 
@@ -843,6 +844,27 @@ namespace insertGuaXingtoPowerpnt
             Process prc = new Process();
             prc.StartInfo.FileName = getDir(picE);//開啟古文字內的各字型字圖存放的資料夾20210419
             prc.Start();
+        }
+
+        private void listBox1_MouseHover(object sender, EventArgs e)
+        {//https://docs.microsoft.com/zh-tw/dotnet/desktop/winforms/controls/how-to-set-tooltips-for-controls-on-a-windows-form-at-design-time?view=netframeworkdesktop-4.8
+            ToolTip ttp = new ToolTip();
+            string listBox1SelectedItem = listBox1.SelectedItem.ToString();
+            Regex rx = new Regex("[a-zA-Z0-9]");
+            if (rx.IsMatch(listBox1SelectedItem.Substring(0, 1)))
+            {
+                if (listBox1SelectedItem.Length > 11)
+                    ttp.SetToolTip(listBox1, listBox1.SelectedItem.ToString());
+                else
+                    ttp.SetToolTip(listBox1, "");
+            }
+            else
+            {
+                if (listBox1SelectedItem.Length > 7)
+                    ttp.SetToolTip(listBox1, listBox1.SelectedItem.ToString());
+                else
+                    ttp.SetToolTip(listBox1, "");
+            }
         }
     }
 
