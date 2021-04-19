@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPnt = Microsoft.Office.Interop.PowerPoint;
 using WinWord = Microsoft.Office.Interop.Word;
+using CharacterConverttoCharacterPics;
 
 namespace insertGuaXingtoPowerpnt
 {
@@ -34,7 +35,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            List<string> lb = new List<string>{"64卦圖","行書",
+            List<string> lb = FontsOpsDoc.fontPicsList;/* new List<string>{"64卦圖","行書",
                 "小篆","甲骨文","金文","隸書","文鼎隸書B","文鼎隸書DB","文鼎隸書HKM","文鼎隸書M",
 
                 "華康行書體","文鼎行楷L","DFGGyoSho-W7","DFPGyoSho-W7","文鼎魏碑B","文鼎行楷碑體B","文鼎鋼筆行楷M","DFPOYoJun-W5","DFPPenJi-W4",
@@ -47,7 +48,7 @@ namespace insertGuaXingtoPowerpnt
                 "DFGothicP-W5",
                 "DFGKanTeiRyu-W11","文鼎古印體B",
                 "文鼎雕刻體B","DFKinBun-W3",
-                "DFGFuun-W7"};
+                "DFGFuun-W7"};*/
             listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
             picE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
@@ -809,7 +810,6 @@ namespace insertGuaXingtoPowerpnt
                 Bitmap pic = new Bitmap(picsFullname);//https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.picturebox.image?view=netframework-4.6.1&f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(System.Windows.Forms.PictureBox.Image);k(TargetFrameworkMoniker-.NETFramework,Version%253Dv4.6.1);k(DevLang-csharp)%26rd%3Dtrue
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;//https://docs.microsoft.com/zh-tw/dotnet/api/system.windows.forms.pictureboxsizemode?view=net-5.0
                 pictureBox1.Image = pic;
-
             }
             else
                 pictureBox1.Image = null;//https://stackoverflow.com/questions/5856196/clear-image-on-picturebox //https://www.codeproject.com/Questions/1205981/How-to-reset-the-image-in-a-picture-box-in-Csharp
