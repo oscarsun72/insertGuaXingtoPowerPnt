@@ -792,6 +792,29 @@ namespace insertGuaXingtoPowerpnt
             }*/
 
             showFontPreview();
+            showToolTip();
+        }
+
+        private void showToolTip()
+        {//https://bit.ly/3gs04Ya        
+         //https://bit.ly/32tdqLF
+            ToolTip ttp = new ToolTip();
+            string listBox1SelectedItem = listBox1.SelectedItem.ToString();
+            Regex rx = new Regex("[a-zA-Z0-9]");
+            if (rx.IsMatch(listBox1SelectedItem.Substring(0, 1)))
+            {
+                if (listBox1SelectedItem.Length > 11)
+                    ttp.SetToolTip(listBox1, listBox1.SelectedItem.ToString());
+                else
+                    ttp.SetToolTip(listBox1, "");
+            }
+            else
+            {
+                if (listBox1SelectedItem.Length > 7)
+                    ttp.SetToolTip(listBox1, listBox1.SelectedItem.ToString());
+                else
+                    ttp.SetToolTip(listBox1, "");
+            }
         }
 
         private void showFontPreview()
@@ -847,24 +870,7 @@ namespace insertGuaXingtoPowerpnt
         }
 
         private void listBox1_MouseHover(object sender, EventArgs e)
-        {//https://docs.microsoft.com/zh-tw/dotnet/desktop/winforms/controls/how-to-set-tooltips-for-controls-on-a-windows-form-at-design-time?view=netframeworkdesktop-4.8
-            ToolTip ttp = new ToolTip();
-            string listBox1SelectedItem = listBox1.SelectedItem.ToString();
-            Regex rx = new Regex("[a-zA-Z0-9]");
-            if (rx.IsMatch(listBox1SelectedItem.Substring(0, 1)))
-            {
-                if (listBox1SelectedItem.Length > 11)
-                    ttp.SetToolTip(listBox1, listBox1.SelectedItem.ToString());
-                else
-                    ttp.SetToolTip(listBox1, "");
-            }
-            else
-            {
-                if (listBox1SelectedItem.Length > 7)
-                    ttp.SetToolTip(listBox1, listBox1.SelectedItem.ToString());
-                else
-                    ttp.SetToolTip(listBox1, "");
-            }
+        {
         }
     }
 
