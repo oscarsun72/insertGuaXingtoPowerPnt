@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -722,6 +723,9 @@ namespace insertGuaXingtoPowerpnt
                 case Keys.R:
                     resetClearAllPicsandFontTranspSel(officE);
                     break;
+                case Keys.Enter:
+                    go();
+                    break;
                 default:
                     break;
             }
@@ -819,20 +823,27 @@ namespace insertGuaXingtoPowerpnt
         enum picEnum : byte
         {//the zero-based index as listbox 20210411
             卦圖64, 行書, 小篆 }
-                /* , 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB, 文鼎隸書HKM, 文鼎隸書M,
-            華康行書體, 文鼎行楷L, DFGGyoSho_W7, DFPGyoSho_W7,文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M, DFPOYoJun_W5,DFPPenJi_W4,
+        /* , 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB, 文鼎隸書HKM, 文鼎隸書M,
+    華康行書體, 文鼎行楷L, DFGGyoSho_W7, DFPGyoSho_W7,文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M, DFPOYoJun_W5,DFPPenJi_W4,
 
-            FangSong, Adobe_仿宋_Std_R, 文鼎仿宋B, 文鼎仿宋L,
+    FangSong, Adobe_仿宋_Std_R, 文鼎仿宋B, 文鼎仿宋L,
 
-            教育部標準楷書, Adobe_楷体_StdR, KaiTi, 文鼎標準楷體ProM,
-            文鼎顏楷H, 文鼎顏楷U, 文鼎毛楷B, 文鼎毛楷EB, 文鼎毛楷H,
-            DFMinchoP_W5,
-            DFGothicP_W5,
-            DFGKanTeiRyu_W11, 文鼎古印體B,
-            文鼎雕刻體B, DFKinBun_W3,
-            DFGFuun_W7
-        } */
+    教育部標準楷書, Adobe_楷体_StdR, KaiTi, 文鼎標準楷體ProM,
+    文鼎顏楷H, 文鼎顏楷U, 文鼎毛楷B, 文鼎毛楷EB, 文鼎毛楷H,
+    DFMinchoP_W5,
+    DFGothicP_W5,
+    DFGKanTeiRyu_W11, 文鼎古印體B,
+    文鼎雕刻體B, DFKinBun_W3,
+    DFGFuun_W7
+} */
         #endregion
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            Process prc = new Process();
+            prc.StartInfo.FileName = getDir(picE);//開啟古文字內的各字型字圖存放的資料夾20210419
+            prc.Start();
+        }
     }
 
     enum officeEnum
