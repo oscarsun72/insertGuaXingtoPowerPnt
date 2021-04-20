@@ -62,7 +62,7 @@ namespace ToolTipExample
 
         // The main entry point for the application.
         [STAThread]
-        static void Main()
+        static void main()
         {
             Application.Run(new ToolTipExampleForm());
         }
