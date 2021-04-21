@@ -59,5 +59,73 @@ namespace insertGuaXingtoPowerpnt.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 64卦圖
+        ///行書
+        ///
+        ///小篆
+        ///甲骨文
+        ///金文
+        ///隸書
+        ///文鼎隸書B
+        ///文鼎隸書DB
+        ///文鼎隸書HKM
+        ///文鼎隸書M
+        ///
+        ///華康行書體
+        ///文鼎行楷L
+        ///DFGGyoSho-W7
+        ///DFPGyoSho-W7
+        ///
+        ///文鼎魏碑B
+        ///文鼎行楷碑體B
+        ///Hanyi Senty Floral Calligraphy
+        ///Hanyi Senty Lingfei Scroll
+        ///漢儀新蒂語文體
+        ///漢儀新蒂語文體430size
+        ///文鼎鋼筆行楷M
+        ///DFPOYoJun-W5
+        ///DFPPenJi-W4
+        ///
+        ///
+        ///FangSong
+        ///Adobe仿宋StdR
+        ///文鼎仿宋B
+        ///文鼎仿宋L
+        ///
+        ///教育部標準楷書
+        ///Adobe楷体StdR
+        ///KaiTi
+        ///文鼎標準楷體ProM
+        ///
+        ///文鼎顏楷H
+        ///文鼎顏楷U
+        ///文鼎毛楷B
+        ///文鼎毛楷EB
+        ///文鼎毛楷H
+        ///
+        ///DFMinchoP-W5
+        ///
+        ///DFGothicP-W5
+        ///
+        ///DFGKanTeiRyu-W11
+        ///文鼎古印體B
+        ///漢儀新蒂佛塔書
+        ///漢儀新蒂牌樓體
+        ///
+        ///文鼎雕刻體B
+        ///DFKinBun-W3
+        ///DFPGiHi-W7
+        ///
+        ///DFGFuun-W7
+        ///
+        ///::華康行書體(P)以下為沒必要做的 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string fontOkList {
+            get {
+                return ResourceManager.GetString("fontOkList", resourceCulture);
+            }
+        }
     }
 }
