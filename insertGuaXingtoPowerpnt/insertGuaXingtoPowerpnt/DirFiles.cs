@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using powerPnt = Microsoft.Office.Interop.PowerPoint;
 
 namespace CharacterConverttoCharacterPics
@@ -48,12 +47,6 @@ namespace CharacterConverttoCharacterPics
             else
                 return null;
         }
-
-        internal static void readFontOkList_txt()
-        { //How to read embedded resource text file: https://bit.ly/2QJJJn6
-          //Read text from resources C# : https://bit.ly/2QhGIKH
-
-        }
         internal static string getDir各字型檔相關()
         {
             return getCjk_basic_IDS_UCS_Basic_txt().DirectoryName;
@@ -79,33 +72,6 @@ namespace CharacterConverttoCharacterPics
             {
                 Directory.CreateDirectory(picFolderPath);
             }
-        }
-
-        public static void openFolder(string picDir)
-        {
-            //Process.Start(picDir);//Shell "explorer " & pth, vbMaximizedFocus;	
-            //開啟資料夾：https://happyduck1020.pixnet.net/blog/post/34382453-c%23-%E9%96%8B%E5%95%9F%E8%B3%87%E6%96%99%E5%A4%BE	
-            System.Diagnostics.Process prc = new System.Diagnostics.Process();
-            prc.StartInfo.FileName = picDir;
-            prc.Start();
-            Application.DoEvents();
-            warnings.playBeep();
-        }
-        public static string searchRootDirChange(string dir)
-        {
-            if (Directory.Exists(dir) == false)
-            {
-                string newDir;
-                DriveInfo[] di = DriveInfo.GetDrives();//https://bit.ly/3mYEqw0	
-                foreach (DriveInfo item in di)
-                {
-                    newDir = dir.Replace(Path.GetPathRoot(dir), item.Name);
-                    if (Directory.Exists(newDir))
-                        return newDir;
-                }
-                return "";
-            }
-            return dir;
         }
     }
 }
