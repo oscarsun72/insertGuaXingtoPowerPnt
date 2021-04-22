@@ -21,6 +21,10 @@ Hanyi Senty Floral Calligraphy
 Hanyi Senty Lingfei Scroll
 漢儀新蒂語文體
 漢儀新蒂語文體430size
+漢儀新蒂舘閣體
+漢儀新蒂春聯體
+漢儀新蒂蘇孝慈碑
+HanyiSentyTang
 文鼎鋼筆行楷M
 DFPOYoJun-W5
 DFPPenJi-W4
@@ -50,10 +54,6 @@ DFGKanTeiRyu-W11
 文鼎古印體B
 漢儀新蒂佛塔書
 漢儀新蒂牌樓體
-漢儀新蒂舘閣體
-漢儀新蒂春聯體
-漢儀新蒂蘇孝慈碑
-HanyiSentyTang
 
 文鼎雕刻體B
 DFKinBun-W3
@@ -79,4 +79,6 @@ DFGyoSho-W7
 細明體-ExtB
 
 教育部隸書
+
+::以下為抓不到的
 
