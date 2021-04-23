@@ -26,10 +26,11 @@ HanyiSentyWen
 漢儀新蒂春聯體
 漢儀新蒂蘇孝慈碑
 HanyiSentyTang
+Hanyi Senty Vimalakirti
 文鼎鋼筆行楷M
 DFPOYoJun-W5
+DFOYoJun-W5
 DFPPenJi-W4
-
 
 FangSong
 Adobe仿宋StdR
@@ -57,6 +58,7 @@ DFGKanTeiRyu-W11
 漢儀新蒂牌樓體
 
 文鼎雕刻體B
+文鼎荊棘體M
 DFKinBun-W3
 DFPGiHi-W7
 
