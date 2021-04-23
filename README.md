@@ -11,3 +11,18 @@ insert Yi Jing Gua Xing to PowerPnt 在Powerpoint簡報中插入《易經》卦�
 
 以上期以增進字與字型的對應而減少特殊意義缺字的可能
 
+# 以下實作經驗記錄
+## 實作展示（[字型轉字圖開發過程結果演示](https://youtu.be/1FS9TZ0tWRk)）：
+餘記錄片詳本人頻道：[https://www.youtube.com/c/%E5%AD%AB%E5%AE%88%E7%9C%9F](https://www.youtube.com/c/%E5%AD%AB%E5%AE%88%E7%9C%9F)
+
+字型畢竟是要在本機電腦上安裝，才能正常顯示。若常在不同電腦間使用字型，又礙於可能對方電腦並不方便安裝字型，則不如將要展示的字型轉作字圖，來得方便、通用、跨平台，一了百了。
+　　末學自己正在嘗試用C# 寫這樣的應用程式，已建立不少字型的字圖檔庫與插入字圖至pptx或docx檔的功能。不妨參考。感恩感恩　南無阿彌陀佛
+ps. 實際測試，在Office內嵌字型，較以等量字圖插入Oiffe文件中，其檔案要冗肥十倍有餘。如內嵌字型後的ppt檔有30MB，同一個檔案以插入字圖的代換，則約只3MB。阿彌陀佛
+建置字型字圖專案計畫：[https://github.com/oscarsun72/PPTtoDoc_PowerPoint_xchg_Word](https://github.com/oscarsun72/PPTtoDoc_PowerPoint_xchg_Word)
+
+插入字圖專案機制：[https://github.com/oscarsun72/insertGuaXingtoPowerPnt](https://github.com/oscarsun72/insertGuaXingtoPowerPnt)
+
+[https://free.com.tw/adobe-fonts-arphic-types/#more-83672](https://free.com.tw/adobe-fonts-arphic-types/?fb_comment_id=4258204694213311_4259613094072471)
+
+[https://www.facebook.com/oscarsun72/posts/3689146467863127](https://www.facebook.com/oscarsun72/posts/3689146467863127)
+
