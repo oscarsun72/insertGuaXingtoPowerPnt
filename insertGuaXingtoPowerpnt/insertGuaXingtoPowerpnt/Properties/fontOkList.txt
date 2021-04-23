@@ -19,7 +19,6 @@ DFPGyoSho-W7
 文鼎行楷碑體B
 Hanyi Senty Floral Calligraphy
 Hanyi Senty Lingfei Scroll
-HanyiSentyWen
 漢儀新蒂語文體
 漢儀新蒂語文體430size
 漢儀新蒂舘閣體
@@ -27,6 +26,7 @@ HanyiSentyWen
 漢儀新蒂蘇孝慈碑
 HanyiSentyTang
 Hanyi Senty Vimalakirti
+HanyiSentyWen
 文鼎鋼筆行楷M
 DFPOYoJun-W5
 DFOYoJun-W5
