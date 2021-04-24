@@ -42,6 +42,9 @@ Adobe楷体StdR
 KaiTi
 文鼎標準楷體ProM
 
+華康歐陽詢體 Std W5
+華康歐陽詢體W5
+華康儷粗宋外字集
 文鼎顏楷H
 文鼎顏楷U
 文鼎毛楷B
