@@ -879,7 +879,7 @@ namespace insertGuaXingtoPowerpnt
         ListBox.ObjectCollection Listbox1Itme { get => listBox1.Items; }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
-        {
+        {//篩選字型
             string text = textBox2.Text;
             if (text == "")
             {
@@ -888,8 +888,11 @@ namespace insertGuaXingtoPowerpnt
             }
             List<string> ls = new List<string>();
             foreach (string item in listbox1itme)
-            {
-                if (item.IndexOf(text) > -1)
+            {/* c# indexof 不分大小寫
+              * http://ezbo.blogspot.com/2012/05/c-stringindexof.html
+                https://blog.csdn.net/amohan/article/details/12649533
+                */
+                if (item.IndexOf(text,StringComparison.CurrentCultureIgnoreCase) > -1)
                 {
                     ls.Add(item);
                 }
