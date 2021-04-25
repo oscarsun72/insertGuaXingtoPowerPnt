@@ -34,13 +34,13 @@ DFOYoJun-W5
 DFPPenJi-W4
 
 FangSong
-Adobe仿宋StdR
+Adobe 仿宋 Std R
 文鼎仿宋B
 文鼎仿宋L
 文鼎仿宋M
 
 教育部標準楷書
-Adobe楷体StdR
+Adobe 楷体 Std R
 KaiTi
 文鼎標準楷體ProM
 
