@@ -49,7 +49,9 @@ namespace insertGuaXingtoPowerpnt
                 "DFGKanTeiRyu-W11","文鼎古印體B",
                 "文鼎雕刻體B","DFKinBun-W3",
                 "DFGFuun-W7"};*/
+
             listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
+            listbox1itme = listBox1.Items;
             picE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
             listBox2.DataSource = lb2;
@@ -871,6 +873,33 @@ namespace insertGuaXingtoPowerpnt
 
         private void listBox1_MouseHover(object sender, EventArgs e)
         {
+        }
+
+        ListBox.ObjectCollection listbox1itme;
+        ListBox.ObjectCollection Listbox1Itme { get => listBox1.Items; }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            string text = textBox2.Text;
+            if (text == "")
+            {
+                listBox1.DataSource = listbox1itme;
+                return;
+            }
+            List<string> ls = new List<string>();
+            foreach (string item in listbox1itme)
+            {
+                if (item.IndexOf(text) > -1)
+                {
+                    ls.Add(item);
+                }
+            }
+            listBox1.DataSource = ls;
+        }
+
+        private void textBox2_Click(object sender, EventArgs e)
+        {
+            if (textBox2.Text != "")textBox2.Text = "";
         }
     }
 
