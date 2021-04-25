@@ -775,9 +775,9 @@ namespace insertGuaXingtoPowerpnt
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {//設定欄位picE的值
-            picE = (picEnum)listBox1.SelectedIndex;//https://docs.microsoft.com/zh-tw/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
+            //picE = (picEnum)listBox1.SelectedIndex;//https://docs.microsoft.com/zh-tw/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
             //https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
-            /* switch (listBox1.SelectedValue)
+             switch (listBox1.SelectedValue)
             {
                 case "64卦圖":
                     picE = picEnum.卦圖64;
@@ -787,11 +787,11 @@ namespace insertGuaXingtoPowerpnt
                     break;
                 case "小篆":
                     picE = picEnum.小篆;
-                    break;
-                    ……
+                    break;                    
                 default:
+                    picE = picEnum.Default;
                     break;
-            }*/
+            }
 
             showFontPreview();
             showToolTip();
@@ -847,7 +847,7 @@ namespace insertGuaXingtoPowerpnt
         //餘均由listBox1來控制判斷項即可）
         enum picEnum : byte
         {//the zero-based index as listbox 20210411
-            卦圖64, 行書, 小篆
+            卦圖64, 行書, 小篆,Default
         }
         /* , 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB, 文鼎隸書HKM, 文鼎隸書M,
     華康行書體, 文鼎行楷L, DFGGyoSho_W7, DFPGyoSho_W7,文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M, DFPOYoJun_W5,DFPPenJi_W4,
