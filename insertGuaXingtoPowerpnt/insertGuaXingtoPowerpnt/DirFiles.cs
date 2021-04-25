@@ -1,9 +1,8 @@
-﻿using System;
+﻿using insertGuaXingtoPowerpnt;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 using powerPnt = Microsoft.Office.Interop.PowerPoint;
 
 namespace CharacterConverttoCharacterPics
@@ -15,7 +14,7 @@ namespace CharacterConverttoCharacterPics
             get =>
                 new DirectoryInfo(
                 System.AppDomain.CurrentDomain.BaseDirectory)
-                .Parent.Parent.Parent.Parent.FullName+"\\";
+                .Parent.Parent.Parent.Parent.FullName + "\\";
         }
 
         internal static FileInfo getCjk_basic_IDS_UCS_Basic_txt()
@@ -57,7 +56,7 @@ namespace CharacterConverttoCharacterPics
             powerPnt.Application pptApp = App.AppPpt;
             foreach (powerPnt.Presentation ppt in pptApp.Presentations)
             {
-                if (ppt.Name== "字圖母片.pptm")
+                if (ppt.Name == "字圖母片.pptm")
                 {
                     return ppt;
                 }
@@ -65,13 +64,59 @@ namespace CharacterConverttoCharacterPics
             return pptApp.Presentations.Open(
                 getDirRoot + "字圖母片.pptm");
         }
-
         internal static void getPicFolder(string picFolderPath)
         {
-            if (Directory.Exists(picFolderPath)==false)
+            if (Directory.Exists(picFolderPath) == false)
             {
                 Directory.CreateDirectory(picFolderPath);
             }
         }
+
+        internal static string PicsRootFolder
+        { get => Path華語文工具及資料 + "Macros\\古文字\\"; }
+
+        internal static string Path華語文工具及資料
+        {
+            get
+            {
+                string dir;
+                DriveInfo[] dis = DriveInfo.GetDrives();
+                //List<string> dirs = new List<string> { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
+                foreach (DriveInfo di in dis)//(string item in dirs)
+                {
+                    //dir = item + ":\\@@@華語文工具及資料@@@" + subFolder;
+                    dir = di.Name + "@@@華語文工具及資料@@@\\";
+                    if (Directory.Exists(dir))
+                    {
+                        return dir;
+                    }
+                }
+                return "";
+            }
+        }
+
+        internal static string getPicDir(picEnum pE)
+        {
+            string subFolder;
+            switch (pE)
+            {
+                case picEnum.卦圖64:
+                    subFolder = "Macros\\64卦圖";
+                    break;
+                case picEnum.小篆:
+                    subFolder = "Macros\\古文字\\台大說文小篆字圖";
+                    break;
+                default://路徑特殊的就析出寫在上面20210410
+                    subFolder = "Macros\\古文字\\" +
+                       Application.OpenForms[0].Controls["listBox1"].Text;
+                    break;
+            }
+            return Path華語文工具及資料 + subFolder;
+        }
+        internal static string getFullNameNTUswxz(string dir, string x)
+        {//為免ADO存取資料庫失敗而增此
+            return FindFileThruLINQ.getfilefullnameIn古文字(x, dir);
+        }
+
     }
 }

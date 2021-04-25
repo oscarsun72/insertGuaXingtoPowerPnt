@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPnt = Microsoft.Office.Interop.PowerPoint;
@@ -91,7 +92,7 @@ namespace insertGuaXingtoPowerpnt
 
         void guaXing(officeEnum ofE)
         {
-            string dir = getDir(picEnum.卦圖64) + "\\";
+            string dir = DirFiles.getPicDir(picEnum.卦圖64) + "\\";
             if (dir != "")
             {
                 switch (ofE)
@@ -197,7 +198,7 @@ namespace insertGuaXingtoPowerpnt
 
         void GuWenZi(picEnum pE, officeEnum ofE)
         {
-            string dir = getDir(pE) + "\\";
+            string dir = DirFiles.getPicDir(pE) + "\\";
             if (dir != "")
             {
                 switch (ofE)
@@ -434,7 +435,7 @@ namespace insertGuaXingtoPowerpnt
                     f = dir + itemText + ".jpg";
                     break;
                 case picEnum.小篆:
-                    f = getFullNameNTUswxz(dir, itemText);
+                    f = DirFiles.getFullNameNTUswxz(dir, itemText);
                     break;
                 default:
                     break;
@@ -465,37 +466,7 @@ namespace insertGuaXingtoPowerpnt
             return office;
         }
 
-        string getDir(picEnum pE)
-        {
-            string subFolder;
-            switch (pE)
-            {
-                case picEnum.卦圖64:
-                    subFolder = "\\Macros\\64卦圖";
-                    break;
-                case picEnum.小篆:
-                    subFolder = "\\Macros\\古文字\\台大說文小篆字圖";
-                    break;
-                default://路徑特殊的就析出寫在上面20210410
-                    subFolder = "\\Macros\\古文字\\" + listBox1.Text;
-                    break;
-            }
-            string dir;
-            List<string> dirs = new List<string> { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
-            foreach (string item in dirs)
-            {
-                dir = item + ":\\@@@華語文工具及資料@@@" + subFolder;
-                if (System.IO.Directory.Exists(dir))
-                {
-                    return dir;
-                }
-            }
-            return "";
-        }
-        string getFullNameNTUswxz(string dir, string x)
-        {//為免ADO存取資料庫失敗而增此
-            return FindFileThruLINQ.getfilefullnameIn古文字(x, dir);
-        }
+
         #region ADODB
         /*ADODB參考：操作方法使用 ADO 和 Jet OLE DB 提供者尋找記錄: https://docs.microsoft.com/zh-tw/office/troubleshoot/access/find-record-by-ado-and-jet-ole-db-provider
          *與各種資料庫的連線字串:http://web12.ravs.ntct.edu.tw/know/show.asp?QUESTIONID=47 
@@ -775,9 +746,9 @@ namespace insertGuaXingtoPowerpnt
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {//設定欄位picE的值
-            //picE = (picEnum)listBox1.SelectedIndex;//https://docs.microsoft.com/zh-tw/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
-            //https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
-             switch (listBox1.SelectedValue)
+         //picE = (picEnum)listBox1.SelectedIndex;//https://docs.microsoft.com/zh-tw/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
+         //https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.listbox.selectedindex?view=net-5.0
+            switch (listBox1.SelectedValue)
             {
                 case "64卦圖":
                     picE = picEnum.卦圖64;
@@ -787,7 +758,7 @@ namespace insertGuaXingtoPowerpnt
                     break;
                 case "小篆":
                     picE = picEnum.小篆;
-                    break;                    
+                    break;
                 default:
                     picE = picEnum.Default;
                     break;
@@ -822,13 +793,13 @@ namespace insertGuaXingtoPowerpnt
         private void showFontPreview()
         {
             string ext = "png";
-            string dir = getDir(picE);
+            string dir = DirFiles.getPicDir(picE);
             string picsFullname;
             if (picE == picEnum.行書)
                 ext = "jpg";
             picsFullname = dir + "\\真." + ext;
             if (picE == picEnum.小篆)
-                picsFullname = getFullNameNTUswxz(dir, "真");
+                picsFullname = DirFiles.getFullNameNTUswxz(dir, "真");
 
             if (System.IO.File.Exists(picsFullname))
             {
@@ -841,34 +812,26 @@ namespace insertGuaXingtoPowerpnt
             //throw new NotImplementedException();
         }
 
-        #region 圖片
-        //特殊的才需要，其他的不需要了。（只要路徑有規則、圖片皆為png，就不必列出了
-        //此只是作為判斷時參考爾。卦圖、小篆是路徑；行書是 jpg，故須列出作判斷
-        //餘均由listBox1來控制判斷項即可）
-        enum picEnum : byte
-        {//the zero-based index as listbox 20210411
-            卦圖64, 行書, 小篆,Default
-        }
-        /* , 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB, 文鼎隸書HKM, 文鼎隸書M,
-    華康行書體, 文鼎行楷L, DFGGyoSho_W7, DFPGyoSho_W7,文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M, DFPOYoJun_W5,DFPPenJi_W4,
 
-    FangSong, Adobe_仿宋_Std_R, 文鼎仿宋B, 文鼎仿宋L,
-
-    教育部標準楷書, Adobe_楷体_StdR, KaiTi, 文鼎標準楷體ProM,
-    文鼎顏楷H, 文鼎顏楷U, 文鼎毛楷B, 文鼎毛楷EB, 文鼎毛楷H,
-    DFMinchoP_W5,
-    DFGothicP_W5,
-    DFGKanTeiRyu_W11, 文鼎古印體B,
-    文鼎雕刻體B, DFKinBun_W3,
-    DFGFuun_W7
-} */
-        #endregion
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             Process prc = new Process();
-            prc.StartInfo.FileName = getDir(picE);//開啟古文字內的各字型字圖存放的資料夾20210419
-            prc.Start();
+            prc.StartInfo.FileName = DirFiles.getPicDir(picE);//開啟古文字內的各字型字圖存放的資料夾20210419
+            if (Directory.Exists(prc.StartInfo.FileName))
+            {
+                prc.Start();
+            }
+            else
+            {
+                MessageBox.Show("資料夾不存在，請檢查！", "",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                prc.StartInfo.FileName = DirFiles.PicsRootFolder;
+                if (Directory.Exists(prc.StartInfo.FileName))
+                {
+                    prc.Start();
+                }
+            }
         }
 
         private void listBox1_MouseHover(object sender, EventArgs e)
@@ -892,7 +855,7 @@ namespace insertGuaXingtoPowerpnt
               * http://ezbo.blogspot.com/2012/05/c-stringindexof.html
                 https://blog.csdn.net/amohan/article/details/12649533
                 */
-                if (item.IndexOf(text,StringComparison.CurrentCultureIgnoreCase) > -1)
+                if (item.IndexOf(text, StringComparison.CurrentCultureIgnoreCase) > -1)
                 {
                     ls.Add(item);
                 }
@@ -902,7 +865,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void textBox2_Click(object sender, EventArgs e)
         {
-            if (textBox2.Text != "")textBox2.Text = "";
+            if (textBox2.Text != "") textBox2.Text = "";
         }
     }
 
