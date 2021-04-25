@@ -70,7 +70,7 @@ DFPGiHi-W7
 文鼎石頭體EB
 文鼎ＰＯＰ-２B
 
-
+@Yu Gothic UI Semibold
 
 DFGFuun-W7
 DFFuun-W7
