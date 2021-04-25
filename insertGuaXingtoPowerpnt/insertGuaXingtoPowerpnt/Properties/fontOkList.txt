@@ -17,6 +17,7 @@ DFPGyoSho-W7
 
 文鼎魏碑B
 文鼎行楷碑體B
+漢儀新蒂永樂大典
 Hanyi Senty Floral Calligraphy
 Hanyi Senty Lingfei Scroll
 漢儀新蒂語文體
@@ -93,3 +94,4 @@ DFGyoSho-W7
 Hanyi Senty Triumph Calligraph
 
 
+::以下判斷後由程式加入
