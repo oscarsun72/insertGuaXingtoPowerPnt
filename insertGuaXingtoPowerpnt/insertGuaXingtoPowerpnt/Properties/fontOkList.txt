@@ -18,6 +18,7 @@ DFPGyoSho-W7
 文鼎魏碑B
 文鼎行楷碑體B
 DFGGiHi-W7
+DFGiHi-W7
 漢儀新蒂永樂大典
 Hanyi Senty Floral Calligraphy
 Hanyi Senty Lingfei Scroll
