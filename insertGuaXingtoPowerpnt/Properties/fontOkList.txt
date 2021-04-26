@@ -69,6 +69,7 @@ DFGKanTeiRyu-W11
 文鼎雕刻體B
 文鼎荊棘體M
 DFKinBun-W3
+DFGKinBun-W3
 DFPGiHi-W7
 華康相撲體
 文鼎水管體B
