@@ -34,6 +34,9 @@ namespace CharacterConverttoCharacterPics
 
         internal static FileInfo getFontOkList_txt()
         {
+            //先求方便了，否則一下要兼顧太多檔案20210426
+            return new FileInfo(@"G:\我的雲端硬碟\programming程式設計開發\fontOkList.txt");
+            /*
             DirectoryInfo dirRoot = new DirectoryInfo(getDirRoot);
             IEnumerable<FileInfo> fileList = dirRoot.GetFiles
                 ("*.txt", SearchOption.AllDirectories);
@@ -45,6 +48,7 @@ namespace CharacterConverttoCharacterPics
                 return fileQuery.First();
             else
                 return null;
+            */
         }
         internal static string getDir各字型檔相關()
         {
