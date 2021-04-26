@@ -17,6 +17,9 @@ namespace insertGuaXingtoPowerpnt
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            //測試根目錄：
+            //Console.WriteLine(
+            //CharacterConverttoCharacterPics.DirFiles.getDirRoot);
         }
     }
 }

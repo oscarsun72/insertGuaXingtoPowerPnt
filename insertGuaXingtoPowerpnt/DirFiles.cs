@@ -14,7 +14,7 @@ namespace CharacterConverttoCharacterPics
             get =>
                 new DirectoryInfo(
                 System.AppDomain.CurrentDomain.BaseDirectory)
-                .Parent.Parent.Parent.Parent.FullName + "\\";
+                .Parent.Parent.Parent.FullName + "\\";
         }
 
         internal static FileInfo getCjk_basic_IDS_UCS_Basic_txt()
