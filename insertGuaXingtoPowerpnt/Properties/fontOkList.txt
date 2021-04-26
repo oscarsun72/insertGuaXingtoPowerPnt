@@ -102,6 +102,7 @@ DFGyoSho-W7
 
 ::以下為抓不到的
 Hanyi Senty Triumph Calligraph
-
+::Word可以，PowerPoint抓不到
+Hanyi Senty Candy
 
 ::以下判斷後由程式加入
