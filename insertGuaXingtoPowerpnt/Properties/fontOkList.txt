@@ -59,6 +59,7 @@ KaiTi
 文鼎毛楷H
 
 DFMinchoP-W5
+DFGMinchoP-W5
 
 DFGothicP-W5
 
