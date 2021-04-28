@@ -35,20 +35,22 @@ namespace CharacterConverttoCharacterPics
         internal static FileInfo getFontOkList_txt()
         {
             //先求方便了，否則一下要兼顧太多檔案20210426
-            //return new FileInfo(@"G:\我的雲端硬碟\programming程式設計開發\fontOkList.txt");
-            //*
-            DirectoryInfo dirRoot = new DirectoryInfo(getDirRoot);
-            IEnumerable<FileInfo> fileList = dirRoot.GetFiles
-                ("*.txt", SearchOption.AllDirectories);
-            IEnumerable<FileInfo> fileQuery =
-                from file in fileList
-                where file.Name.IndexOf("fontOkList.txt") > -1
-                select file;
-            if (fileQuery.Count() > 0)
-                return fileQuery.First();
+            if (File.Exists(@"G:\我的雲端硬碟\programming程式設計開發\fontOkList.txt"))
+                return new FileInfo(@"G:\我的雲端硬碟\programming程式設計開發\fontOkList.txt");
             else
-                return null;
-            //*/
+            {
+                DirectoryInfo dirRoot = new DirectoryInfo(getDirRoot);
+                IEnumerable<FileInfo> fileList = dirRoot.GetFiles
+                    ("*.txt", SearchOption.AllDirectories);
+                IEnumerable<FileInfo> fileQuery =
+                    from file in fileList
+                    where file.Name.IndexOf("fontOkList.txt") > -1
+                    select file;
+                if (fileQuery.Count() > 0)
+                    return fileQuery.First();
+                else
+                    return null;
+            }
         }
         internal static string getDir各字型檔相關()
         {

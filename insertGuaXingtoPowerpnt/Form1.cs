@@ -1,4 +1,5 @@
 ﻿using CharacterConverttoCharacterPics;
+using Microsoft.Office.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -627,15 +628,39 @@ namespace insertGuaXingtoPowerpnt
 
         void resetClearAllPicsandFontTranspSel(officeEnum ofE)
         {
-            switch (ofE)
+            switch (ofE)//自判別是哪個Office應用程式要操作
             {
                 case officeEnum.PowerPoint:
                     pptApp = (PowerPnt.Application)getOffice(ofE);
                     pptApp.Activate();
                     sld = pptApp.ActiveWindow.View.Slide;
                     PowerPnt.Shape sp;
+                    List<PowerPnt.Shape> spFrame = new List<PowerPnt.Shape>();//記下包括要取消/清除掉的字圖所在文字方塊
                     pptApp.Activate();
-                    for (int i = 1; i <= sld.Shapes.Count; i++)
+                    sel = pptApp.ActiveWindow.Selection;
+                    //PowerPnt.ShapeRange spRng;
+                    if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText ||
+                        sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes)
+                    {//如果有選取範圍則僅處理選取的範圍文字框內的字圖
+                        ShapsOps<PowerPnt.ShapeRange> spRngPtt =
+                             new ShapsOps<PowerPnt.ShapeRange>(sel.ShapeRange,
+                             "PowerPnt.ShapeRange");
+                        foreach (PowerPnt.Shape item in sel.SlideRange.Shapes)
+                        {
+                            if (item.HasTextFrame == MsoTriState.msoTrue)
+                            {//因為是插入字圖，故要文字方塊才處理
+
+                                if (spRngPtt.isShapeContainsMeShapeRng(item))
+                                {
+                                    spFrame.Add(item);
+                                    //break; 不能break 有可能是跨文字方塊複選的
+                                }
+                            }
+                        }
+                    }//否則就清除在投影片內的全部字圖
+
+                    //for (int i = 1; i <=  sld.Shapes.Count; i++)
+                    for (int i = 1; i <= sld.Shapes.Range().Count; i++)
                     {
                         sp = sld.Shapes[i];
                         if (sp.Type == Microsoft.Office.Core.MsoShapeType.msoPicture &&
@@ -643,13 +668,29 @@ namespace insertGuaXingtoPowerpnt
                             sp.ActionSettings[PowerPnt.PpMouseActivation.ppMouseClick]
                                 .Hyperlink.Address == null)
                         {
-                            sp.Delete();
-                            i--;
+                            if (spFrame.Count > 0)
+                            {
+                                foreach (PowerPnt.Shape item in spFrame)
+                                {
+                                    if (new ShapsOps<PowerPnt.Shape>(sp,
+                                        "PowerPnt.Shape").
+                                        isShapeContainsMeShape(item))
+                                    {
+                                        sp.Delete();
+                                        i--; break;//sp被刪除後便不能再比對了
+                                    }
+                                }
+                            }
+                            else
+                            {//沒有包含的文字框就清除投影片內的全部字圖（非字圖，應設定「AlternativeText」屬性以供識別。如前判斷式所陳列）
+                                sp.Delete();
+                                i--;
+                            }
                         }
                     }
-                    sel = pptApp.ActiveWindow.Selection;
+
                     switch (sel.Type)
-                    {
+                    {//復原原來字型文字狀態
                         case PowerPnt.PpSelectionType.ppSelectionText:
                             if (sel.TextRange2.Characters.Count == 0)
                                 sel.ShapeRange.TextFrame.TextRange.Select();
@@ -667,29 +708,49 @@ namespace insertGuaXingtoPowerpnt
                                 //sel.TextRange2.Font.Fill.Transparency = 0;
                             }
                             break;
-                        case PowerPnt.PpSelectionType.ppSelectionNone:
-                            int shpCnt = sld.Shapes.Count;
-                            if (shpCnt > 0)
+                        default:
+                            if (sel.Type==PowerPnt.PpSelectionType.ppSelectionNone ||
+                                sel.Type==PowerPnt.PpSelectionType.ppSelectionSlides)
                             {
-                                for (int i = 1; i <= shpCnt; i++)
+
+
+                                int shpCnt = sld.Shapes.Count;
+                                if (shpCnt > 0)
                                 {
-                                    //if (sld.Shapes[i].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)//不是TextBox，卻有TextFrame(msoPlaceholder即有TextFrame)
-                                    if (sld.Shapes[i].HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                                    for (int i = 1; i <= shpCnt; i++)
                                     {
-                                        if (sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency != 0)
+                                        //if (sld.Shapes[i].Type == Microsoft.Office.Core.MsoShapeType.msoTextBox)//不是TextBox，卻有TextFrame(msoPlaceholder即有TextFrame)
+                                        if (sld.Shapes[i].HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
                                         {
-                                            sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency = 0;
-                                            sld.Shapes[i].Select();
-                                            //這裡不要 break; 讓所有文字變透明的都恢復不透明就好20210410
+                                            if (sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency != 0)
+                                            {
+                                                if (spFrame.Count > 0)
+                                                {
+                                                    foreach (PowerPnt.Shape item in spFrame)
+                                                    {
+                                                        if (item.Id == sld.Shapes[i].Id)
+                                                        {
+                                                            sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                                            sld.Shapes[i].Select();
+                                                            break;//20210429改良，回復就而不必再比對，繼續找投影片中其他的shape，看有沒有其他文字方塊涵蓋了執行前選取的字圖
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //這裡不要 break; 讓所有文字變透明的都恢復不透明就好20210410
+                                                    sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                                    sld.Shapes[i].Select();
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                             break;
-                        default:
-                            break;
                     }
                     break;
+                //如果是對象是MS Word（winword）
                 case officeEnum.Word:
                     docApp = (WinWord.Application)getOffice(ofE);
                     selDoc = docApp.ActiveWindow.Selection;
