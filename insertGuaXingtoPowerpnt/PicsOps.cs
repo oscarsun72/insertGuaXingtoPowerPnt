@@ -15,7 +15,7 @@ namespace insertGuaXingtoPowerpnt
     //餘均由listBox1來控制判斷項即可）
     enum picEnum : byte
     {//the zero-based index as listbox 20210411
-        卦圖64, 行書, 小篆, Default
+        卦圖64, 卦形8,行書, 小篆, Default
     }
     /* , 甲骨文, 金文, 隸書, 文鼎隸書B, 文鼎隸書DB, 文鼎隸書HKM, 文鼎隸書M,
 華康行書體, 文鼎行楷L, DFGGyoSho_W7, DFPGyoSho_W7,文鼎魏碑B, 文鼎行楷碑體B, 文鼎鋼筆行楷M, DFPOYoJun_W5,DFPPenJi_W4,

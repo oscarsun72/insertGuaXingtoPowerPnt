@@ -1,4 +1,5 @@
 64卦圖
+8卦圖
 行書
 
 小篆
@@ -14,15 +15,19 @@
 文鼎行楷L
 DFGGyoSho-W7
 DFPGyoSho-W7
+DFGPenJi-W4
 
 文鼎魏碑B
 文鼎行楷碑體B
+DFPWeiBei Std W7
+DFPWeiBeiW7-GB
 DFGOYoJun-W5
 DFGGiHi-W7
 DFGiHi-W7
+DFPShouJinW3-GB
 漢儀新蒂永樂大典
-漢儀新蒂張即之體
 HanyiSentyZhao
+漢儀新蒂張即之體
 Hanyi Senty Floral Calligraphy
 Hanyi Senty Lingfei Scroll
 漢儀新蒂語文體
@@ -33,11 +38,17 @@ Hanyi Senty Lingfei Scroll
 HanyiSentyTang
 Hanyi Senty Vimalakirti
 HanyiSentyWen
+Hanyi Senty Journal
+Hanyi Senty Lotus
+Hanyi Senty Meadow
+Hanyi Senty Silk Road
+HanyiSentyMarshmallow
+Oz焦糖体
 文鼎鋼筆行楷M
 DFPOYoJun-W5
 DFOYoJun-W5
 DFPPenJi-W4
-
+DFPenJi-W4
 
 FangSong
 Adobe 仿宋 Std R
@@ -49,6 +60,7 @@ Adobe 仿宋 Std R
 Adobe 楷体 Std R
 KaiTi
 文鼎標準楷體ProM
+DFKaiW5-A
 
 華康歐陽詢體 Std W5
 華康歐陽詢體W5
@@ -59,31 +71,45 @@ KaiTi
 文鼎毛楷EB
 文鼎毛楷H
 
+DFSongW3-A
 DFMinchoP-W5
 DFGMinchoP-W5
 
 DFGothicP-W5
+DFKanTingLiuW9-GB
+HeiT
 
 DFGKanTeiRyu-W11
 文鼎古印體B
 漢儀新蒂佛塔書
 漢儀新蒂牌樓體
 文鼎雕刻體B
-文鼎荊棘體M
 DFKinBun-W3
 DFGKinBun-W3
+DFPKinBun-W3
 DFPGiHi-W7
 華康相撲體
 文鼎水管體B
 文鼎石頭體EB
 文鼎ＰＯＰ-２B
 Hanyi Senty Chalk Original
+Hanyi Senty Diary
 
 @Yu Gothic UI Semibold
 
 DFGFuun-W7
 DFFuun-W7
+DFGPOPCorn-W12
+DFGPOPMix-W5
+DFHaiBaoW12-GB
 
+
+
+::以下為抓不到的
+Hanyi Senty Triumph Calligraph
+::Word可以，PowerPoint抓不到
+Hanyi Senty Candy
+Hanyi Senty Triumph Calligraphy
 
 ::華康行書體(P)以下為沒必要做的
 華康行書體(P)
@@ -104,9 +130,364 @@ DFGyoSho-W7
 
 教育部隸書
 
-::以下為抓不到的
-Hanyi Senty Triumph Calligraph
-::Word可以，PowerPoint抓不到
-Hanyi Senty Candy
+
 
 ::以下判斷後由程式加入
+HanaMinA
+HanaMinB
+Malgun Gothic
+Malgun Gothic Semilight
+Microsoft JhengHei UI
+Microsoft JhengHei UI Light
+Microsoft YaHei
+Microsoft YaHei Light
+Microsoft YaHei UI
+Microsoft YaHei UI Light
+MS Gothic
+MS PGothic
+MS UI Gothic
+NSimSun
+sim-ch_n5100
+SimSun
+SimSun-ExtB
+TH-Tshyn-P0
+TH-Tshyn-P1
+TH-Tshyn-P16
+TH-Tshyn-P2
+Yu Gothic
+Yu Gothic Light
+Yu Gothic Medium
+Yu Gothic UI
+Yu Gothic UI Light
+Yu Gothic UI Semibold
+Yu Gothic UI Semilight
+微軟正黑體 Light
+新細明體-ExtB
+Adobe Gothic Std B
+Adobe Myungjo Std M
+Adobe 宋体 Std L
+Adobe 明體 Std L
+Adobe 黑体 Std R
+Adobe 繁黑體 Std B
+Arial Unicode MS
+Batang
+BatangChe
+CSongGB18030C-Light
+CSongGB18030C-LightHWL
+DFFangSongW3-A
+教育部標準宋體UN
+Adobe Devanagari
+Agency FB
+Algerian
+Arial
+Arial Black
+Arial Narrow
+Arial Rounded MT Bold
+Baskerville Old Face
+Bauhaus 93
+Bell MT
+Berlin Sans FB
+Berlin Sans FB Demi
+Bernard MT Condensed
+Blackadder ITC
+Bodoni MT
+Bodoni MT Black
+Bodoni MT Condensed
+Bodoni MT Poster Compressed
+Book Antiqua
+Bookman Old Style
+Bookshelf Symbol 7
+Bradley Hand ITC
+Britannic Bold
+Broadway
+Brush Script MT
+Calibri
+Calibri Light
+Californian FB
+Calisto MT
+Cambria
+Cambria Math
+Candara
+Castellar
+Centaur
+Century
+Century Gothic
+Century Schoolbook
+Chiller
+Colonna MT
+Comic Sans MS
+Consolas
+Constantia
+Cooper Black
+Copperplate Gothic Bold
+Copperplate Gothic Light
+Corbel
+Courier New
+Curlz MT
+Ebrima
+Edwardian Script ITC
+Elephant
+Engravers MT
+Eras Bold ITC
+Eras Demi ITC
+Eras Light ITC
+Eras Medium ITC
+Felix Titling
+Footlight MT Light
+Forte
+Franklin Gothic Book
+Franklin Gothic Demi
+Franklin Gothic Demi Cond
+Franklin Gothic Heavy
+Franklin Gothic Medium
+Franklin Gothic Medium Cond
+Freestyle Script
+French Script MT
+Gabriola
+Gadugi
+Garamond
+Georgia
+Gigi
+Gill Sans MT
+Gill Sans MT Condensed
+Gill Sans MT Ext Condensed Bold
+Gill Sans Ultra Bold
+Gill Sans Ultra Bold Condensed
+Gloucester MT Extra Condensed
+Goudy Old Style
+Goudy Stout
+Haettenschweiler
+Harlow Solid Italic
+Harrington
+High Tower Text
+Impact
+Imprint MT Shadow
+Informal Roman
+Javanese Text
+JetBrains Mono
+Jokerman
+Juice ITC
+Kristen ITC
+Kunstler Script
+Leelawadee
+Leelawadee UI
+Leelawadee UI Semilight
+Lucida Bright
+Lucida Calligraphy
+Lucida Console
+Lucida Fax
+Lucida Handwriting
+Lucida Sans
+Lucida Sans Typewriter
+Lucida Sans Unicode
+Magneto
+Maiandra GD
+Marlett
+Matura MT Script Capitals
+Microsoft Himalaya
+Microsoft New Tai Lue
+Microsoft PhagsPa
+Microsoft Sans Serif
+Microsoft Tai Le
+Microsoft Uighur
+Microsoft Yi Baiti
+Mistral
+Modern No. 20
+Mongolian Baiti
+Monotype Corsiva
+MS Outlook
+MS Reference Sans Serif
+MS Reference Specialty
+MT Extra
+MV Boli
+Myanmar Text
+Niagara Engraved
+Niagara Solid
+Nirmala UI
+Nirmala UI Semilight
+OCR A Extended
+Old English Text MT
+Onyx
+Palace Script MT
+Palatino Linotype
+Papyrus
+Parchment
+Perpetua
+Perpetua Titling MT
+Playbill
+Poor Richard
+Pristina
+Rage Italic
+Ravie
+Rockwell
+Rockwell Condensed
+Rockwell Extra Bold
+Script MT Bold
+Segoe MDL2 Assets
+Segoe Print
+Segoe Script
+Segoe UI
+Segoe UI Black
+Segoe UI Emoji
+Segoe UI Historic
+Segoe UI Light
+Segoe UI Semibold
+Segoe UI Semilight
+Segoe UI Symbol
+Showcard Gothic
+Sitka Banner
+Sitka Display
+Sitka Heading
+Sitka Small
+Sitka Subheading
+Sitka Text
+Snap ITC
+Stencil
+Sylfaen
+Symbol
+Tahoma
+Tempus Sans ITC
+Times New Roman
+Trebuchet MS
+Tw Cen MT
+Tw Cen MT Condensed
+Tw Cen MT Condensed Extra Bold
+Verdana
+Viner Hand ITC
+Vivaldi
+Vladimir Script
+Webdings
+Wide Latin
+Wingdings
+Wingdings 2
+Wingdings 3
+ZWAdobeF
+@Malgun Gothic
+@Malgun Gothic Semilight
+@Microsoft JhengHei UI
+@Microsoft JhengHei UI Light
+@Microsoft YaHei
+@Microsoft YaHei Light
+@Microsoft YaHei UI
+@Microsoft YaHei UI Light
+@MS Gothic
+@MS PGothic
+@MS UI Gothic
+@NSimSun
+@SimSun
+@SimSun-ExtB
+@Yu Gothic
+@Yu Gothic Light
+@Yu Gothic Medium
+@Yu Gothic UI
+@Yu Gothic UI Light
+@Yu Gothic UI Semilight
+@文鼎毛楷B
+@文鼎毛楷EB
+@文鼎毛楷H
+@文鼎古印體B
+@文鼎仿宋B
+@文鼎仿宋L
+@文鼎仿宋M
+@文鼎行楷碑體B
+@文鼎標準楷體ProM
+@文鼎鋼筆行楷M
+@文鼎雕刻體B
+@文鼎隸書B
+@文鼎隸書DB
+@文鼎隸書M
+@文鼎顏楷H
+@文鼎顏楷U
+@文鼎魏碑B
+@教育部標準宋體UN
+@教育部標準楷書
+@教育部隸書
+@細明體
+@細明體_HKSCS
+@細明體_HKSCS-ExtB
+@細明體-ExtB
+@華康行書體
+@華康行書體(P)
+@微軟正黑體
+@微軟正黑體 Light
+@新細明體
+@新細明體-ExtB
+@漢儀新蒂永樂大典
+@標楷體
+DengXian
+DengXian Light
+DFGGothicP-W5
+DFGMaruGothic-Md
+DFHeiW3-GB
+DFHeiW5-A
+DFHeiW5-GB
+DFKaiW5-GB
+DFKanTeiRyu-W11
+DFKGothic-Bd
+DFKGothic-Md
+DFKMincho-Bd
+DFKMincho-Md
+DFMaruGothic-Md
+DFPGothicP-W5
+DFPHaiBao Std W12
+DFPHaiBaoW12-GB
+DFPHei Std W5
+DFPHeiW3-GB
+DFPHeiW5-GB
+DFPHei-W5J-Pinyin1LDA
+DFPHei-W5J-Pinyin1LUA
+DFPHei-W5J-Pinyin1UDA
+DFPHei-W5J-Pinyin1UUA
+DFPHei-W5J-Pinyin2LDA
+DFPHei-W5J-Pinyin2LUA
+DFPHei-W5J-Pinyin2UDA
+DFPHei-W5J-Pinyin2UUA
+DFPHei-W5J-Pinyin3LDA
+DFPHei-W5J-Pinyin3LUA
+DFPHei-W5J-Pinyin3UDA
+DFPHei-W5J-Pinyin3UUA
+DFPHei-W5J-Pinyin4LDA
+DFPHei-W5J-Pinyin4LUA
+DFPHei-W5J-Pinyin4UDA
+DFPHei-W5J-Pinyin4UUA
+DFPHei-W5J-Pinyin5LDA
+DFPHei-W5J-Pinyin5LUA
+DFPHei-W5J-Pinyin5UDA
+DFPHei-W5J-Pinyin5UUA
+DFPHei-W5J-Pinyin6LDA
+DFPHei-W5J-Pinyin6LUA
+DFPHei-W5J-Pinyin6UDA
+DFPHei-W5J-Pinyin6UUA
+DFPKaiW5-GB
+DFPKanTeiRyu-W11
+DFPKanTingLiuW9-GB
+DFPKinBun-W3
+DFPMaruGothic-Md
+DFPMinchoP-W5
+DFPOPCorn-W12
+DFPOPMix-W5
+DFPPOPCorn-W12
+DFPPOPMix-W5
+DFPShaoNvW5-GB
+DFPSong Std W5
+DFPSongW3-GB
+DFPSongW5-GB
+DFPWeiBei Std W7
+DFPYaSong Std W9
+DFPYuan Std W5
+DFPYuanW3-GB
+DFPYuanW5-GB
+DFShaoNvW5-GB
+DFShouJinW3-GB
+DFSongW3-GB
+DFSongW5-GB
+DFWeiBeiW7-GB
+DFYuanW3-GB
+DFYuanW5-GB
+Dotum
+DotumChe
+Gulim
+GulimChe
+Gungsuh
+GungsuhChe
+

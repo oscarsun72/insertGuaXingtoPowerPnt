@@ -51,7 +51,7 @@ namespace insertGuaXingtoPowerpnt
                 "文鼎雕刻體B","DFKinBun-W3",
                 "DFGFuun-W7"};*/
 
-            listBox1.DataSource = lb; listBox1.SetSelected(1, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
+            listBox1.DataSource = lb; listBox1.SetSelected(2, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
             listbox1itme = listBox1.Items;
             picE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
@@ -78,6 +78,9 @@ namespace insertGuaXingtoPowerpnt
                 case picEnum.卦圖64:// "64卦圖":
                     guaXing(officE);
                     break;
+                case picEnum.卦形8:// "64卦圖":
+                    guaXing(officE);
+                    break;
                 default:
                     GuWenZi(picE, officE);
                     break;
@@ -92,7 +95,18 @@ namespace insertGuaXingtoPowerpnt
 
         void guaXing(officeEnum ofE)
         {
-            string dir = DirFiles.getPicDir(picEnum.卦圖64) + "\\";
+            string dir = "";
+            switch (picE)
+            {
+                case picEnum.卦圖64:
+                    dir = DirFiles.getPicDir(picEnum.卦圖64) + "\\";
+                    break;
+                case picEnum.卦形8:
+                    dir = DirFiles.getPicDir(picEnum.卦形8) + "\\";
+                    break;
+                default:
+                    break;
+            }
             if (dir != "")
             {
                 switch (ofE)
@@ -101,16 +115,40 @@ namespace insertGuaXingtoPowerpnt
                         pptApp = (PowerPnt.Application)getOffice(ofE);
                         ppt = pptApp.ActivePresentation;
                         sel = pptApp.ActiveWindow.Selection;
-                        selDocType = selDoc.Type;
                         ppt.Application.Activate();
                         sld = ppt.Application.ActiveWindow.View.Slide;
+                        if (picE == picEnum.卦形8)
+                        {
+                            switch (sel.TextRange.Font.NameFarEast)
+                            {
+                                case "標楷體":
+                                    dir += "楷體用\\";
+                                    break;
+                                default:
+                                    dir += "細明體用\\";
+                                    break;
+                            }
+                        }
                         runPPTGuaXing(dir);
                         break;
                     case officeEnum.Word:
                         docApp = (WinWord.Application)getOffice(ofE);
                         doc = docApp.ActiveDocument;
                         selDoc = doc.ActiveWindow.Selection;
+                        selDocType = selDoc.Type;
                         rng = selDoc.Range;
+                        if (picE == picEnum.卦形8)
+                        {
+                            switch (selDoc.Font.NameFarEast)
+                            {
+                                case "標楷體":
+                                    dir += "楷體用\\";
+                                    break;
+                                default:
+                                    dir += "細明體用\\";
+                                    break;
+                            }
+                        }
                         runDOCGuaXing(dir);
                         break;
                     case officeEnum.Excel:
@@ -161,6 +199,12 @@ namespace insertGuaXingtoPowerpnt
             string f = dir + selDoc.Text + ".png";
             if (!System.IO.File.Exists(f) && rng.Characters.Count == 1)
             {
+                if (rng.Characters[1].Next() == null)
+                {
+                    MessageBox.Show("請將插入點放在要插入卦形圖的卦名前位置！", "", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
                 rng.SetRange(rng.Start, rng.Characters[1].Next().End);
                 f = dir + rng.Text + ".png";
             }
@@ -429,8 +473,8 @@ namespace insertGuaXingtoPowerpnt
             string f = dir + itemText + ".png";
             switch (pE)
             {
-                case picEnum.卦圖64:
-                    break;
+                //case picEnum.卦圖64:
+                //    break;
                 case picEnum.行書:
                     f = dir + itemText + ".jpg";
                     break;
@@ -752,6 +796,9 @@ namespace insertGuaXingtoPowerpnt
             {
                 case "64卦圖":
                     picE = picEnum.卦圖64;
+                    break;
+                case "8卦圖":
+                    picE = picEnum.卦形8;
                     break;
                 case "行書":
                     picE = picEnum.行書;
