@@ -72,6 +72,7 @@ namespace insertGuaXingtoPowerpnt
         }
         private void go()
         {
+            if (getOffice(officE) == null) return;
             //為免誤按，故使控制項失效
             listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false; button2.Enabled = false;
             switch (PicE)
@@ -265,7 +266,9 @@ namespace insertGuaXingtoPowerpnt
                         break;
                     case officeEnum.Word:
                         docApp = (WinWord.Application)getOffice(ofE);
-                        doc = docApp.ActiveDocument;
+                        if (docApp.Documents.Count == 0)
+                        { doc = docApp.Documents.Add(); doc.ActiveWindow.Visible = true; }
+                        else doc = docApp.ActiveDocument;
                         selDoc = doc.ActiveWindow.Selection;
                         selDocType = selDoc.Type;
                         if (selDocType == WinWord.WdSelectionType.wdSelectionIP)
@@ -507,8 +510,20 @@ namespace insertGuaXingtoPowerpnt
                     break;
             }
             //https://docs.microsoft.com/en-us/previous-versions/office/troubleshoot/office-developer/use-visual-c-automate-run-program-instance
-            office = System.Runtime.InteropServices.Marshal.GetActiveObject(CLSID);
-            return office;
+            try
+            {
+                office = System.Runtime.InteropServices.Marshal.GetActiveObject(CLSID);
+                if (office == null) throw new Exception("Null");//https://ithelp.ithome.com.tw/articles/10254045?sc=rss.qu
+                return office;
+            }
+            catch
+            {
+                MessageBox.Show("沒有開啟" + CLSID.Substring(
+                    0, CLSID.IndexOf(".")), "", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                //throw new Exception("Null");
+                return null;
+            }
         }
 
 
@@ -900,12 +915,12 @@ namespace insertGuaXingtoPowerpnt
 
         private void showFontPreview()
         {
-            string ext = "png";string w = textBox1.Text== "打個字看看：" ? "真": textBox1.Text;
+            string ext = "png"; string w = textBox1.Text == "打個字看看：" ? "真" : textBox1.Text;
             string dir = DirFiles.getPicDir(PicE);
             string picsFullname;
             if (PicE == picEnum.行書)
                 ext = "jpg";
-            picsFullname = dir + "\\"+w+"." + ext;
+            picsFullname = dir + "\\" + w + "." + ext;
             if (PicE == picEnum.小篆)
                 picsFullname = DirFiles.getFullNameNTUswxz(dir, w);
 
@@ -978,7 +993,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void textBox1_Enter(object sender, EventArgs e)
         {
-            textBox1.Text = "";
+
         }
 
         private void textBox1_Leave(object sender, EventArgs e)
@@ -1002,6 +1017,11 @@ namespace insertGuaXingtoPowerpnt
                     pictureBox1.Image = new Bitmap(picFilefullname);
                 }
             }
+        }
+
+        private void textBox1_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
         }
     }
 

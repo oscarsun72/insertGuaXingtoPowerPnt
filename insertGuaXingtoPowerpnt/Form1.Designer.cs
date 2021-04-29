@@ -54,8 +54,8 @@
             this.textBox1.Size = new System.Drawing.Size(87, 22);
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = "打個字看看：";
+            this.textBox1.Click += new System.EventHandler(this.textBox1_Click);
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            this.textBox1.Enter += new System.EventHandler(this.textBox1_Enter);
             this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
             // 
             // button1

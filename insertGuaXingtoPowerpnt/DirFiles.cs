@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Windows.Forms;
 using powerPnt = Microsoft.Office.Interop.PowerPoint;
 
@@ -35,21 +36,34 @@ namespace CharacterConverttoCharacterPics
         internal static FileInfo getFontOkList_txt()
         {
             //先求方便了，否則一下要兼顧太多檔案20210426
-            //if (File.Exists(@"G:\我的雲端硬碟\programming程式設計開發\fontOkList.txt"))
+            const string f = @"G:\我的雲端硬碟\programming程式設計開發\fontOkList.txt";
+            //if (File.Exists(f))
             //    return new FileInfo(@"G:\我的雲端硬碟\programming程式設計開發\fontOkList.txt");
             //else
-            //{
-                DirectoryInfo dirRoot = new DirectoryInfo(getDirRoot);
-                IEnumerable<FileInfo> fileList = dirRoot.GetFiles
-                    ("*.txt", SearchOption.AllDirectories);
-                IEnumerable<FileInfo> fileQuery =
-                    from file in fileList
-                    where file.Name.IndexOf("fontOkList.txt") > -1
-                    select file;
-                if (fileQuery.Count() > 0)
-                    return fileQuery.First();
-                else
-                    return null;
+            //{//判斷成功了
+            DirectoryInfo dirRoot = new DirectoryInfo(getDirRoot);
+            DirectorySecurity directorySecurity = dirRoot.GetAccessControl();
+            if (directorySecurity.AreAccessRulesProtected)
+            {
+                if (File.Exists(f))
+                    return new FileInfo(f);
+                else { 
+                    MessageBox.Show("此資料夾是無法讀取的！\n\r" +
+                        "而「"+f+"」檔案又不存在，故無法執行！", "",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.OpenForms[0].Close();//return null;
+                }
+            }
+            IEnumerable<FileInfo> fileList = dirRoot.GetFiles
+                ("*.txt", SearchOption.AllDirectories);
+            IEnumerable<FileInfo> fileQuery =
+                from file in fileList
+                where file.Name.IndexOf("fontOkList.txt") > -1
+                select file;
+            if (fileQuery.Count() > 0)
+                return fileQuery.First();
+            else
+                return null;
             //}
         }
         internal static string getDir各字型檔相關()
