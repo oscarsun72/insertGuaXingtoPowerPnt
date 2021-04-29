@@ -125,6 +125,9 @@ namespace insertGuaXingtoPowerpnt
                             string subFolderName = "")
         {
             string startFolder = folderfullNameBackslash + subFolderName;
+            if (!Directory.Exists(startFolder)){MessageBox.Show("指定的資料夾並不存在：\n\r"
+                +startFolder,"",MessageBoxButtons.OK,MessageBoxIcon.Error); return "";
+            }
             dir = new DirectoryInfo(startFolder);
             string ext = "png";
             if (startFolder.IndexOf("行書") > -1) ext = "jpg";
