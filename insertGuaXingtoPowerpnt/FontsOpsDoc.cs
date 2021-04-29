@@ -18,8 +18,9 @@ namespace CharacterConverttoCharacterPics
                 string fontname;
                 while (!sr.EndOfStream)
                 {
-                    fontname = sr.ReadLine();                    
-                    if (fontname != ""&& fontname.IndexOf("::")== -1)
+                    fontname = sr.ReadLine();
+                    if (fontname != "" && fontname.IndexOf("::") == -1 &&
+                            fontname.IndexOf("//") == -1)
                         fontoklist.Add(fontname);
                 }
                 return fontoklist;
@@ -38,7 +39,7 @@ namespace CharacterConverttoCharacterPics
                 {
                     fontname = sr.ReadLine();
                     if (fontname.IndexOf("::") > -1) break;//以「::」記號作為選取中止
-                    if (fontname != "")
+                    if (fontname != "" && fontname.IndexOf("//") == -1)
                         fontoklist.Add(fontname);
                 }
                 return fontoklist;
