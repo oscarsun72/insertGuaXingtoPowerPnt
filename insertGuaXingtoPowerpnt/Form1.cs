@@ -51,10 +51,12 @@ namespace insertGuaXingtoPowerpnt
                 "DFGKanTeiRyu-W11","文鼎古印體B",
                 "文鼎雕刻體B","DFKinBun-W3",
                 "DFGFuun-W7"};*/
-
-            listBox1.DataSource = lb; listBox1.SetSelected(2, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
-            listbox1itme = listBox1.Items;
-            PicE = picEnum.行書;
+            if (lb.Count > 0)
+            {
+                listBox1.DataSource = lb; listBox1.SetSelected(2, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
+                listbox1itme = listBox1.Items;
+                PicE = picEnum.行書;
+            }
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
             listBox2.DataSource = lb2;
             checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件
