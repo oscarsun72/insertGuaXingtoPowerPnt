@@ -100,8 +100,8 @@ namespace CharacterConverttoCharacterPics
                 return "";
             }
         }
-
-        internal static string getPicDir(picEnum pE)
+        //without \
+        internal static string getPicDir(picEnum pE)//without \
         {
             string subFolder;
             switch (pE)
@@ -124,7 +124,7 @@ namespace CharacterConverttoCharacterPics
         }
         internal static string getFullNameNTUswxz(string dir, string x)
         {//為免ADO存取資料庫失敗而增此
-            return FindFileThruLINQ.getfilefullnameIn古文字(x, dir);
+            return new FindFileThruLINQ().getfilefullnameIn古文字(x, dir);
         }
 
     }

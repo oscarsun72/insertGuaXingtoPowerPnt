@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CharacterConverttoCharacterPics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,13 @@ namespace insertGuaXingtoPowerpnt
 {
     class PicsOps
     {
+        internal string getPicFullname(string whatsCharacter)
+    {
+        return new FindFileThruLINQ().getfilefullnameIn古文字(whatsCharacter,
+            DirFiles.getPicDir(Form1.PicE)+"\\");
     }
+    }
+
     #region 圖片
     //特殊的才需要，其他的不需要了。（只要路徑有規則、圖片皆為png，就不必列出了
     //此只是作為判斷時參考爾。卦圖、小篆是路徑；行書是 jpg，故須列出作判斷

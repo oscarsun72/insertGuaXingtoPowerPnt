@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPnt = Microsoft.Office.Interop.PowerPoint;
 using WinWord = Microsoft.Office.Interop.Word;
-
 namespace insertGuaXingtoPowerpnt
 {
     public partial class Form1 : Form
@@ -30,7 +30,7 @@ namespace insertGuaXingtoPowerpnt
         WinWord.Range rng;
         WinWord.WdSelectionType selDocType;
         officeEnum officE;
-        picEnum picE;
+        internal static picEnum PicE;
         ADODB.Connection cnt;
         ADODB.Recordset rst;
 
@@ -54,7 +54,7 @@ namespace insertGuaXingtoPowerpnt
 
             listBox1.DataSource = lb; listBox1.SetSelected(2, true);// 設定預設值為"行書";the zero-based index of the currently selected item in a ListBox. 
             listbox1itme = listBox1.Items;
-            picE = picEnum.行書;
+            PicE = picEnum.行書;
             List<string> lb2 = new List<string> { "PowerPoint", "Word", "Excel" };
             listBox2.DataSource = lb2;
             checkBox1.Enabled = false;//在上一行給定listBox2.DataSource值時就會觸發事件
@@ -74,7 +74,7 @@ namespace insertGuaXingtoPowerpnt
         {
             //為免誤按，故使控制項失效
             listBox1.Enabled = false; listBox2.Enabled = false; numericUpDown1.Focus(); button1.Enabled = false; checkBox1.Enabled = false; button2.Enabled = false;
-            switch (picE)
+            switch (PicE)
             {
                 case picEnum.卦圖64:// "64卦圖":
                     guaXing(officE);
@@ -83,7 +83,7 @@ namespace insertGuaXingtoPowerpnt
                     guaXing(officE);
                     break;
                 default:
-                    GuWenZi(picE, officE);
+                    GuWenZi(PicE, officE);
                     break;
             }
             //執行完後恢復控制項狀態
@@ -97,7 +97,7 @@ namespace insertGuaXingtoPowerpnt
         void guaXing(officeEnum ofE)
         {
             string dir = "";
-            switch (picE)
+            switch (PicE)
             {
                 case picEnum.卦圖64:
                     dir = DirFiles.getPicDir(picEnum.卦圖64) + "\\";
@@ -118,7 +118,7 @@ namespace insertGuaXingtoPowerpnt
                         sel = pptApp.ActiveWindow.Selection;
                         ppt.Application.Activate();
                         sld = ppt.Application.ActiveWindow.View.Slide;
-                        if (picE == picEnum.卦形8)
+                        if (PicE == picEnum.卦形8)
                         {
                             switch (sel.TextRange.Font.NameFarEast)
                             {
@@ -138,7 +138,7 @@ namespace insertGuaXingtoPowerpnt
                         selDoc = doc.ActiveWindow.Selection;
                         selDocType = selDoc.Type;
                         rng = selDoc.Range;
-                        if (picE == picEnum.卦形8)
+                        if (PicE == picEnum.卦形8)
                         {
                             switch (selDoc.Font.NameFarEast)
                             {
@@ -709,8 +709,8 @@ namespace insertGuaXingtoPowerpnt
                             }
                             break;
                         default:
-                            if (sel.Type==PowerPnt.PpSelectionType.ppSelectionNone ||
-                                sel.Type==PowerPnt.PpSelectionType.ppSelectionSlides)
+                            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionNone ||
+                                sel.Type == PowerPnt.PpSelectionType.ppSelectionSlides)
                             {
 
 
@@ -856,19 +856,19 @@ namespace insertGuaXingtoPowerpnt
             switch (listBox1.SelectedValue)
             {
                 case "64卦圖":
-                    picE = picEnum.卦圖64;
+                    PicE = picEnum.卦圖64;
                     break;
                 case "8卦圖":
-                    picE = picEnum.卦形8;
+                    PicE = picEnum.卦形8;
                     break;
                 case "行書":
-                    picE = picEnum.行書;
+                    PicE = picEnum.行書;
                     break;
                 case "小篆":
-                    picE = picEnum.小篆;
+                    PicE = picEnum.小篆;
                     break;
                 default:
-                    picE = picEnum.Default;
+                    PicE = picEnum.Default;
                     break;
             }
 
@@ -900,14 +900,14 @@ namespace insertGuaXingtoPowerpnt
 
         private void showFontPreview()
         {
-            string ext = "png";
-            string dir = DirFiles.getPicDir(picE);
+            string ext = "png";string w = textBox1.Text== "打個字看看：" ? "真": textBox1.Text;
+            string dir = DirFiles.getPicDir(PicE);
             string picsFullname;
-            if (picE == picEnum.行書)
+            if (PicE == picEnum.行書)
                 ext = "jpg";
-            picsFullname = dir + "\\真." + ext;
-            if (picE == picEnum.小篆)
-                picsFullname = DirFiles.getFullNameNTUswxz(dir, "真");
+            picsFullname = dir + "\\"+w+"." + ext;
+            if (PicE == picEnum.小篆)
+                picsFullname = DirFiles.getFullNameNTUswxz(dir, w);
 
             if (System.IO.File.Exists(picsFullname))
             {
@@ -925,7 +925,7 @@ namespace insertGuaXingtoPowerpnt
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             Process prc = new Process();
-            prc.StartInfo.FileName = DirFiles.getPicDir(picE);//開啟古文字內的各字型字圖存放的資料夾20210419
+            prc.StartInfo.FileName = DirFiles.getPicDir(PicE);//開啟古文字內的各字型字圖存放的資料夾20210419
             if (Directory.Exists(prc.StartInfo.FileName))
             {
                 prc.Start();
@@ -974,6 +974,34 @@ namespace insertGuaXingtoPowerpnt
         private void textBox2_Click(object sender, EventArgs e)
         {
             if (textBox2.Text != "") textBox2.Text = "";
+        }
+
+        private void textBox1_Enter(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+        }
+
+        private void textBox1_Leave(object sender, EventArgs e)
+        {
+            if (textBox1.Text == "") textBox1.Text = "打個字看看：";
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            string x = textBox1.Text;
+            if (string.IsNullOrEmpty(x) || string.IsNullOrWhiteSpace(x)) return;
+            Regex rg = new Regex("[0-9a-zA-Z]");
+            if (rg.IsMatch(x)) return;
+            StringInfo si = new StringInfo(textBox1.Text);
+            if (si.LengthInTextElements == 1)
+            {
+                string picFilefullname = new PicsOps().getPicFullname(
+                    si.String);
+                if (File.Exists(picFilefullname))
+                {
+                    pictureBox1.Image = new Bitmap(picFilefullname);
+                }
+            }
         }
     }
 

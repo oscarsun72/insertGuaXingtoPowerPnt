@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Windows.Forms;
 
 namespace insertGuaXingtoPowerpnt
 {
@@ -59,22 +60,53 @@ namespace insertGuaXingtoPowerpnt
         } 
         */
         #endregion
-        static DirectoryInfo dir; static string StartFolder;
-        static IEnumerable<FileInfo> fileList;
+        DirectoryInfo dir; internal string StartFolder;
+        IEnumerable<FileInfo> fileList;
+        public FindFileThruLINQ() { }
+        public FindFileThruLINQ(string startFolder)
+        {
+            StartFolder = startFolder;
+            dir = new DirectoryInfo(startFolder);
+            fileList = dir.GetFiles("*.*", SearchOption.AllDirectories);
+        }
 
-        internal static List<string> getfilesfullnameIn古文字(string qText
+        internal string TopFolder { get => StartFolder; }
+        internal IEnumerable<FileInfo> FileList { get => fileList; }
+
+        internal IEnumerable<FileInfo> findFiles(string fileNameInclude,
+            string extensionNameNodot="")
+        {
+            if (dir == null) return null;
+            //https://bit.ly/3xtAAzX
+            //https://bit.ly/3vwBfOX
+            DirectorySecurity directorySecurity = dir.GetAccessControl();
+            if (directorySecurity.AreAccessRulesProtected)
+            {
+                MessageBox.Show("此資料夾是無法讀取的！","",
+                    MessageBoxButtons.OK,MessageBoxIcon.Error);return null;
+            }
+            fileList = dir.GetFiles("."+ extensionNameNodot, SearchOption.AllDirectories);
+            IEnumerable<FileInfo> filequeryResult =
+                from file in fileList
+                where file.Name.IndexOf(fileNameInclude) > -1
+                select file;
+            return filequeryResult;
+        }
+        internal List<string> getfilesfullnameIn古文字(string qText
             , string folderfullNameBackslash, string subFolderName = "")
         {
             string startFolder = folderfullNameBackslash + subFolderName;
             // Take a snapshot of the file system.
-            if (StartFolder!=startFolder|| dir==null)
+            dir = new DirectoryInfo(startFolder);
+            // This method assumes that the application has discovery permissions  
+            // for all folders under the specified path. 
+            string ext = "png";
+            if (folderfullNameBackslash.IndexOf("行書") > -1)
             {
-                dir = new DirectoryInfo(startFolder);
-                // This method assumes that the application has discovery permissions  
-                // for all folders under the specified path. 
-                fileList = dir.GetFiles("*.png",SearchOption.AllDirectories);
-                StartFolder = startFolder;
+                ext = "jpg";
             }
+            fileList = dir.GetFiles("*." + ext, SearchOption.AllDirectories);
+            StartFolder = startFolder;
             //Create the query  
             IEnumerable<FileInfo> fileQuery =
                 from file in fileList
@@ -88,23 +120,22 @@ namespace insertGuaXingtoPowerpnt
             return filefullnameList;
         }
 
-        internal static string getfilefullnameIn古文字(string qText
+        internal string getfilefullnameIn古文字(string qText
                                     , string folderfullNameBackslash,
                             string subFolderName = "")
         {
             string startFolder = folderfullNameBackslash + subFolderName;
-            if (StartFolder!=startFolder||dir==null)
-            {
-                dir = new DirectoryInfo(startFolder);
-                fileList = dir.GetFiles("*.png",SearchOption.AllDirectories);
-                StartFolder = startFolder;
-            }
+            dir = new DirectoryInfo(startFolder);
+            string ext = "png";
+            if (startFolder.IndexOf("行書") > -1) ext = "jpg";
+            fileList = dir.GetFiles("*."+ext, SearchOption.AllDirectories);
+            StartFolder = startFolder;
             IEnumerable<FileInfo> fi = (from file in fileList
                                         where file.Name.IndexOf(qText) > -1
                                         select file);
-            if (fi.Count()>0)
+            if (fi.Count() > 0)
             {
-                 return fi.First().FullName;
+                return fi.First().FullName;
             }
             return "";
         }
