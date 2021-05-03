@@ -65,6 +65,13 @@ namespace insertGuaXingtoPowerpnt
         public FindFileThruLINQ() { }
         public FindFileThruLINQ(string startFolder)
         {
+            //以下當由呼叫端來檢查
+            //if (Directory.Exists(startFolder)==false)
+            //{
+            //    MessageBox.Show("資料夾路徑有誤！","",
+            //        MessageBoxButtons.OK,MessageBoxIcon.Error);
+            //    return;
+            //}
             StartFolder = startFolder;
             dir = new DirectoryInfo(startFolder);
             fileList = dir.GetFiles("*.*", SearchOption.AllDirectories);
