@@ -1,3 +1,4 @@
+//「//」符註明各字型之分類，及其他註記用。首見之雙「:」符則作為字圖與識別不必做或無法做之字圖之區隔。
 64卦圖
 8卦圖
 行書
@@ -13,10 +14,12 @@
 
 華康行書體
 文鼎行楷L
+文鼎行書M
 DFGGyoSho-W7
 DFPGyoSho-W7
 DFGPenJi-W4
 
+//風格體
 文鼎魏碑B
 文鼎行楷碑體B
 DFPWeiBei Std W7
@@ -44,24 +47,34 @@ Hanyi Senty Meadow
 Hanyi Senty Silk Road
 HanyiSentyMarshmallow
 Oz焦糖体
+Senty Snow Mountain 新蒂雪山体
+Senty Golden Bell 新蒂金钟体
+Senty Pea 新蒂绿豆体
+SentyTEA 新蒂下午茶体
+漢儀新蒂青松小楷
+漢儀新蒂歡樂體
 文鼎鋼筆行楷M
 DFPOYoJun-W5
 DFOYoJun-W5
 DFPPenJi-W4
 DFPenJi-W4
 
+//規範體
 FangSong
 Adobe 仿宋 Std R
 文鼎仿宋B
 文鼎仿宋L
 文鼎仿宋M
+文鼎仿宋HKB
 
 教育部標準楷書
 Adobe 楷体 Std R
 KaiTi
-文鼎標準楷體ProM
 DFKaiW5-A
+文鼎標準楷體ProM
+文鼎楷體B5E外字M
 
+//法書體
 華康歐陽詢體 Std W5
 華康歐陽詢體W5
 華康儷粗宋外字集
@@ -71,30 +84,89 @@ DFKaiW5-A
 文鼎毛楷EB
 文鼎毛楷H
 
+//明體匠字
+文鼎明體H
+文鼎明體U
 DFSongW3-A
 DFMinchoP-W5
 DFGMinchoP-W5
+Kozuka Mincho Pro EL
+Kozuka Mincho Pro B
+Kozuka Mincho Pro H
+Kozuka Mincho Pr6N M
+Kozuka Mincho Pr6N B
 
+//海報粗體
+文鼎圓體L
+文鼎圓體M
+文鼎圓體B
+文鼎圓體EB
+文鼎圓體H
+文鼎圓體HKM
+文鼎圓體U
+文鼎黑體L
+文鼎黑體M
+文鼎黑體H
+文鼎黑體EB
+文鼎黑體U
+文鼎黑體HKL
+文鼎黑體HKB
+文鼎新黑體M
+文鼎新黑體B
+文鼎新黑體HKB
+文鼎新黑體HKL
+文鼎新黑體HKM
+文鼎新藝體U
 DFGothicP-W5
+Kozuka Gothic Pr6N B
+Kozuka Gothic Pr6N EL
+Kozuka Gothic Pr6N H
+Kozuka Gothic Pro EL
+Kozuka Gothic Pro H
 DFKanTingLiuW9-GB
 HeiT
 
+//搞怪體
 DFGKanTeiRyu-W11
 文鼎古印體B
 漢儀新蒂佛塔書
 漢儀新蒂牌樓體
 文鼎雕刻體B
+文鼎俏黑體U
+文鼎荊棘體M
 DFKinBun-W3
 DFGKinBun-W3
 DFPKinBun-W3
 DFPGiHi-W7
 華康相撲體
+文鼎圓立體B
+文鼎海報體B
 文鼎水管體B
+文鼎淹水體EB
+文鼎香腸體B
+文鼎空疊圓U
 文鼎石頭體EB
+文鼎妞妞體B
+文鼎甜妞體U
+文鼎甜妞體H
 文鼎ＰＯＰ-２B
+文鼎ＰＯＰ-４B
+文鼎甜心體U
 Hanyi Senty Chalk Original
 Hanyi Senty Diary
-
+Senty Cream Puff 新蒂泡芙体
+SentyCHALK
+SentyMARUKO 新蒂小丸子体
+SentyPaperCut
+漢儀新蒂手指畫
+漢儀新蒂花園體
+漢儀新蒂春遊體
+漢儀新蒂珍珠奶茶
+漢儀新蒂棉花糖黑板報A
+漢儀新蒂棉花糖黑板報B
+漢儀新蒂童刻體
+漢儀新蒂塗鴉體
+漢儀新蒂蠟筆體
 @Yu Gothic UI Semibold
 
 DFGFuun-W7
@@ -106,7 +178,7 @@ DFHaiBaoW12-GB
 
 
 ::以下為抓不到的
-Hanyi Senty Triumph Calligraph
+Hanyi Senty Triumph Calligraphy
 ::Word可以，PowerPoint抓不到
 Hanyi Senty Candy
 Hanyi Senty Triumph Calligraphy
@@ -491,3 +563,149 @@ GulimChe
 Gungsuh
 GungsuhChe
 
+Kozuka Gothic Pr6N L
+Kozuka Gothic Pr6N M
+Kozuka Gothic Pr6N R
+Kozuka Gothic Pro B
+Kozuka Gothic Pro H
+Kozuka Gothic Pro L
+Kozuka Gothic Pro M
+Kozuka Gothic Pro R
+Kozuka Mincho Pr6N B
+Kozuka Mincho Pr6N EL
+Kozuka Mincho Pr6N H
+Kozuka Mincho Pr6N L
+Kozuka Mincho Pr6N R
+Kozuka Mincho Pro L
+Kozuka Mincho Pro M
+Kozuka Mincho Pro R
+Meiryo
+Meiryo UI
+MS Mincho
+MS PMincho
+MYingHei_18030_C-Medium
+MYingHei_18030_C-MediumHWL
+Noto Sans JP Bold
+Noto Sans JP Light
+Noto Sans JP Regular
+Noto Sans KR Bold
+Noto Sans KR Light
+Noto Sans KR Regular
+Noto Sans SC Bold
+Noto Sans SC Light
+Noto Sans SC Regular
+Noto Sans TC Bold
+Noto Sans TC Light
+Noto Sans TC Regular
+SimHei
+Times New Roman Uni
+Yu Mincho
+Yu Mincho Demibold
+Yu Mincho Light
+文鼎上海宋L
+文鼎中特標宋注音破音三
+文鼎中特標宋注音破音五
+文鼎中特標宋注音破音四
+文鼎中黑注音破音三
+文鼎中黑注音破音五
+文鼎中黑注音破音四
+文鼎中圓注音破音三
+文鼎中圓注音破音五
+文鼎中圓注音破音四
+文鼎水瓶座U
+文鼎仿宋HKB
+文鼎仿宋HKM
+文鼎仿宋簡HKL
+文鼎仿宋簡L
+文鼎行書M
+文鼎行書簡M
+文鼎行楷簡B
+文鼎妞妞體B
+文鼎明體B
+文鼎明體B5E外字L
+文鼎明體EB
+文鼎明體HKB
+文鼎明體HKM
+文鼎明體L
+文鼎明體M
+文鼎明體簡B
+文鼎明體簡H
+文鼎明體簡HKH
+文鼎明體簡HKM
+漢儀新蒂春遊體
+文鼎金牛座U
+文鼎俏黑體EB
+文鼎明體U30HK-L
+文鼎注音窄字破音三
+文鼎注音窄字破音五
+文鼎注音窄字破音四
+文鼎花草注音破音三
+文鼎花草注音破音五
+文鼎花草注音破音四
+文鼎特標宋注音破音三
+文鼎特標宋注音破音五
+文鼎特標宋注音破音四
+文鼎草莓注音破音三
+文鼎草莓注音破音五
+文鼎草莓注音破音四
+文鼎粗黑注音破音三
+文鼎粗黑注音破音五
+文鼎粗黑注音破音四
+文鼎粗圓注音破音三
+文鼎粗圓注音破音五
+文鼎粗圓注音破音四
+文鼎粗標宋注音破音三
+文鼎粗標宋注音破音五
+文鼎粗標宋注音破音四
+文鼎細圓注音破音三
+文鼎細圓注音破音五
+文鼎細圓注音破音四
+@Hanyi Senty Candy
+@Hanyi Senty Chalk Original
+@Hanyi Senty Diary
+@Hanyi Senty Floral Calligraphy
+@Hanyi Senty Journal
+@Hanyi Senty Lingfei Scroll
+@Hanyi Senty Lotus
+@Hanyi Senty Meadow
+@Hanyi Senty Silk Road
+@Hanyi Senty Triumph Calligraph
+@Hanyi Senty Vimalakirti
+@HanyiSentyMarshmallow
+@HanyiSentyTang
+@HanyiSentyWen
+@HanyiSentyZhao
+@Oz焦糖体
+@Senty Cream Puff 新蒂泡芙体
+@Senty Golden Bell 新蒂金钟体
+@Senty Pea 新蒂绿豆体
+@Senty Snow Mountain 新蒂雪山体
+@SentyCHALK
+@SentyMARUKO 新蒂小丸子体
+@SentyPaperCut
+@SentyTEA 新蒂下午茶体
+@漢儀新蒂手指畫
+@漢儀新蒂佛塔書
+@漢儀新蒂花園體
+@漢儀新蒂青松小楷
+@漢儀新蒂春遊體
+@漢儀新蒂春聯體
+@漢儀新蒂珍珠奶茶
+@漢儀新蒂張即之體
+@漢儀新蒂棉花糖黑板報A
+@漢儀新蒂棉花糖黑板報B
+@漢儀新蒂牌樓體
+@漢儀新蒂童刻體
+@漢儀新蒂塗鴉體
+@漢儀新蒂語文體
+@漢儀新蒂舘閣體
+@漢儀新蒂蘇孝慈碑
+@漢儀新蒂蠟筆體
+文鼎黑體U30HK-M
+文鼎黑體簡B
+文鼎黑體簡HKB
+文鼎圓體簡B
+文鼎圓體簡H
+文鼎新明體HKL
+文鼎新明體L
+文鼎新黑體外字M
