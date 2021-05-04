@@ -1025,6 +1025,36 @@ namespace insertGuaXingtoPowerpnt
         {
             textBox1.Text = "";
         }
+        bool doNotEntered = false;
+        private void listBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (ModifierKeys)
+            {
+                case Keys.Shift:
+                    break;
+                case Keys.Control:
+                    if (listBox1.SelectedItems.Count > 0)
+                        if (e.KeyCode == Keys.C)
+                        {
+                            Clipboard.SetText
+                                  (listBox1.SelectedItem.ToString());
+                            doNotEntered = true;
+                        }
+                    break;
+                case Keys.Alt:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void listBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (doNotEntered)
+            {
+                e.Handled = true;doNotEntered = false;
+            }
+        }
     }
 
     enum officeEnum
