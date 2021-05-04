@@ -89,12 +89,14 @@ namespace insertGuaXingtoPowerpnt
                     GuWenZi(PicE, officE);
                     break;
             }
+            WindowState =FormWindowState.Minimized;
             //執行完後恢復控制項狀態
             listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true; button2.Enabled = true;
             if ((string)listBox2.SelectedValue == "Word")
             {
                 checkBox1.Enabled = true;
             }
+            WindowState = FormWindowState.Normal;
             Activate();
         }
 
@@ -890,6 +892,7 @@ namespace insertGuaXingtoPowerpnt
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             runSlideShow(sld);
+            WindowState = FormWindowState.Minimized;
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
