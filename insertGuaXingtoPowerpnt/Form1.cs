@@ -365,7 +365,8 @@ namespace insertGuaXingtoPowerpnt
         void runPPT(string dir, picEnum pE, List<PowerPnt.Slide> slds)
         //void runPPT(string dir, picEnum pE)
         {
-            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionNone) return;
+            //if (sel.Type == PowerPnt.PpSelectionType.ppSelectionNone) return;
+            if (slds.Count==0) return;
             foreach (PowerPnt.Slide sld in slds)
             {
 
