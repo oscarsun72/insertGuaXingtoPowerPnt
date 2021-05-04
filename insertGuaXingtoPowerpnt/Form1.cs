@@ -89,7 +89,8 @@ namespace insertGuaXingtoPowerpnt
                     GuWenZi(PicE, officE);
                     break;
             }
-            WindowState =FormWindowState.Minimized;
+            numericUpDown1.Value = 0.1M;//最小化時須要設定非0，否則會卡死。日後改為多執行緒時，再改良
+            WindowState = FormWindowState.Minimized;
             //執行完後恢復控制項狀態
             listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true; button2.Enabled = true;
             if ((string)listBox2.SelectedValue == "Word")
@@ -363,9 +364,10 @@ namespace insertGuaXingtoPowerpnt
         //void runPPT(string dir, picEnum pE)
         {
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionNone) return;
-            foreach (PowerPnt.Slide sld in slds)            {
-                
-                for (int i=1;i<=sld.Application.SlideShowWindows.Count;i++)
+            foreach (PowerPnt.Slide sld in slds)
+            {
+
+                for (int i = 1; i <= sld.Application.SlideShowWindows.Count; i++)
                 {
                     if (sld.Application.SlideShowWindows[i].Active == MsoTriState.msoTrue)
                     {
@@ -382,6 +384,8 @@ namespace insertGuaXingtoPowerpnt
                     {
                         if (sp.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
                         {
+                            sld.Parent.Windows[1].Activate();
+                            sld.Application.ActiveWindow.ViewType = PowerPnt.PpViewType.ppViewNormal;
                             sp.Select();//改變 sel 值                            
                             //如果sel可以因Select方法而即時變動，即不用此行:sel = sel.Application.ActiveWindow.Selection;
                             hasTextFrame = true;
@@ -892,6 +896,7 @@ namespace insertGuaXingtoPowerpnt
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             runSlideShow(sld);
+            numericUpDown1.Value = 0.1M;//最小化時須要設定非0，否則會卡死。日後改為多執行緒時，再改良
             WindowState = FormWindowState.Minimized;
         }
 
