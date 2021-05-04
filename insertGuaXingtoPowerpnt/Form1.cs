@@ -82,7 +82,7 @@ namespace insertGuaXingtoPowerpnt
                 case picEnum.卦圖64:// "64卦圖":
                     guaXing(officE);
                     break;
-                case picEnum.卦形8:// "64卦圖":
+                case picEnum.卦形8:// 8卦圖及陽爻陰爻:
                     guaXing(officE);
                     break;
                 default:
@@ -95,6 +95,7 @@ namespace insertGuaXingtoPowerpnt
             {
                 checkBox1.Enabled = true;
             }
+            Activate();
         }
 
         void guaXing(officeEnum ofE)
@@ -253,18 +254,23 @@ namespace insertGuaXingtoPowerpnt
                 {
                     case officeEnum.PowerPoint:
                         pptApp = (PowerPnt.Application)getOffice(ofE);
+                        pptApp.Activate();
                         ppt = pptApp.ActivePresentation;
-                        ppt.Application.Activate();
+                        //ppt.Application.Activate();
                         sel = pptApp.ActiveWindow.Selection;
                         sld = pptApp.ActiveWindow.View.Slide;
                         if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText)
-                        {
                             if (sel.TextRange2.Characters.Count == 0)
-                            {
                                 sel.ShapeRange.TextFrame.TextRange.Select();
-                            }
-                        }
-                        runPPT(dir, pE);
+                        //選取數張投影片以逐張執行插入字圖功能
+                        List<PowerPnt.Slide> slds = new List<PowerPnt.Slide>();
+                        if (sel.Type == PowerPnt.PpSelectionType.ppSelectionSlides)
+                            foreach (PowerPnt.Slide sld in sel.SlideRange)
+                                slds.Add(sld);
+                        else
+                            slds.Add(sld);
+                        runPPT(dir, pE, slds);
+                        //runPPT(dir, pE);
                         break;
                     case officeEnum.Word:
                         docApp = (WinWord.Application)getOffice(ofE);
@@ -351,80 +357,98 @@ namespace insertGuaXingtoPowerpnt
             }
         }
 
-        void runPPT(string dir, picEnum pE)
+        void runPPT(string dir, picEnum pE, List<PowerPnt.Slide> slds)
+        //void runPPT(string dir, picEnum pE)
         {
             if (sel.Type == PowerPnt.PpSelectionType.ppSelectionNone) return;
-            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionSlides)
-            {
-                for (int i = 1; i <= sel.SlideRange.Shapes.Count; i++)
+            foreach (PowerPnt.Slide sld in slds)            {
+                
+                for (int i=1;i<=sld.Application.SlideShowWindows.Count;i++)
                 {
-                    if (sel.SlideRange.Shapes[i].HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                    if (sld.Application.SlideShowWindows[i].Active == MsoTriState.msoTrue)
                     {
-                        sel.SlideRange.Shapes[i].Select();
-                        //如果sel可以因Select方法而即時變動，即不用此行:sel = sel.Application.ActiveWindow.Selection;
+                        sld.Parent.Windows[1].Activate();
+                        sld.Application.ActiveWindow.ViewType = PowerPnt.PpViewType.ppViewNormal;
                         break;
                     }
                 }
-                if (sel.Type == PowerPnt.PpSelectionType.ppSelectionSlides)
+                if (slds.Count > 1 || sel.Type == PowerPnt.PpSelectionType.ppSelectionSlides)
                 {
-                    MessageBox.Show("請先選取要處理的文字方塊！再執行……");
-                    return;
-                }
-            }
-
-            if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText ||
-                sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes &
-                sel.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
-            {
-                ppt.Application.Activate();
-                PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
-                runSlideShow();
-                if (sel.ShapeRange.HasTable == Microsoft.Office.Core.MsoTriState.msoTrue)
-                {//有表格
-                    /* PowerPnt.CellRange cr = (PowerPnt.CellRange)sel.ShapeRange;//轉型失敗，改用下方「.Selected」屬性來判斷應用
-                    for (int i = 0; i < cr.Count; i++)
+                    sld.Select();
+                    bool hasTextFrame = false;
+                    foreach (PowerPnt.Shape sp in sld.Shapes)
                     {
-                        if (cr[i].Selected)
+                        if (sp.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
                         {
-                            cr[i].Select();
-                            PowerPnt.Selection s = cr.Application.ActiveWindow.Selection;
-                            charBycharPpt(dir, pE, sld, s.TextRange2,
-                                true, s.ShapeRange.Table.Parent.left, s.ShapeRange.Table.Parent.top);
+                            sp.Select();//改變 sel 值                            
+                            //如果sel可以因Select方法而即時變動，即不用此行:sel = sel.Application.ActiveWindow.Selection;
+                            hasTextFrame = true;
+                            break;
                         }
-                    } */
-
-                    PowerPnt.Table tb = sel.ShapeRange.Table;
-                    int r = tb.Rows.Count;
-                    int c = tb.Columns.Count;
-                    List<PowerPnt.Cell> cels = new List<PowerPnt.Cell> { };//list容器初始化
-                    for (int i = 1; i <= r; i++)//這是表格中所有儲存格都處理
-                    {//https://docs.microsoft.com/zh-tw/office/vba/api/powerpoint.table.cell
-                        for (int j = 1; j <= c; j++)
-                        {//https://docs.microsoft.com/zh-tw/office/vba/api/powerpoint.cellrange?f1url=%3FappId%3DDev11IDEF1%26l%3Dzh-TW%26k%3Dk(vbapp10.chm627000);k(TargetFrameworkMoniker-Office.Version%3Dv16)%26rd%3Dtrue
-                            if (tb.Cell(i, j).Selected)//判斷儲存格是否有被選取
+                    }
+                    if (hasTextFrame == false)
+                    //if (sel.Type == PowerPnt.PpSelectionType.ppSelectionSlides)
+                    {
+                        MessageBox.Show("請先選取要處理的文字方塊！再執行……");
+                        return;
+                    }
+                }
+                if (sel.Type == PowerPnt.PpSelectionType.ppSelectionText ||
+                        sel.Type == PowerPnt.PpSelectionType.ppSelectionShapes &
+                        sel.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    //ppt.Application.Activate();                
+                    //PowerPnt.Slide sld = ppt.Application.ActiveWindow.View.Slide;
+                    runSlideShow(sld);
+                    if (sel.ShapeRange.HasTable == Microsoft.Office.Core.MsoTriState.msoTrue)
+                    {//有表格
+                        /* PowerPnt.CellRange cr = (PowerPnt.CellRange)sel.ShapeRange;//轉型失敗，改用下方「.Selected」屬性來判斷應用
+                        for (int i = 0; i < cr.Count; i++)
+                        {
+                            if (cr[i].Selected)
                             {
-                                cels.Add(tb.Cell(i, j));//記下已選取的儲存格，以備用
+                                cr[i].Select();
+                                PowerPnt.Selection s = cr.Application.ActiveWindow.Selection;
+                                charBycharPpt(dir, pE, sld, s.TextRange2,
+                                    true, s.ShapeRange.Table.Parent.left, s.ShapeRange.Table.Parent.top);
+                            }
+                        } */
+
+                        PowerPnt.Table tb = sel.ShapeRange.Table;
+                        int r = tb.Rows.Count;
+                        int c = tb.Columns.Count;
+                        List<PowerPnt.Cell> cels = new List<PowerPnt.Cell> { };//list容器初始化
+                        for (int i = 1; i <= r; i++)//這是表格中所有儲存格都處理
+                        {//https://docs.microsoft.com/zh-tw/office/vba/api/powerpoint.table.cell
+                            for (int j = 1; j <= c; j++)
+                            {//https://docs.microsoft.com/zh-tw/office/vba/api/powerpoint.cellrange?f1url=%3FappId%3DDev11IDEF1%26l%3Dzh-TW%26k%3Dk(vbapp10.chm627000);k(TargetFrameworkMoniker-Office.Version%3Dv16)%26rd%3Dtrue
+                                if (tb.Cell(i, j).Selected)//判斷儲存格是否有被選取
+                                {
+                                    cels.Add(tb.Cell(i, j));//記下已選取的儲存格，以備用
+                                }
                             }
                         }
+                        foreach (PowerPnt.Cell item in cels)
+                        {
+                            item.Select();
+                            PowerPnt.Selection selCell = tb.Application.ActiveWindow.Selection;
+                            charBycharPpt(dir, pE, sld, selCell.TextRange2, true, tb.Parent.left, tb.Parent.top);
+                        }
+
                     }
-                    foreach (PowerPnt.Cell item in cels)
+                    else//純文字方塊
                     {
-                        item.Select();
-                        PowerPnt.Selection selCell = tb.Application.ActiveWindow.Selection;
-                        charBycharPpt(dir, pE, sld, selCell.TextRange2, true, tb.Parent.left, tb.Parent.top);
+                        Microsoft.Office.Core.TextRange2 tr = sel.TextRange2;
+                        charBycharPpt(dir, pE, sld, tr);
                     }
+                    sel.Unselect();
 
                 }
-                else//純文字方塊
-                {
-                    Microsoft.Office.Core.TextRange2 tr = sel.TextRange2;
-                    charBycharPpt(dir, pE, sld, tr);
-                }
-                sel.Unselect();
+
             }
         }
 
-        private void runSlideShow()
+        private void runSlideShow(PowerPnt.Slide sld)
         {
             if (checkBox2.Checked)
             {//http://www.exceloffice.net/archives/4127
@@ -748,6 +772,7 @@ namespace insertGuaXingtoPowerpnt
                                                         if (item.Id == sld.Shapes[i].Id)
                                                         {
                                                             sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                                            sld.Parent.Windows[1].Activate();
                                                             sld.Shapes[i].Select();
                                                             break;//20210429改良，回復就而不必再比對，繼續找投影片中其他的shape，看有沒有其他文字方塊涵蓋了執行前選取的字圖
                                                         }
@@ -757,6 +782,7 @@ namespace insertGuaXingtoPowerpnt
                                                 {
                                                     //這裡不要 break; 讓所有文字變透明的都恢復不透明就好20210410
                                                     sld.Shapes[i].TextFrame2.TextRange.Font.Fill.Transparency = 0;
+                                                    sld.Parent.Windows[1].Activate();
                                                     sld.Shapes[i].Select();
                                                 }
                                             }
@@ -863,7 +889,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            runSlideShow();
+            runSlideShow(sld);
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1052,7 +1078,7 @@ namespace insertGuaXingtoPowerpnt
         {
             if (doNotEntered)
             {
-                e.Handled = true;doNotEntered = false;
+                e.Handled = true; doNotEntered = false;
             }
         }
     }
