@@ -286,7 +286,19 @@ namespace insertGuaXingtoPowerpnt
                         selDocType = selDoc.Type;
                         if (selDocType == WinWord.WdSelectionType.wdSelectionIP)
                         {
-                            doc.Content.Select();
+                            if (doc.Characters.Count > 200)
+                            {
+                                if (MessageBox.Show("文件內容多於200字，仍繼續？", "", MessageBoxButtons.OKCancel,
+                                    MessageBoxIcon.Question) == DialogResult.OK)
+                                {
+                                    doc.Content.Select();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("請選取要執行的文字範圍,再執行", "", MessageBoxButtons.OK,
+                                      MessageBoxIcon.Exclamation); return;
+                                }
+                            }
                         }
                         rng = selDoc.Range;
                         runDOC(dir, pE);
@@ -366,7 +378,7 @@ namespace insertGuaXingtoPowerpnt
         //void runPPT(string dir, picEnum pE)
         {
             //if (sel.Type == PowerPnt.PpSelectionType.ppSelectionNone) return;
-            if (slds.Count==0) return;
+            if (slds.Count == 0) return;
             foreach (PowerPnt.Slide sld in slds)
             {
 
