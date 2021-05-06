@@ -25,7 +25,7 @@ namespace insertGuaXingtoPowerpnt
             //CharacterConverttoCharacterPics.DirFiles.getDirRoot);
             #endregion
             #region  測試調整圖片大小功能:
-            //PicsOps.resize字圖ArchiveOrigionIn560x690Folder(30,"11");
+            //PicsOps.resize字圖ArchiveOrigionIn560x690Folder(30, "11");
             //warnings.playSound();
             #endregion
         }
