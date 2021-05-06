@@ -14,6 +14,7 @@
 
 華康行書體
 文鼎行楷L
+文鼎行楷B
 文鼎行書M
 DFGGyoSho-W7
 DFPGyoSho-W7
@@ -53,7 +54,10 @@ Senty Pea 新蒂绿豆体
 SentyTEA 新蒂下午茶体
 漢儀新蒂青松小楷
 漢儀新蒂歡樂體
+文鼎鋼筆行楷L
 文鼎鋼筆行楷M
+文鼎鋼筆行楷B
+文鼎誰的字體M
 DFPOYoJun-W5
 DFOYoJun-W5
 DFPPenJi-W4
@@ -71,7 +75,15 @@ Adobe 仿宋 Std R
 Adobe 楷体 Std R
 KaiTi
 DFKaiW5-A
+文鼎標準楷體M
+文鼎標準楷體B
 文鼎標準楷體ProM
+文鼎標準楷體U30HK-M
+文鼎楷體L
+文鼎楷體M
+文鼎楷體B
+文鼎楷體HKL
+文鼎楷體HKB
 文鼎楷體B5E外字M
 
 //法書體
@@ -87,6 +99,8 @@ DFKaiW5-A
 //明體匠字
 文鼎明體H
 文鼎明體U
+文鼎標準宋體EB
+文鼎標準宋體H
 DFSongW3-A
 DFMinchoP-W5
 DFGMinchoP-W5
@@ -104,6 +118,7 @@ Kozuka Mincho Pr6N B
 文鼎圓體H
 文鼎圓體HKM
 文鼎圓體U
+文鼎疊圓U
 文鼎黑體L
 文鼎黑體M
 文鼎黑體H
@@ -113,6 +128,8 @@ Kozuka Mincho Pr6N B
 文鼎黑體HKB
 文鼎新黑體M
 文鼎新黑體B
+文鼎新黑體H
+文鼎新黑體EB
 文鼎新黑體HKB
 文鼎新黑體HKL
 文鼎新黑體HKM
@@ -123,17 +140,23 @@ Kozuka Gothic Pr6N EL
 Kozuka Gothic Pr6N H
 Kozuka Gothic Pro EL
 Kozuka Gothic Pro H
+文鼎勘亭流U
 DFKanTingLiuW9-GB
 HeiT
 
 //搞怪體
 DFGKanTeiRyu-W11
-文鼎古印體B
 漢儀新蒂佛塔書
 漢儀新蒂牌樓體
+文鼎古印體B
+文鼎廣告體M
+文鼎廣告體B
+文鼎廣告體EB
+文鼎彈簧體B
 文鼎雕刻體B
 文鼎俏黑體U
 文鼎荊棘體M
+文鼎齒輪體M
 DFKinBun-W3
 DFGKinBun-W3
 DFPKinBun-W3
@@ -149,6 +172,7 @@ DFPGiHi-W7
 文鼎妞妞體B
 文鼎甜妞體U
 文鼎甜妞體H
+文鼎瓢蟲體U
 文鼎ＰＯＰ-２B
 文鼎ＰＯＰ-４B
 文鼎甜心體U
@@ -709,3 +733,20 @@ Yu Mincho Light
 文鼎新明體HKL
 文鼎新明體L
 文鼎新黑體外字M
+文鼎楷體外字M
+文鼎楷體簡HKM
+文鼎楷體簡M
+文鼎嘟嘟猴體U
+文鼎黑體B
+文鼎標宋注音破音三
+文鼎標宋注音破音五
+文鼎標宋注音破音四
+文鼎標楷注音破音三
+文鼎標楷注音破音五
+文鼎標楷注音破音四
+文鼎新黑體L
+文鼎標準宋體L
+文鼎標準宋體M
+文鼎標準宋體ProM
+文鼎標準宋體B
+文鼎標準楷體L
