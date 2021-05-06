@@ -1,6 +1,7 @@
 ﻿using insertGuaXingtoPowerpnt;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Windows.Forms;
@@ -10,6 +11,35 @@ namespace CharacterConverttoCharacterPics
 {
     public class DirFiles
     {//以後目錄、路徑均要取得最後的反斜線
+
+        DirectoryInfo dir; internal string TopFolder;
+        IEnumerable<FileInfo> fileList;
+        public DirFiles() { }
+        public DirFiles(string topFolder)
+        {
+            //路徑及存取權的有效性當由呼叫端來檢查！20210506
+            TopFolder = topFolder;
+            dir = new DirectoryInfo(topFolder);
+            fileList = dir.GetFiles("*.*", SearchOption.AllDirectories);
+        }
+
+        internal IEnumerable<FileInfo> getAllFiles
+        {
+            get => fileList ?? null;
+            //上式為此式之簡化：get => fileList == null ? null : fileList;
+        }
+        internal IEnumerable<FileInfo> getPNGs
+        {
+            get
+            {
+                return
+                    from f in fileList
+                    where f.Extension.Equals(".png",//原來 Extension 屬性值包括前綴「.」號20210506
+                    System.StringComparison.OrdinalIgnoreCase)
+                    select f;
+            }
+        }
+
         internal static string getDirRoot
         {//https://www.google.com/search?q=c%23+%E5%8F%96%E5%BE%97%E5%B0%88%E6%A1%88%E8%B7%AF%E5%BE%91&rlz=1C1JRYI_enTW948TW948&oq=%E5%8F%96%E5%BE%97%E5%B0%88%E6%A1%88%E8%B7%AF%E5%BE%91&aqs=chrome.1.69i57j0i5i30l2.7266j0j7&sourceid=chrome&ie=UTF-8
             get =>
@@ -142,5 +172,16 @@ namespace CharacterConverttoCharacterPics
             return new FindFileThruLINQ().getfilefullnameIn古文字(x, dir);
         }
 
+        //將指定資料夾包成同名壓縮檔zip
+        internal static void zipFolderFiles(string dir)
+        {
+            if (Directory.Exists(dir) == false) return;
+            DirectoryInfo di = new DirectoryInfo(dir);
+            string fZip = di.Parent.FullName + "\\" + di.Name + ".zip";
+            if (File.Exists(fZip)) File.Delete(fZip);
+            ZipFile.CreateFromDirectory(dir, fZip,
+                CompressionLevel.NoCompression, true
+                );
+        }
     }
 }

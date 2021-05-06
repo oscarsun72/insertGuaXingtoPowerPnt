@@ -393,6 +393,11 @@ namespace insertGuaXingtoPowerpnt
                 }
                 if (slds.Count > 1 || sel.Type == PowerPnt.PpSelectionType.ppSelectionSlides)
                 {
+                    if (sld.Application.ActiveWindow.ViewType != PowerPnt.PpViewType.ppViewNormal)
+                    {
+                        sld.Parent.Windows[1].Activate();
+                        sld.Application.ActiveWindow.ViewType = PowerPnt.PpViewType.ppViewNormal;
+                    }
                     sld.Select();
                     bool hasTextFrame = false;
                     foreach (PowerPnt.Shape sp in sld.Shapes)
