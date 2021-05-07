@@ -41,10 +41,13 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -181,11 +184,39 @@
             this.pictureBox3.TabIndex = 11;
             this.pictureBox3.TabStop = false;
             // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Location = new System.Drawing.Point(237, 0);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(49, 22);
+            this.numericUpDown2.TabIndex = 12;
+            this.numericUpDown2.TabStop = false;
+            this.numericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            this.numericUpDown2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.numericUpDown2_MouseDown);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft JhengHei", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Location = new System.Drawing.Point(176, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 14);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "調整字圖大小";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(381, 226);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.numericUpDown2);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.pictureBox2);
@@ -208,6 +239,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -227,6 +259,8 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Label label1;
     }
 }
 

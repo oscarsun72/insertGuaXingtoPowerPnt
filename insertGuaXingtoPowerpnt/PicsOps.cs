@@ -53,7 +53,7 @@ namespace insertGuaXingtoPowerpnt
             img.Save(destFullName, ImageFormat.Png);
         }
 
-        internal Image resizeImage(
+        Image resizeImage(
             Size size)
         {//https://www.cnblogs.com/Yesi/p/5952783.html
             if (img == null) return null;

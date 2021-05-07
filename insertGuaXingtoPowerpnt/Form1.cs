@@ -973,6 +973,7 @@ namespace insertGuaXingtoPowerpnt
 
         private void showFontPreview()
         {
+            if (numericUpDown2.Value != 0) return;
             string ext = "png"; string w = textBox1.Text == "打個字看看：" ? "真" : textBox1.Text;
             string dir = DirFiles.getPicDir(PicE);
             string picsFullname;
@@ -1109,6 +1110,54 @@ namespace insertGuaXingtoPowerpnt
             if (doNotEntered)
             {
                 e.Handled = true; doNotEntered = false;
+            }
+        }
+
+        private void numericUpDown2_MouseDown(object sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    if (ModifierKeys==Keys.Control)
+                    {
+                        #region  測試調整圖片大小功能:
+                        //if (pictureBox1.Image != null)
+                        //{
+                        //pictureBox1.Image = null;// 判斷檔案是否在使用中/是否被鎖定住 https://oscarsun72.blogspot.com/2021/04/c.html#Locked
+                        //Bitmap pic = new Bitmap(@"D:\@@@華語文工具及資料@@@\Macros\古文字\行書\真.jpg");
+                        //pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                        //pictureBox1.Image = pic;
+                        //pictureBox1.Refresh();//這些都沒有用
+                        //}
+                        //Color cl = numericUpDown2.BackColor;
+                        if (numericUpDown2.Value == 0) return;
+                        numericUpDown2.BackColor = Color.Brown;//原來是與顏色有關，如Azure就不能接受，但也得有下行才能即時變色
+                        numericUpDown2.Refresh();//這也不能即時變色20210507
+                        PicsOps.resize字圖ArchiveOrigionIn560x690Folder(
+                            Convert.ToInt32(numericUpDown2.Value), 
+                            listBox1.SelectedValue as string);
+                        warnings.playSound();
+                        //numericUpDown2.BackColor = cl;
+                        numericUpDown2.BackColor = SystemColors.Control;//https://docs.microsoft.com/zh-tw/dotnet/api/system.windows.forms.control.backcolor?view=net-5.0
+                        numericUpDown2.Refresh();
+                        #endregion
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            if (numericUpDown2.Value==0)
+            {
+                warnings wSp = new warnings();
+                if(wSp.Sp!=null)
+                {
+                    wSp.Sp.Stop();
+                    wSp.Sp = null;
+                }
             }
         }
     }
