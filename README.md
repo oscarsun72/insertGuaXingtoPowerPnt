@@ -4,7 +4,7 @@ insert Yi Jing Gua Xing to PowerPnt 在Powerpoint簡報中插入《易經》卦�
 
 【至於如例由字型轉字圖，可見此專案（rspo）：https://github.com/oscarsun72/PPTtoDoc_PowerPoint_xchg_Word 】
 
-# 調整字圖大小（20210508）
+# 調整字圖大小（20210508） Resize Pictures and images
 * 為了：在沒有必要以大圖插入的文件或投影片中，加速插入字圖的速度
 * 效能：1萬多字當不出十分鐘即可調整完畢
 * 應用範疇：可應用於所有圖形檔案
