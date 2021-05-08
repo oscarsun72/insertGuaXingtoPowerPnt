@@ -20,6 +20,8 @@ DFGGyoSho-W7
 DFPGyoSho-W7
 DFGPenJi-W4
 
+
+
 //風格體
 文鼎魏碑B
 文鼎行楷碑體B
@@ -62,6 +64,9 @@ DFPOYoJun-W5
 DFOYoJun-W5
 DFPPenJi-W4
 DFPenJi-W4
+AoyagiSosekiFont2
+
+
 
 //規範體
 FangSong
@@ -86,6 +91,8 @@ DFKaiW5-A
 文鼎楷體HKB
 文鼎楷體B5E外字M
 
+
+
 //法書體
 華康歐陽詢體 Std W5
 華康歐陽詢體W5
@@ -95,6 +102,8 @@ DFKaiW5-A
 文鼎毛楷B
 文鼎毛楷EB
 文鼎毛楷H
+
+
 
 //明體匠字
 文鼎明體H
@@ -143,6 +152,16 @@ Kozuka Gothic Pro H
 文鼎勘亭流U
 DFKanTingLiuW9-GB
 HeiT
+思源黑体 CN Regular
+思源黑體 TW Regular
+華康POP1體 Std W5
+華康POP1體 Std W7
+華康POP1體 Std W9
+華康POP1體W5
+華康POP1體W7
+華康POP1體W7(P)
+
+
 
 //搞怪體
 DFGKanTeiRyu-W11
@@ -173,6 +192,16 @@ DFPGiHi-W7
 文鼎甜妞體U
 文鼎甜妞體H
 文鼎瓢蟲體U
+文鼎簪梅體U
+文鼎火柴體B
+文鼎竹子體M
+文鼎瀟灑體M
+文鼎鬍子體EB
+文鼎霹靂體U
+文鼎鬚勘亭流H
+文鼎咕咕雞體U
+文鼎花草體EB
+文鼎花瓣體U
 文鼎ＰＯＰ-２B
 文鼎ＰＯＰ-４B
 文鼎甜心體U
@@ -193,11 +222,16 @@ SentyPaperCut
 漢儀新蒂蠟筆體
 @Yu Gothic UI Semibold
 
+
 DFGFuun-W7
 DFFuun-W7
 DFGPOPCorn-W12
 DFGPOPMix-W5
 DFHaiBaoW12-GB
+
+
+
+
 
 
 
@@ -750,3 +784,60 @@ Yu Mincho Light
 文鼎標準宋體ProM
 文鼎標準宋體B
 文鼎標準楷體L
+文鼎隸書簡HKM
+文鼎隸書簡M
+@文鼎ＰＯＰ-２B
+@文鼎ＰＯＰ-４B
+@文鼎上海宋L
+@文鼎行書M
+@文鼎行楷B
+@文鼎行楷L
+@文鼎明體B
+@文鼎明體EB
+@文鼎明體H
+@文鼎明體L
+@文鼎明體M
+@文鼎明體U
+@文鼎空疊圓U
+@文鼎海報體B
+@文鼎勘亭流U
+@文鼎黑體B
+@文鼎黑體EB
+@文鼎黑體H
+@文鼎黑體L
+@文鼎黑體M
+@文鼎黑體U
+@文鼎圓體B
+@文鼎圓體EB
+@文鼎圓體H
+@文鼎圓體L
+@文鼎圓體M
+@文鼎圓體U
+@文鼎新明體L
+@文鼎新黑體B
+@文鼎新黑體EB
+@文鼎新黑體H
+@文鼎新黑體L
+@文鼎新黑體M
+@文鼎新藝體U
+@文鼎楷體B
+@文鼎楷體L
+@文鼎楷體M
+@文鼎廣告體B
+@文鼎廣告體EB
+@文鼎廣告體M
+@文鼎標準宋體B
+@文鼎標準宋體EB
+@文鼎標準宋體H
+@文鼎標準宋體L
+@文鼎標準宋體M
+@文鼎標準楷體B
+@文鼎標準楷體L
+@文鼎標準楷體M
+@文鼎鋼筆行楷B
+@文鼎鋼筆行楷L
+@文鼎疊圓U
+@漢儀新蒂歡樂體
+文鼎雙魚座U
+華康POP1體W5(P)
+華康POP1體W5外字集
