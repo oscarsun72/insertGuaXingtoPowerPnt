@@ -1,4 +1,5 @@
 ﻿using insertGuaXingtoPowerpnt;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -123,7 +124,8 @@ namespace CharacterConverttoCharacterPics
             }
         }
 
-        internal static string PicsRootFolder
+        //"Macros\\古文字\\"
+        internal static string PicsRootFolder//"Macros\\古文字\\"
         { get => Path華語文工具及資料 + "Macros\\古文字\\"; }
 
         internal static string Path華語文工具及資料
@@ -172,6 +174,39 @@ namespace CharacterConverttoCharacterPics
             return new FindFileThruLINQ().getfilefullnameIn古文字(x, dir);
         }
 
+        public static bool IsReadonly(DirectoryInfo di)
+        {
+            if (di.Attributes.ToString().IndexOf(FileAttributes.ReadOnly.ToString()) != -1) return true; else return false;
+        }
+        public static bool IsReadonly(FileInfo fi)
+        {
+            if (fi.Attributes.ToString().IndexOf(FileAttributes.ReadOnly.ToString()) != -1) return true; else return false;
+        }
+        public static void SwitchReadonly(DirectoryInfo di)
+        {
+            di.Attributes &= ~FileAttributes.ReadOnly;
+        }
+        public static void SwitchReadonly(FileInfo fi)
+        {
+            fi.Attributes &= ~FileAttributes.ReadOnly;
+        }
+        public static void NoReadonly(DirectoryInfo di)
+        {
+            if (IsReadonly(di)) di.Attributes &= ~FileAttributes.ReadOnly;
+        }
+        public static void NoReadonly(FileInfo fi)
+        {
+            if (IsReadonly(fi)) fi.Attributes &= ~FileAttributes.ReadOnly;
+        }
+
+        //直接刪除檔案，不管有沒有唯讀屬性 20210508
+        public static void DeleteFileRemoveReadOnly(FileInfo fileInfo)
+        {
+            NoReadonly(fileInfo);
+            fileInfo.Delete();//上下兩式作用相同
+            //io.File.Delete(fileInfo.FullName);//delete from the source file                            
+        }
+
         //將指定資料夾包成同名壓縮檔zip
         internal static void zipFolderFiles(string dir)
         {
@@ -182,6 +217,23 @@ namespace CharacterConverttoCharacterPics
             ZipFile.CreateFromDirectory(dir, fZip,
                 CompressionLevel.NoCompression, true
                 );
+        }
+
+        internal static void unZipsFromSpecificFolder(DirectoryInfo di)
+        {
+            if (!Directory.Exists(di.FullName)) return;
+            IEnumerable<FileInfo> fis =
+                from file in di.GetFiles("*.zip", SearchOption.TopDirectoryOnly)
+                select file;
+            foreach (FileInfo item in fis)
+            {
+                try
+                {
+                    ZipFile.ExtractToDirectory(item.FullName, di.FullName);
+                    DeleteFileRemoveReadOnly(item);
+                }
+                catch (Exception e) { MessageBox.Show(e.ToString()); }
+            }
         }
     }
 }

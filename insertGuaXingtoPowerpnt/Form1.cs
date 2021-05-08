@@ -1160,6 +1160,16 @@ namespace insertGuaXingtoPowerpnt
                 }
             }
         }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {//解壓縮下載的字圖檔
+            if (MessageBox.Show("要解壓縮字圖檔案?","",MessageBoxButtons.OKCancel,MessageBoxIcon.Question) == DialogResult.Cancel) return;
+            Color cl =BackColor;
+            BackColor = Color.Chocolate;Refresh();
+            DirFiles.unZipsFromSpecificFolder(new DirectoryInfo(DirFiles.PicsRootFolder));
+            BackColor = cl; Refresh();
+            MessageBox.Show("解壓縮字圖檔案完畢", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 
     enum officeEnum
