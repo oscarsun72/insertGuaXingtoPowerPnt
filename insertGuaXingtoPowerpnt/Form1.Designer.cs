@@ -56,6 +56,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(87, 22);
             this.textBox1.TabIndex = 3;
+            this.textBox1.TabStop = false;
             this.textBox1.Text = "打個字看看：";
             this.textBox1.Click += new System.EventHandler(this.textBox1_Click);
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
@@ -67,6 +68,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(193, 49);
             this.button1.TabIndex = 1;
+            this.button1.TabStop = false;
             this.button1.Text = "Go~";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -80,6 +82,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(159, 118);
             this.listBox1.TabIndex = 2;
+            this.listBox1.TabStop = false;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             this.listBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox1_KeyDown);
@@ -95,6 +98,7 @@
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(111, 46);
             this.listBox2.TabIndex = 3;
+            this.listBox2.TabStop = false;
             this.listBox2.SelectedValueChanged += new System.EventHandler(this.listBox2_SelectedValueChanged);
             this.listBox2.DoubleClick += new System.EventHandler(this.listBox2_DoubleClick);
             // 
@@ -129,6 +133,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(79, 32);
             this.button2.TabIndex = 6;
+            this.button2.TabStop = false;
             this.button2.Text = "reset~";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -141,6 +146,7 @@
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(66, 16);
             this.checkBox2.TabIndex = 7;
+            this.checkBox2.TabStop = false;
             this.checkBox2.Text = "SlidePPT";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
@@ -170,6 +176,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(159, 22);
             this.textBox2.TabIndex = 10;
+            this.textBox2.TabStop = false;
             this.textBox2.Text = "篩選字型";
             this.textBox2.Click += new System.EventHandler(this.textBox2_Click);
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);

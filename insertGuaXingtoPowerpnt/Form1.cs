@@ -299,6 +299,8 @@ namespace insertGuaXingtoPowerpnt
                                       MessageBoxIcon.Exclamation); return;
                                 }
                             }
+                            else
+                                doc.Content.Select();
                         }
                         rng = selDoc.Range;
                         runDOC(dir, pE);
