@@ -90,14 +90,14 @@ namespace insertGuaXingtoPowerpnt
                     break;
             }
             numericUpDown1.Value = 0.1M;//最小化時須要設定非0，否則會卡死。日後改為多執行緒時，再改良
-            WindowState = FormWindowState.Minimized;
+            //WindowState = FormWindowState.Minimized;
             //執行完後恢復控制項狀態
             listBox1.Enabled = true; listBox2.Enabled = true; button1.Enabled = true; button2.Enabled = true;
             if ((string)listBox2.SelectedValue == "Word")
             {
                 checkBox1.Enabled = true;
             }
-            WindowState = FormWindowState.Normal;
+            //WindowState = FormWindowState.Normal;
             Activate();
         }
 
@@ -302,7 +302,7 @@ namespace insertGuaXingtoPowerpnt
                             else
                                 doc.Content.Select();
                         }
-                        rng = selDoc.Range;
+                        rng = selDoc.Range;                        
                         runDOC(dir, pE);
                         break;
                     case officeEnum.Excel:
@@ -321,17 +321,21 @@ namespace insertGuaXingtoPowerpnt
             {
                 selDoc.ParagraphFormat.BaseLineAlignment = WinWord.WdBaselineAlignment.wdBaselineAlignCenter;
             }
-
-            if (selDoc.Information[WinWord.WdInformation.wdWithInTable])
+            WinWord.Range myRng = selDoc.Range;
+            selDoc.Collapse();            
+            //if (selDoc.Information[WinWord.WdInformation.wdWithInTable])
+            if (myRng.Information[WinWord.WdInformation.wdWithInTable])
             {//若在表格中
-                foreach (WinWord.Cell c in selDoc.Cells)
+                //foreach (WinWord.Cell c in selDoc.Cells)
+                foreach (WinWord.Cell c in myRng.Cells)
                 {
                     charBycharDoc(dir, pE, c.Range);
                 }
             }
             else
-                charBycharDoc(dir, pE, selDoc.Range);
-            selDoc.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
+                //charBycharDoc(dir, pE, selDoc.Range);
+                charBycharDoc(dir, pE, myRng);
+            //selDoc.Collapse(WinWord.WdCollapseDirection.wdCollapseEnd);
         }
 
         private void charBycharDoc(string dir, picEnum pE, WinWord.Range rng)
@@ -701,6 +705,7 @@ namespace insertGuaXingtoPowerpnt
             {
                 case officeEnum.PowerPoint:
                     pptApp = (PowerPnt.Application)getOffice(ofE);
+                    if (pptApp == null) return;
                     pptApp.Activate();
                     sld = pptApp.ActiveWindow.View.Slide;
                     PowerPnt.Shape sp;
@@ -824,6 +829,7 @@ namespace insertGuaXingtoPowerpnt
                 //如果是對象是MS Word（winword）
                 case officeEnum.Word:
                     docApp = (WinWord.Application)getOffice(ofE);
+                    if (docApp == null) return;
                     selDoc = docApp.ActiveWindow.Selection;
                     selDocType = selDoc.Type;
                     if (selDocType == WinWord.WdSelectionType.wdSelectionIP)
@@ -871,7 +877,7 @@ namespace insertGuaXingtoPowerpnt
                     this.Close();
                     break;
                 case Keys.R:
-                    resetClearAllPicsandFontTranspSel(officE);
+                        resetClearAllPicsandFontTranspSel(officE);
                     break;
                 case Keys.Enter:
                     go();
