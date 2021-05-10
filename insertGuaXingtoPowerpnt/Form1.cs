@@ -1176,7 +1176,7 @@ namespace insertGuaXingtoPowerpnt
             BackColor = Color.Chocolate;Refresh();
             DirFiles.unZipsFromSpecificFolder(new DirectoryInfo(DirFiles.PicsRootFolder));
             BackColor = cl; Refresh();
-            MessageBox.Show("解壓縮字圖檔案完畢", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //MessageBox.Show("解壓縮字圖檔案完畢", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 
