@@ -56,6 +56,12 @@ Senty Pea 新蒂绿豆体
 SentyTEA 新蒂下午茶体
 漢儀新蒂青松小楷
 漢儀新蒂歡樂體
+華康文徵明體W4
+華康文徵明體 Std W4
+莫大毛筆-Light
+莫大毛筆-ExtraLight
+莫大毛筆-Bold
+
 文鼎鋼筆行楷L
 文鼎鋼筆行楷M
 文鼎鋼筆行楷B
@@ -143,6 +149,7 @@ Kozuka Mincho Pr6N B
 文鼎新黑體HKL
 文鼎新黑體HKM
 文鼎新藝體U
+文鼎新潮POP體H
 DFGothicP-W5
 Kozuka Gothic Pr6N B
 Kozuka Gothic Pr6N EL
@@ -160,7 +167,16 @@ HeiT
 華康POP1體W5
 華康POP1體W7
 華康POP1體W7(P)
-
+華康POP1體W9
+華康POP1體W9(P)
+華康POP2體W9
+華康POP2體W9(P)
+華康POP2體 Std W9
+華康POP3體 Std W12
+華康中特圓體
+華康中特圓體(P)
+華康方圓體 Std W7
+華康方圓體W7
 
 
 //搞怪體
@@ -168,6 +184,8 @@ DFGKanTeiRyu-W11
 漢儀新蒂佛塔書
 漢儀新蒂牌樓體
 文鼎古印體B
+華康古印體
+華康古印體 Std W5
 文鼎廣告體M
 文鼎廣告體B
 文鼎廣告體EB
@@ -189,6 +207,7 @@ DFPGiHi-W7
 文鼎空疊圓U
 文鼎石頭體EB
 文鼎妞妞體B
+文鼎甜妞體B
 文鼎甜妞體U
 文鼎甜妞體H
 文鼎瓢蟲體U
@@ -202,9 +221,11 @@ DFPGiHi-W7
 文鼎咕咕雞體U
 文鼎花草體EB
 文鼎花瓣體U
+文鼎草莓體H
 文鼎ＰＯＰ-２B
 文鼎ＰＯＰ-４B
 文鼎甜心體U
+文鼎賤狗體B
 Hanyi Senty Chalk Original
 Hanyi Senty Diary
 Senty Cream Puff 新蒂泡芙体
@@ -221,6 +242,16 @@ SentyPaperCut
 漢儀新蒂塗鴉體
 漢儀新蒂蠟筆體
 @Yu Gothic UI Semibold
+華康少女文字 Std W3
+華康少女文字 Std W5
+華康少女文字 Std W7
+華康少女文字W3
+華康布丁體
+華康布丁體 Std W12
+華康布丁體 Std W7
+華康布丁體(P)
+華康布丁體W7
+華康布丁體W7(P)
 
 
 DFGFuun-W7
@@ -841,3 +872,41 @@ Yu Mincho Light
 文鼎雙魚座U
 華康POP1體W5(P)
 華康POP1體W5外字集
+華康POP1體W7外字集
+華康POP1體W9外字集
+華康POP2體W9外字集
+華康POP3體W12
+華康POP3體W12(P)
+華康POP3體W12外字集
+華康中明體
+華康中明體(P)
+華康中明體外字集
+華康中特圓體外字集
+華康中黑體
+華康中黑體(P)
+華康中黑體(P)-UN
+華康中黑體外字集
+華康中黑體外字集-HK
+華康中圓體
+華康中圓體(P)
+華康中圓體外字集
+華康少女文字W3(P)
+華康少女文字W3外字集
+華康少女文字W5
+華康少女文字W5(P)
+華康少女文字W5-GB5
+華康少女文字W5P-GB5
+華康少女文字W5外字集
+華康少女文字W7
+華康少女文字W7(P)
+華康少女文字W7外字集
+文鼎親親體U
+文鼎顏楷九宮體U
+華康文徵明體W4(P)
+華康文徵明體W4外字集
+華康方圓體W7(P)
+華康方圓體W7外字集
+華康古印體(P)
+華康古印體外字集
+華康布丁體W7外字集
+華康布丁體外字集
