@@ -228,6 +228,7 @@ namespace CharacterConverttoCharacterPics
                 select file;
             foreach (FileInfo item in fis)
             {
+                if (!item.Exists)continue;//可能在執行期間手動刪除重複的壓縮檔案20210516
                 try
                 {
                     if (Directory.Exists(di.FullName + "\\" + item.Name.Replace(item.Extension, "")))
